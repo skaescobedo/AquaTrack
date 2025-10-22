@@ -1,0 +1,13 @@
+<article class="card" (click)="open()">
+  <div class="icon">🏞️</div>
+  <h3>{{ granja.nombre }}</h3>
+
+  <div class="meta">
+    <div>📍 {{ granja.ubicacion || '—' }}</div>
+    <div>Superficie: {{ (granja.superficie_total_m2 / 10000) | number:'1.2-2' }} ha</div>
+  </div>
+
+  <div class="cta">
+    <button type="button">Ver panel</button>
+  </div>
+</article>

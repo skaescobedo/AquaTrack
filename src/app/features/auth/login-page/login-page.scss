@@ -1,0 +1,15 @@
+.login-page{
+  position:relative; height:100vh;
+  background:var(--at-bg-gradient); color:var(--at-white);
+  display:flex; align-items:center; justify-content:center; overflow:hidden;
+
+  .overlay{ position:absolute; inset:0; background:var(--at-overlay-30); z-index:1; }
+  .content{ position:relative; z-index:2; text-align:center; max-width:380px; width:90%; }
+
+  .title{
+    font-size:2rem; font-weight:800; letter-spacing:1px; margin:0 0 var(--at-space-7);
+    span{ color:var(--at-brand); font-size:.8rem; }
+  }
+
+  .tagline{ margin:0 0 var(--at-space-8); font-weight:300; }
+}

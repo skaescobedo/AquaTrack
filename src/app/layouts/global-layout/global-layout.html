@@ -1,0 +1,24 @@
+<div class="global-shell" [class.sidebar-open]="sidebarOpen()">
+
+  <!-- Header móvil -->
+  <header class="topbar" *ngIf="mobile()">
+    <button class="icon" (click)="toggleSidebar()" aria-label="Abrir menú">☰</button>
+    <div class="brand">AquaTrack <span class="headersito">alpha</span></div>
+    <button class="icon" routerLink="/profile" aria-label="Perfil">👤</button>
+  </header>
+
+  <!-- Sidebar -->
+  <app-sidebar-global
+    class="sidebar-host"
+    [mode]="mobile() ? 'over' : 'persistent'"
+    [open]="mobile() ? sidebarOpen() : true">
+  </app-sidebar-global>
+
+  <!-- Backdrop móvil -->
+  <div class="backdrop" *ngIf="mobile() && sidebarOpen()" (click)="toggleSidebar(false)"></div>
+
+  <!-- Contenido -->
+  <main class="content">
+    <router-outlet></router-outlet>
+  </main>
+</div>

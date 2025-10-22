@@ -1,0 +1,57 @@
+/* Blindaje local por si algún día cambian el reset global */
+:host, .modal, .modal * { box-sizing: border-box; }
+
+.modal{
+  width:min(520px,92vw);
+  background:var(--at-surface-2);
+  color:var(--at-text);
+  border:1px solid var(--at-border-strong);
+  border-radius:var(--at-radius-5);
+  padding:var(--at-space-6);
+  box-shadow:var(--at-shadow-1);
+}
+h2{ margin:0 0 var(--at-space-6); }
+
+form{
+  display:flex; flex-direction:column; gap:var(--at-space-5);
+
+  label{ color:var(--at-text-muted); font-size:.92rem; }
+
+  input, textarea{
+    width:100%; padding:12px; border-radius:var(--at-radius-3);
+    border:1px solid var(--at-input-border);
+    background:var(--at-input-bg); color:var(--at-white);
+    &::placeholder{ color:var(--at-placeholder); }
+  }
+
+  .input-suffix{ position:relative;
+    .suffix{
+      position:absolute; right:10px; top:50%; transform:translateY(-50%);
+      color:var(--at-chip-text); background:var(--at-chip-bg);
+      padding:4px 8px; border-radius:var(--at-radius-2);
+      border:1px solid var(--at-chip-border); font-size:.85rem;
+      pointer-events:none;
+    }
+    input{ padding-right:96px; }
+  }
+
+  .actions{
+    display:grid; grid-template-columns:1fr 1fr; gap:var(--at-space-3); margin-top:var(--at-space-2);
+
+    button{
+      padding:10px; border-radius:var(--at-radius-3); border:none; cursor:pointer;
+      &.secondary{
+        background: color-mix(in oklab, var(--at-logout-bg) 60%, transparent);
+        color: var(--at-text-soft);
+        border: 1px solid color-mix(in oklab, var(--at-logout-border) 60%, transparent);
+      }
+      &:not(.secondary){
+        background:var(--at-btn); color:var(--at-white); border:1px solid var(--at-btn-border);
+      }
+      &:disabled{ opacity:.6; cursor:not-allowed; }
+    }
+  }
+
+  .error{ color:var(--at-danger); text-align:center; margin-top:2px; }
+}
+

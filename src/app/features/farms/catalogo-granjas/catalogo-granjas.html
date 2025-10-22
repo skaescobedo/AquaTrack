@@ -1,0 +1,14 @@
+<section class="catalog">
+  <header>
+    <h1>Mis Granjas</h1>
+    <p>Accede a una granja para ver su panel o crea una nueva.</p>
+  </header>
+
+  <div *ngIf="loading()" class="state">Cargando…</div>
+  <div *ngIf="error()" class="state error">{{ error() }}</div>
+
+  <div class="grid" *ngIf="!loading() && !error()">
+    <app-granja-card *ngFor="let g of data()" [granja]="g"></app-granja-card>
+    <app-granja-add (created)="load()"></app-granja-add>
+  </div>
+</section>

@@ -1,1 +1,27 @@
+<<<<<<< Updated upstream
 /* You can add global styles to this file, and also import other style files */
+=======
+@use 'styles/tokens' as *;
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap');
+
+/* Box sizing heredado (incluye ::before/::after) */
+html { box-sizing: border-box; }
+*, *::before, *::after {
+  box-sizing: inherit;
+  margin: 0;
+  padding: 0;
+}
+
+/* Base */
+html, body { height: 100%; }
+body {
+  font-family: 'Manrope', sans-serif;
+  background: var(--at-bg);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+img, picture, video, canvas, svg { display: block; max-width: 100%; }
+input, button, textarea, select { font: inherit; color: inherit; }
+:focus-visible { outline: 2px solid var(--at-brand); outline-offset: 2px; }
+>>>>>>> Stashed changes

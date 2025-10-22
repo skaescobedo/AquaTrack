@@ -1,0 +1,18 @@
+.catalog{
+  max-width:var(--at-container); margin:0 auto; color:var(--at-text);
+
+  header{ margin-bottom:var(--at-space-5);
+    h1{ margin:0 0 var(--at-space-2); font-size:var(--at-fs-h1); }
+    p{ margin:0; color:var(--at-text-muted); }
+  }
+}
+.state{ color:var(--at-text-soft); }
+.state.error{ color:var(--at-danger); }
+
+.grid{
+  margin-top:var(--at-space-5);
+  display:grid; gap:var(--at-space-6);
+  grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
+  align-items:stretch;
+}
+.grid > *{ height:100%; }

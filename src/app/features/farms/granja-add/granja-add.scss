@@ -1,0 +1,17 @@
+:host{ display:block; height:100%; }
+
+.card.new{
+  height:100%; box-sizing:border-box;
+  background:var(--at-surface-3);
+  border:1px solid var(--at-border-strong);
+  border-radius:var(--at-radius-4);
+  padding:var(--at-space-6);
+  display:grid; place-items:center; text-align:center;
+  color:var(--at-accent-soft); cursor:pointer;
+  transition: background var(--at-dur-1), border-color var(--at-dur-1);
+
+  .plus{ font-size:2rem; line-height:1; }
+  .label{ margin-top:var(--at-space-2); }
+
+  &:hover{ transform:translateY(-2px); border-color:var(--at-interactive); background:var(--at-card-hover); }
+}

@@ -1,0 +1,13 @@
+<aside class="sg" [class.persistent]="mode==='persistent'" [class.over]="mode==='over'" [class.open]="open">
+  <div class="brand">
+    <h3>AquaTrack <span>alpha</span></h3>
+  </div>
+
+  <nav>
+    <a routerLink="/farms" routerLinkActive="active">Mis granjas</a>
+    <a *ngIf="isAdmin()" routerLink="/users" routerLinkActive="active">Usuarios</a>
+    <a routerLink="/profile" routerLinkActive="active">Mi perfil</a>
+  </nav>
+
+  <button class="logout" (click)="logout()">Cerrar sesión</button>
+</aside>

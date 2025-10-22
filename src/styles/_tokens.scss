@@ -1,0 +1,101 @@
+/* -------- Design tokens AquaTrack (versión simple) -------- */
+
+/* CSS variables -> se usan en todos los componentes con var(--...)  */
+:root {
+  /* Brand */
+  --at-brand:        #1da1f2;   /* Botones primarios: login-form (submit), granja-card (.cta button), granja-dialog (.actions > button:not(.secondary)); acento "alpha" en headersito */
+  --at-brand-hover:  #0d8ae5;   /* Hover de botones: login-form (submit:hover), granja-card (.cta button:hover), granja-dialog (primary:hover) */
+
+  /* Textos */
+  --at-white:        #ffffff;   /* Textos sobre inputs y superficies oscuras: login-form (inputs), sidebars (titulares), etc. */
+  --at-text:         #e6eefb;   /* Texto base: body global, cards (granja-card), formularios, layouts */
+  --at-text-muted:   #b1c7e7;   /* Descriptivos: catalogo (header p), granja-card (.meta), granja-dialog (label) */
+  --at-text-soft:    #cfe3ff;   /* Estados y botones secundarios: catalogo (.state), granja-card (.cta button), granja-dialog (.secondary) */
+  --at-link:         #69b8ff;   /* Enlaces: login-form (.forgot) */
+  --at-danger:       #ff8b8b;   /* Errores: login-form (.error), catalogo (.state.error), granja-dialog (.error) */
+  --at-placeholder:  #6f8db2;   /* Placeholder de inputs: granja-dialog (input/textarea::placeholder), login-form (placeholder si lo usas) */
+
+  /* Superficies / fondos */
+  --at-bg:           #08111c;   /* Fondo de la app: global-layout, granja-layout, body */
+  --at-surface-1:    #0b1624;   /* Topbar móvil + sidebars: global-layout (.topbar), sidebar-global, sidebar-granja */
+  --at-surface-2:    #0f1d2f;   /* Modal/capas: granja-dialog (.modal) */
+  --at-surface-3:    #1a2133;   /* Cards/inputs oscuros: login-form (contenedor), granja-card (.card), granja-add (.card.new) */
+  --at-bg-gradient:  radial-gradient(circle at center, #253645 0%, #121921 73%); /* Fondo de login: login-page */
+
+  /* Bordes / estados */
+  --at-border:        #162740;  /* Divisores/bordes sutiles: topbars (border-bottom), sidebars (border-right) */
+  --at-border-strong: #334566;  /* Bordes de cards y form contenedores: login-form, granja-card, granja-add, granja-dialog */
+  --at-interactive:   #2b5f9d;  /* Hover de borde/links oscuros: granja-card (.card:hover border), .cta button border */
+  --at-card-hover:    #11233a;  /* Hover de tarjetas: granja-card (.card:hover), granja-add (.card.new:hover) */
+
+  /* Inputs */
+  --at-input-bg:      #162843;  /* Fondo de inputs: granja-dialog (input/textarea), login-form (inputs al tokenizar) */
+  --at-input-border:  #213a5e;  /* Borde de inputs: granja-dialog, login-form (inputs) */
+
+  /* Chips (sufijo “hectáreas”) */
+  --at-chip-text:     #84b5ff;  /* Texto del sufijo: granja-dialog (.input-suffix .suffix) */
+  --at-chip-bg:       #13223a;  /* Fondo del sufijo: granja-dialog (.input-suffix .suffix) */
+  --at-chip-border:   #1e3a63;  /* Borde del sufijo: granja-dialog (.input-suffix .suffix) */
+
+  /* Botones */
+  --at-btn:           #1e60d6;  /* Botón primario: granja-dialog (primary) */
+  --at-btn-border:    #2a74f7;  /* Borde botón primario: granja-dialog (primary) */
+  --at-btn-hover:     #194472;  /* Hover ghost/accion secundaria: granja-card (.cta button:hover) */
+  --at-btn-ghost-bg:  #14365c;  /* Fondo ghost: granja-card (.cta button) */
+
+  /* Navegación (sidebar) */
+  --at-nav-active-bg: #1f2b45;  /* Link activo: sidebar-global/nav .active, sidebar-granja/nav .active */
+  --at-nav-active-fg: #60a5fa;  /* Texto de link activo: sidebars */
+  --at-nav-hover-bg:  #141c2e;  /* Hover de links en sidebars: sidebar-global/nav a:hover, sidebar-granja/nav a:hover */
+
+  /* Botón logout */
+  --at-logout-bg:        #121a2d; /* Fondo: sidebar-global .logout, sidebar-granja .logout */
+  --at-logout-border:    #1f2937; /* Borde: sidebar-global .logout, sidebar-granja .logout */
+  --at-logout-hover-bg:  #18223a; /* Hover: sidebar-global .logout:hover, sidebar-granja .logout:hover */
+
+  /* Dimensión & layout */
+  --at-sidebar-w:    280px;     /* Ancho sidebar: global-layout (grid), granja-layout (grid), :host.over width */
+  --at-topbar-h:     54px;      /* Alto topbar móvil: global-layout .topbar, granja-layout .topbar */
+  --at-container:    1100px;    /* Max ancho del catálogo: catalogo (max-width) */
+
+  /* Tipografía */
+  --at-fs-h1: 1.6rem;           /* Título de sección: catalogo (header h1) */
+  --at-fs-h2: 1.2rem;           /* Título del form: login-form (h2), granja-dialog (h2 si lo aplicas) */
+  --at-fs-base: 1rem;           /* (Disponible) Tamaño base si estandarizas textos */
+  --at-fs-sm: .85rem;           /* Errores/textos chicos: login-form (.error), granja-dialog (.suffix ~ .85rem) */
+  --at-fs-xs: .8rem;            /* Enlaces pequeños: login-form (.forgot), “alpha” en algunos casos */
+
+  /* Espaciado (escala corta) */
+  --at-space-1: 4px;            /* (Disponible) micro-espacios */
+  --at-space-2: 6px;            /* granja-card (.label mt), grids finos */
+  --at-space-3: 8px;            /* gaps pequeños: topbar (gap), nav sidebars */
+  --at-space-4: 10px;           /* granja-card (gap), botones padding pequeños */
+  --at-space-5: 12px;           /* paddings: granja-card (padding), dialog (gaps) */
+  --at-space-6: 14px;           /* granja-add (padding), dialog (h2 margin-bottom) */
+  --at-space-7: 16px;           /* gaps/paddings medios: login-form (gap), layout paddings */
+  --at-space-8: 24px;           /* paddings grandes: login-form (padding), content (desktop) */
+
+  /* Radios */
+  --at-radius-1: 6px;           /* Inputs/botones básicos: login-form, granja-card .cta button */
+  --at-radius-2: 8px;           /* Botones icon/topbar/links sidebar */
+  --at-radius-3: 10px;          /* Inputs/dialog botones: granja-dialog */
+  --at-radius-4: 12px;          /* Cards/containers: login-form, granja-card, granja-add */
+  --at-radius-5: 14px;          /* Modal: granja-dialog */
+
+  /* Sombras / transiciones */
+  --at-shadow-1: 0 6px 24px rgba(0,0,0,.24); /* Sombra modal: granja-dialog (.modal) */
+  --at-dur-1: .15s;             /* Transiciones: hover de cards/botones (granja-card, granja-add, login-form) */
+
+  /* Overlay / Backdrop */
+  --at-overlay-30:  rgba(0,0,0,.30); /* Capa de login: login-page (.overlay) */
+  --at-backdrop-45: rgba(0,0,0,.45); /* (Sugerido) Backdrop global en global-layout/granja-layout .backdrop; también útil si haces overlay en host del dialog */
+
+  /* Detalles UI */
+  --at-icon-border: #223a5b;    /* Borde de botones icono en topbar móvil: global-layout .topbar .icon, granja-layout .topbar .icon */
+  --at-text-nav:    #cbd5e1;    /* Color base de links en sidebars: sidebar-global/nav a, sidebar-granja/nav a */
+  --at-logout-fg:   #93c5fd;    /* Texto del botón “Cerrar sesión”: sidebars */
+  --at-accent-soft: #9fd1ff;    /* Azul suave de la card “+ Agregar nueva granja”: granja-add (.card.new) */
+}
+
+/* SCSS variables -> para media queries/constantes de build-time */
+$at-bp-mobile: 920px;   /* Breakpoint móvil: media queries en global-layout, granja-layout, sidebar-*, etc. */

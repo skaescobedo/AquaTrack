@@ -1,0 +1,41 @@
+@use '../../../styles/tokens' as *;
+
+.global-shell{
+  min-height:100dvh; background:var(--at-bg);
+  display:grid; grid-template-columns:var(--at-sidebar-w) 1fr;
+}
+.content{ padding:var(--at-space-8); color:var(--at-text); }
+.topbar{ display:none; }
+
+@media (min-width: ($at-bp-mobile + 1)) {
+  .sidebar-host{ grid-column:1; }
+  .content{ grid-column:2; }
+}
+
+@media (max-width: $at-bp-mobile){
+  .global-shell{ display:block; }
+
+  .topbar{
+    display:flex; align-items:center; justify-content:space-between; gap:var(--at-space-3);
+    height:var(--at-topbar-h); padding:0 var(--at-space-3);
+    position:sticky; top:0; z-index:500;
+    background:var(--at-surface-1); color:var(--at-text);
+    border-bottom:1px solid var(--at-border);
+
+    .brand{ font-weight:600; }
+    .icon{
+      width:36px; height:36px; border-radius:var(--at-radius-2);
+      background:transparent; color:var(--at-text);
+      border:1px solid var(--at-icon-border);
+      display:grid; place-items:center; cursor:pointer;
+    }
+  }
+
+  .backdrop{
+    position:fixed; inset:0; background:rgba(0,0,0,.45);
+    backdrop-filter:blur(2px); z-index:900;
+  }
+
+  .headersito{ color:var(--at-brand); font-size:.5rem; }
+  .content{ padding:var(--at-space-5); }
+}

@@ -1,0 +1,29 @@
+<div class="modal" role="dialog" aria-modal="true" aria-labelledby="dlg-title">
+  <h2 id="dlg-title">Agregar Nueva Granja</h2>
+
+  <form [formGroup]="form" (ngSubmit)="submit()">
+    <label>Nombre de la Granja</label>
+    <input type="text" formControlName="nombre" placeholder="Ej. Granja de Luis" />
+
+    <label>Ubicación</label>
+    <input type="text" formControlName="ubicacion" placeholder="Descripción de la ubicación" />
+
+    <label>Superficie total</label>
+    <div class="input-suffix">
+      <input type="number" formControlName="superficie_ha" placeholder="Ej. 181.2" step="0.01" />
+      <span class="suffix">hectáreas</span>
+    </div>
+
+    <label>Descripción / notas</label>
+    <textarea formControlName="descripcion" rows="4" placeholder="Escribe algo..."></textarea>
+
+    <div class="actions">
+      <button type="button" class="secondary" (click)="cancel()">Cancelar</button>
+      <button type="submit" [disabled]="loading() || form.invalid">
+        {{ loading() ? 'Agregando…' : 'Agregar' }}
+      </button>
+    </div>
+
+    <p class="error" *ngIf="error()">{{ error() }}</p>
+  </form>
+</div>
