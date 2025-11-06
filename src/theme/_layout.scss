@@ -1,0 +1,190 @@
+// _layout.scss - Estilos del layout principal
+@import 'variables';
+
+.app-layout {
+  @apply flex h-screen bg-slate-900 overflow-hidden;
+}
+
+// Sidebar
+.sidebar {
+  @apply w-64 bg-slate-800 border-r border-slate-700 flex flex-col transition-transform duration-300;
+
+  &-header {
+    @apply p-4 border-b border-slate-700 flex items-center gap-3 relative;
+
+    .logo {
+      @apply w-10 h-10 bg-blue-500 rounded-lg flex items-center justify-center;
+    }
+
+    .brand {
+      @apply flex flex-col flex-1;
+
+      h1 {
+        @apply text-lg font-bold text-white m-0;
+      }
+
+      p {
+        @apply text-xs text-slate-400 m-0;
+      }
+    }
+
+    .sidebar-close-btn {
+      @apply p-1.5 rounded-lg hover:bg-slate-700 text-slate-400 hover:text-white transition-colors;
+    }
+  }
+
+  &-nav {
+    @apply flex-1 overflow-y-auto p-4;
+  }
+
+  &-footer {
+    @apply p-4 border-t border-slate-700;
+  }
+}
+
+.nav-item {
+  @apply flex items-center gap-3 px-4 py-3 rounded-lg text-slate-300 transition-all duration-200 mb-1 cursor-pointer;
+
+  &:hover {
+    @apply bg-slate-700 text-white;
+  }
+
+  &.active {
+    @apply bg-blue-500 bg-opacity-20 text-blue-400 border-l-4 border-blue-500;
+  }
+
+  .icon {
+    @apply flex-shrink-0;
+  }
+
+  .label {
+    @apply font-medium;
+  }
+}
+
+// Main content
+.main-content {
+  @apply flex-1 flex flex-col overflow-hidden;
+}
+
+// Topbar
+.topbar {
+  @apply h-16 bg-slate-800 border-b border-slate-700 px-6 flex items-center justify-between;
+
+  &-left {
+    @apply flex items-center gap-4;
+  }
+
+  &-right {
+    @apply flex items-center gap-4;
+  }
+
+  .user-menu {
+    @apply flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-700 cursor-pointer transition-colors;
+
+    .avatar {
+      @apply w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center text-white font-semibold text-sm;
+    }
+
+    .user-info {
+      @apply flex flex-col;
+
+      .name {
+        @apply text-sm font-medium text-white;
+      }
+
+      .email {
+        @apply text-xs text-slate-400;
+      }
+    }
+  }
+}
+
+// Content area
+.content-area {
+  @apply flex-1 overflow-y-auto p-6;
+}
+
+// Page header
+.page-header {
+  @apply mb-6;
+
+  .title {
+    @apply text-3xl font-bold text-white mb-2;
+  }
+
+  .subtitle {
+    @apply text-slate-400;
+  }
+
+  &-actions {
+    @apply flex items-center justify-between;
+
+    .left {
+      @apply flex flex-col;
+    }
+
+    .right {
+      @apply flex gap-2;
+    }
+  }
+}
+
+// Grid layouts
+.grid-container {
+  @apply grid gap-6;
+
+  &.cols-1 {
+    @apply grid-cols-1;
+  }
+
+  &.cols-2 {
+    @apply grid-cols-1 lg:grid-cols-2;
+  }
+
+  &.cols-3 {
+    @apply grid-cols-1 md:grid-cols-2 xl:grid-cols-3;
+  }
+
+  &.cols-4 {
+    @apply grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4;
+  }
+}
+
+// Mobile menu toggle
+.mobile-menu-toggle {
+  @apply lg:hidden p-2 rounded-lg hover:bg-slate-700 text-slate-300 transition-colors;
+}
+
+// Desktop - mostrar boton toggle solo en mobile
+@media (min-width: 1024px) {
+  .mobile-menu-toggle {
+    @apply hidden;
+  }
+}
+
+// Responsive sidebar
+@media (max-width: 1024px) {
+  .sidebar {
+    @apply fixed inset-y-0 left-0 z-50;
+
+    &.closed {
+      @apply -translate-x-full;
+    }
+  }
+
+  .sidebar-overlay {
+    @apply fixed inset-0 bg-black bg-opacity-50 z-40;
+  }
+}
+
+// Desktop
+@media (min-width: 1024px) {
+  .sidebar {
+    @apply relative;
+  }
+
+  .sidebar-overlay {
+    @apply hidden;
+  }
+}

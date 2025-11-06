@@ -1,0 +1,93 @@
+<div class="app-layout">
+  <!-- Sidebar -->
+  <aside class="sidebar" [class.closed]="!sidebarOpen()">
+    <!-- Logo & Brand -->
+    <div class="sidebar-header">
+      <div class="logo">
+        <lucide-icon [img]="Building2" [size]="24" class="text-blue-400"></lucide-icon>
+      </div>
+      <div class="brand">
+        <h1>AquaTrack</h1>
+        <p>Gestión Acuícola</p>
+      </div>
+      
+      <!-- Close button para mobile -->
+      @if (isMobile()) {
+        <button 
+          class="sidebar-close-btn"
+          (click)="toggleSidebar()"
+        >
+          <lucide-icon [img]="X" [size]="20"></lucide-icon>
+        </button>
+      }
+    </div>
+
+    <!-- Navigation -->
+    <nav class="sidebar-nav">
+      @for (item of navItems; track item.route) {
+        @if (shouldShowNavItem(item)) {
+          <a 
+            [routerLink]="item.route"
+            routerLinkActive="active"
+            class="nav-item"
+            (click)="closeSidebarIfMobile()"
+          >
+            <lucide-icon [img]="item.icon" [size]="20" class="icon"></lucide-icon>
+            <span class="label">{{ item.label }}</span>
+          </a>
+        }
+      }
+    </nav>
+
+    <!-- User Section -->
+    <div class="sidebar-footer">
+      <button 
+        class="btn btn-ghost w-full justify-start"
+        (click)="logout()"
+      >
+        <lucide-icon [img]="LogOut" [size]="20" class="icon"></lucide-icon>
+        <span>Cerrar Sesión</span>
+      </button>
+    </div>
+  </aside>
+
+  <!-- Main Content Area -->
+  <div class="main-content">
+    <!-- Top Bar -->
+    <header class="topbar">
+      <div class="topbar-left">
+        <button 
+          class="mobile-menu-toggle"
+          (click)="toggleSidebar()"
+        >
+          <lucide-icon [img]="Menu" [size]="24"></lucide-icon>
+        </button>
+      </div>
+
+      <div class="topbar-right">
+        @if (currentUser) {
+          <div class="user-menu">
+            <div class="avatar">{{ userInitials }}</div>
+            <div class="user-info">
+              <div class="name">{{ currentUser.nombre }} {{ currentUser.apellido1 }}</div>
+              <div class="email">{{ currentUser.email }}</div>
+            </div>
+          </div>
+        }
+      </div>
+    </header>
+
+    <!-- Content -->
+    <main class="content-area">
+      <router-outlet />
+    </main>
+  </div>
+
+  <!-- Mobile Overlay -->
+  @if (sidebarOpen() && isMobile()) {
+    <div 
+      class="sidebar-overlay"
+      (click)="toggleSidebar()"
+    ></div>
+  }
+</div>

@@ -1,0 +1,97 @@
+<div class="farms-page">
+  <!-- Page Header -->
+  <div class="page-header-actions">
+    <div class="left">
+      <h1 class="title">Mis Granjas</h1>
+      <p class="subtitle">Accede a una granja para ver su panel o crea una nueva.</p>
+    </div>
+    <div class="right">
+      @if (isAdminGlobal) {
+        <button 
+          class="btn btn-primary"
+          (click)="openCreateModal()"
+        >
+          <lucide-icon [img]="Plus" [size]="20"></lucide-icon>
+          <span>Agregar nueva granja</span>
+        </button>
+      }
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  @if (loading()) {
+    <div class="flex justify-center items-center py-20">
+      <div class="spinner spinner-lg"></div>
+    </div>
+  }
+
+  <!-- Error State -->
+  @if (error()) {
+    <div class="alert alert-danger">
+      {{ error() }}
+    </div>
+  }
+
+  <!-- Farms Grid -->
+  @if (!loading() && !error()) {
+    <!-- Active Farms -->
+    @if (activeFarms.length > 0) {
+      <div class="grid-container cols-3 fade-in">
+        @for (farm of activeFarms; track farm.granja_id) {
+          <app-farm-card 
+            [farm]="farm"
+            (viewPanel)="viewFarmPanel($event)"
+          />
+        }
+      </div>
+    }
+
+    <!-- Inactive Farms Section -->
+    @if (inactiveFarms.length > 0) {
+      <div class="mt-8">
+        <h2 class="text-xl font-semibold text-slate-300 mb-4">Granjas Inactivas</h2>
+        <div class="grid-container cols-3 fade-in">
+          @for (farm of inactiveFarms; track farm.granja_id) {
+            <app-farm-card 
+              [farm]="farm"
+              (viewPanel)="viewFarmPanel($event)"
+            />
+          }
+        </div>
+      </div>
+    }
+
+    <!-- Empty State -->
+    @if (farms().length === 0) {
+      <div class="empty-state">
+        <div class="icon">
+          <lucide-icon [img]="Building2" [size]="64" class="text-slate-600"></lucide-icon>
+        </div>
+        <h3 class="title">No tienes granjas asignadas</h3>
+        <p class="message">
+          @if (isAdminGlobal) {
+            Crea una nueva granja para comenzar
+          } @else {
+            Contacta con el administrador para que te asigne a una granja
+          }
+        </p>
+        @if (isAdminGlobal) {
+          <button 
+            class="btn btn-primary"
+            (click)="openCreateModal()"
+          >
+            Crear mi primera granja
+          </button>
+        }
+      </div>
+    }
+  }
+</div>
+
+<!-- Modal -->
+@if (showModal()) {
+  <app-farm-modal
+    (close)="closeModal()"
+    (save)="onSaveFarm($event)"
+  />
+}

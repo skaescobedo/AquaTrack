@@ -1,0 +1,64 @@
+// _forms.scss - Estilos de formularios
+@import 'variables';
+
+.form-group {
+  @apply mb-4;
+
+  label {
+    @apply block text-sm font-medium text-slate-300 mb-2;
+
+    &.required::after {
+      content: ' *';
+      @apply text-red-500;
+    }
+  }
+
+  input,
+  textarea,
+  select {
+    @apply w-full px-4 py-2.5 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-slate-400 transition-colors;
+
+    &:focus {
+      @apply outline-none border-blue-500 ring-2 ring-blue-500 ring-opacity-30;
+    }
+
+    &:disabled {
+      @apply bg-slate-800 cursor-not-allowed opacity-50;
+    }
+
+    &.error {
+      @apply border-red-500;
+    }
+  }
+
+  textarea {
+    @apply resize-none;
+    min-height: 100px;
+  }
+
+  .error-message {
+    @apply text-sm text-red-400 mt-1;
+  }
+
+  .hint {
+    @apply text-sm text-slate-400 mt-1;
+  }
+}
+
+.form-row {
+  @apply grid grid-cols-1 md:grid-cols-2 gap-4;
+}
+
+.checkbox-group,
+.radio-group {
+  @apply flex items-center gap-2;
+
+  input[type="checkbox"],
+  input[type="radio"] {
+    @apply w-4 h-4 text-blue-500 bg-slate-700 border-slate-600 rounded focus:ring-2 focus:ring-blue-500;
+  }
+
+  label {
+    @apply text-sm text-slate-300 mb-0;
+  }
+}

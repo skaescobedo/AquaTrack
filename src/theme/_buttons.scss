@@ -1,0 +1,52 @@
+// _buttons.scss - Estilos de botones reutilizables
+@import 'variables';
+
+.btn {
+  @apply px-4 py-2 rounded-lg font-medium transition-all duration-300 inline-flex items-center justify-center gap-2;
+  cursor: pointer;
+  border: none;
+
+  &:disabled {
+    @apply opacity-50 cursor-not-allowed;
+  }
+
+  &-primary {
+    @apply bg-blue-500 text-white hover:bg-blue-600;
+
+    &:disabled {
+      @apply bg-blue-500;
+    }
+  }
+
+  &-secondary {
+    @apply bg-slate-700 text-white hover:bg-slate-600;
+  }
+
+  &-success {
+    @apply bg-green-500 text-white hover:bg-green-600;
+  }
+
+  &-danger {
+    @apply bg-red-500 text-white hover:bg-red-600;
+  }
+
+  &-outline {
+    @apply bg-transparent border-2 border-slate-600 text-slate-300 hover:bg-slate-800 hover:border-slate-500;
+  }
+
+  &-ghost {
+    @apply bg-transparent text-slate-300 hover:bg-slate-800;
+  }
+
+  &-sm {
+    @apply px-3 py-1.5 text-sm;
+  }
+
+  &-lg {
+    @apply px-6 py-3 text-lg;
+  }
+
+  &-icon {
+    @apply p-2 rounded-lg;
+  }
+}

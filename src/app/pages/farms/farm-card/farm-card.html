@@ -1,0 +1,47 @@
+<div class="farm-card" [class.inactive]="!farm.is_active">
+  <!-- Header -->
+  <div class="farm-header">
+    <div class="farm-icon" [class.opacity-50]="!farm.is_active">
+      <lucide-icon [img]="Building2" [size]="24"></lucide-icon>
+    </div>
+    <div class="farm-status" [ngClass]="farm.is_active ? 'active' : 'inactive'">
+      {{ farm.is_active ? 'Activa' : 'Inactiva' }}
+    </div>
+  </div>
+
+  <!-- Content -->
+  <div class="mt-4" [class.opacity-60]="!farm.is_active">
+    <h3 class="farm-title">{{ farm.nombre }}</h3>
+    
+    @if (farm.ubicacion) {
+      <div class="farm-location">
+        <lucide-icon [img]="MapPin" [size]="16"></lucide-icon>
+        <span>{{ farm.ubicacion }}</span>
+      </div>
+    }
+    
+    @if (farm.descripcion) {
+      <p class="text-sm text-slate-400 mt-2">{{ farm.descripcion }}</p>
+    }
+  </div>
+
+  <!-- Info -->
+  <div class="farm-info" [class.opacity-60]="!farm.is_active">
+    <div class="farm-stat">
+      <lucide-icon [img]="Maximize2" [size]="16"></lucide-icon>
+      <span>Superficie: {{ superficieFormatted }}</span>
+    </div>
+  </div>
+
+  <!-- Actions -->
+  @if (farm.is_active) {
+    <div class="farm-actions">
+      <button 
+        class="btn btn-primary w-full"
+        (click)="onViewPanel()"
+      >
+        Ver panel
+      </button>
+    </div>
+  }
+</div>

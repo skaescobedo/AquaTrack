@@ -1,0 +1,33 @@
+// farm-modal.scss
+
+.modal-content {
+  @apply max-w-2xl;
+}
+
+.tabs {
+  @apply flex border-b border-slate-700 px-6;
+
+  .tab {
+    @apply px-4 py-3 text-sm font-medium text-slate-400 border-b-2 border-transparent transition-colors;
+
+    &:hover {
+      @apply text-slate-300;
+    }
+
+    &.active {
+      @apply text-blue-400 border-blue-400;
+    }
+  }
+}
+
+.tab-content {
+  @apply space-y-4;
+}
+
+.pond-item {
+  @apply bg-slate-700 bg-opacity-30 p-4 rounded-lg flex items-start gap-4;
+
+  .form-row {
+    @apply flex-1;
+  }
+}

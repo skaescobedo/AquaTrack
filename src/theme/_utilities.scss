@@ -1,0 +1,117 @@
+// _utilities.scss - Clases de utilidad
+@import 'variables';
+
+// Estados
+.badge {
+  @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium;
+
+  &-success {
+    @apply bg-green-500 bg-opacity-20 text-green-400;
+  }
+
+  &-danger {
+    @apply bg-red-500 bg-opacity-20 text-red-400;
+  }
+
+  &-warning {
+    @apply bg-yellow-500 bg-opacity-20 text-yellow-400;
+  }
+
+  &-info {
+    @apply bg-blue-500 bg-opacity-20 text-blue-400;
+  }
+
+  &-neutral {
+    @apply bg-slate-600 bg-opacity-30 text-slate-400;
+  }
+}
+
+// Loading spinner
+.spinner {
+  @apply inline-block w-5 h-5 border-2 border-slate-600 border-t-blue-500 rounded-full animate-spin;
+
+  &-lg {
+    @apply w-8 h-8 border-4;
+  }
+
+  &-sm {
+    @apply w-4 h-4 border-2;
+  }
+}
+
+// Empty state
+.empty-state {
+  @apply flex flex-col items-center justify-center py-12 text-center;
+
+  .icon {
+    @apply w-16 h-16 text-slate-600 mb-4;
+  }
+
+  .title {
+    @apply text-xl font-semibold text-slate-300 mb-2;
+  }
+
+  .message {
+    @apply text-slate-400 mb-6;
+  }
+}
+
+// Divider
+.divider {
+  @apply border-t border-slate-700 my-4;
+
+  &-vertical {
+    @apply border-l border-slate-700 mx-4 h-full;
+  }
+}
+
+// Tooltip
+.tooltip {
+  @apply absolute z-50 px-2 py-1 text-xs text-white bg-slate-900 rounded shadow-lg;
+}
+
+// Alert
+.alert {
+  @apply p-4 rounded-lg border;
+
+  &-success {
+    @apply bg-green-500 bg-opacity-10 border-green-500 text-green-400;
+  }
+
+  &-danger {
+    @apply bg-red-500 bg-opacity-10 border-red-500 text-red-400;
+  }
+
+  &-warning {
+    @apply bg-yellow-500 bg-opacity-10 border-yellow-500 text-yellow-400;
+  }
+
+  &-info {
+    @apply bg-blue-500 bg-opacity-10 border-blue-500 text-blue-400;
+  }
+}
+
+// Modal overlay
+.modal-overlay {
+  @apply fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50;
+}
+
+.modal-content {
+  @apply bg-slate-800 rounded-xl shadow-2xl max-w-lg w-full mx-4 max-h-[90vh] overflow-y-auto;
+}
+
+.modal-header {
+  @apply px-6 py-4 border-b border-slate-700;
+
+  h2 {
+    @apply text-xl font-semibold text-white m-0;
+  }
+}
+
+.modal-body {
+  @apply px-6 py-4;
+}
+
+.modal-footer {
+  @apply px-6 py-4 border-t border-slate-700 flex justify-end gap-2;
+}

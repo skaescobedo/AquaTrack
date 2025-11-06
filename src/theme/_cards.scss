@@ -1,0 +1,88 @@
+// _cards.scss - Estilos de tarjetas reutilizables
+@import 'variables';
+
+.card {
+  @apply bg-slate-800 rounded-xl p-6 shadow-lg border border-slate-700;
+
+  &-header {
+    @apply mb-4 pb-4 border-b border-slate-700;
+
+    h3 {
+      @apply text-xl font-semibold text-white m-0;
+    }
+
+    p {
+      @apply text-sm text-slate-400 mt-1 m-0;
+    }
+  }
+
+  &-body {
+    @apply space-y-4;
+  }
+
+  &-footer {
+    @apply mt-4 pt-4 border-t border-slate-700 flex justify-end gap-2;
+  }
+
+  &-interactive {
+    @apply transition-all duration-300 hover:shadow-xl hover:border-blue-500 cursor-pointer;
+
+    &:hover {
+      transform: translateY(-2px);
+    }
+  }
+
+  &-compact {
+    @apply p-4;
+  }
+}
+
+// Card para granjas específicamente
+.farm-card {
+  @apply relative bg-slate-800 rounded-xl p-5 shadow-lg border border-slate-700 transition-all duration-300;
+
+  &:hover {
+    @apply border-blue-500 shadow-xl;
+    transform: translateY(-4px);
+  }
+
+  .farm-header {
+    @apply flex items-start justify-between mb-4;
+  }
+
+  .farm-icon {
+    @apply w-12 h-12 bg-blue-500 bg-opacity-20 rounded-lg flex items-center justify-center text-blue-400 text-2xl;
+  }
+
+  .farm-status {
+    @apply px-2 py-1 rounded-md text-xs font-medium;
+
+    &.active {
+      @apply bg-green-500 bg-opacity-20 text-green-400;
+    }
+
+    &.inactive {
+      @apply bg-slate-600 bg-opacity-30 text-slate-400;
+    }
+  }
+
+  .farm-title {
+    @apply text-lg font-semibold text-white mb-1;
+  }
+
+  .farm-location {
+    @apply text-sm text-slate-400 flex items-center gap-1;
+  }
+
+  .farm-info {
+    @apply mt-4 pt-4 border-t border-slate-700;
+  }
+
+  .farm-stat {
+    @apply flex items-center gap-2 text-sm text-slate-300;
+  }
+
+  .farm-actions {
+    @apply mt-4 flex gap-2;
+  }
+}

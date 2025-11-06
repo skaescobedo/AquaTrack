@@ -1,0 +1,8 @@
+// farm-card.scss
+// Los estilos principales están en theme/_cards.scss
+
+.farm-card {
+  &.inactive {
+    @apply opacity-75;
+  }
+}

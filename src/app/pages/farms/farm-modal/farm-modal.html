@@ -1,0 +1,200 @@
+<div class="modal-overlay" (click)="onClose()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <!-- Header -->
+    <div class="modal-header">
+      <h2>Crear Nueva Granja</h2>
+      <p class="text-sm text-slate-400 mt-1">Ingresa los detalles de la nueva granja</p>
+      <button 
+        class="absolute top-4 right-4 p-2 rounded-lg hover:bg-slate-700 text-slate-400 hover:text-white transition-colors"
+        (click)="onClose()"
+      >
+        <lucide-icon [img]="X" [size]="20"></lucide-icon>
+      </button>
+    </div>
+
+    <!-- Tabs -->
+    <div class="tabs">
+      <button 
+        class="tab"
+        [class.active]="activeTab() === 'basic'"
+        (click)="setActiveTab('basic')"
+        type="button"
+      >
+        Información Básica
+      </button>
+      <button 
+        class="tab"
+        [class.active]="activeTab() === 'advanced'"
+        (click)="setActiveTab('advanced')"
+        type="button"
+      >
+        Opciones Avanzadas
+      </button>
+    </div>
+
+    <!-- Form -->
+    <form [formGroup]="farmForm" (ngSubmit)="onSubmit()">
+      <div class="modal-body">
+        <!-- Tab: Información Básica -->
+        @if (activeTab() === 'basic') {
+          <div class="tab-content fade-in">
+            <!-- Nombre -->
+            <div class="form-group">
+              <label for="nombre" class="required">Nombre</label>
+              <input
+                id="nombre"
+                type="text"
+                formControlName="nombre"
+                placeholder="Ej: Granja San José"
+                [class.error]="nombre?.invalid && nombre?.touched"
+              />
+              @if (nombre?.invalid && nombre?.touched) {
+                <span class="error-message">El nombre es requerido</span>
+              }
+            </div>
+
+            <!-- Ubicación -->
+            <div class="form-group">
+              <label for="ubicacion">Ubicación</label>
+              <input
+                id="ubicacion"
+                type="text"
+                formControlName="ubicacion"
+                placeholder="Ej: Tumbes, Perú"
+              />
+              <span class="hint">Ciudad, región o coordenadas de la granja</span>
+            </div>
+
+            <!-- Descripción -->
+            <div class="form-group">
+              <label for="descripcion">Descripción</label>
+              <textarea
+                id="descripcion"
+                formControlName="descripcion"
+                placeholder="Descripción breve de la granja (opcional)"
+              ></textarea>
+            </div>
+
+            <!-- Superficie en hectáreas -->
+            <div class="form-group">
+              <label for="superficie_ha" class="required">Superficie Total (hectáreas)</label>
+              <input
+                id="superficie_ha"
+                type="number"
+                step="0.01"
+                formControlName="superficie_ha"
+                placeholder="15.00"
+                [class.error]="superficie_ha?.invalid && superficie_ha?.touched"
+              />
+              @if (superficie_ha?.invalid && superficie_ha?.touched) {
+                <span class="error-message">
+                  @if (superficie_ha?.errors?.['required']) {
+                    La superficie es requerida
+                  }
+                  @if (superficie_ha?.errors?.['min']) {
+                    La superficie debe ser mayor a 0
+                  }
+                </span>
+              }
+              <span class="hint">La superficie se convertirá automáticamente a m² para almacenar</span>
+            </div>
+
+            <!-- Granja Activa -->
+            <div class="checkbox-group">
+              <input
+                id="is_active"
+                type="checkbox"
+                formControlName="is_active"
+              />
+              <label for="is_active">Granja activa</label>
+            </div>
+          </div>
+        }
+
+        <!-- Tab: Opciones Avanzadas -->
+        @if (activeTab() === 'advanced') {
+          <div class="tab-content fade-in">
+            <div class="mb-4">
+              <h3 class="text-lg font-semibold text-white mb-2">Crear Estanques</h3>
+              <p class="text-sm text-slate-400 mb-4">Agrega estanques iniciales a esta granja</p>
+            </div>
+
+            <!-- Lista de estanques -->
+            @if (estanques.length > 0) {
+              <div class="space-y-4">
+                @for (estanque of estanques.controls; track estanque; let idx = $index) {
+                  <div class="pond-item">
+                    <ng-container [formGroup]="estanque">
+                      <div class="form-row">
+                        <div class="form-group mb-0">
+                          <label>Nombre del Estanque</label>
+                          <input
+                            type="text"
+                            formControlName="nombre"
+                            placeholder="Ej: Estanque A1"
+                          />
+                        </div>
+
+                        <div class="form-group mb-0">
+                          <label>Superficie (m²)</label>
+                          <input
+                            type="number"
+                            formControlName="superficie_m2"
+                            placeholder="5000"
+                            min="0"
+                          />
+                        </div>
+                      </div>
+                    </ng-container>
+
+                    <button
+                      type="button"
+                      class="btn btn-ghost btn-icon text-red-400 hover:text-red-300 hover:bg-red-500 hover:bg-opacity-10"
+                      (click)="removeEstanque(idx)"
+                    >
+                      <lucide-icon [img]="Trash2" [size]="18"></lucide-icon>
+                    </button>
+                  </div>
+                }
+              </div>
+            }
+
+            <!-- Botón agregar estanque -->
+            <button
+              type="button"
+              class="btn btn-outline w-full mt-4"
+              (click)="addEstanque()"
+            >
+              <lucide-icon [img]="Plus" [size]="18"></lucide-icon>
+              <span>Agregar Estanque</span>
+            </button>
+
+            @if (estanques.length === 0) {
+              <p class="text-sm text-slate-400 text-center mt-4">
+                No hay estanques agregados. Puedes crear estanques más tarde desde el panel de la granja.
+              </p>
+            }
+          </div>
+        }
+      </div>
+
+      <!-- Footer -->
+      <div class="modal-footer">
+        <button 
+          type="button"
+          class="btn btn-secondary"
+          (click)="onClose()"
+        >
+          Cancelar
+        </button>
+        <button 
+          type="submit"
+          class="btn btn-primary"
+          [disabled]="!isFormValid"
+        >
+          Crear Granja
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
