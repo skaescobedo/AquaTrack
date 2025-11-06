@@ -1,6 +1,6 @@
 <div class="user-card">
-  <!-- Avatar & Menu -->
-  <div class="flex items-start justify-between mb-4">
+  <!-- Header Section: Avatar & Menu -->
+  <div class="card-header-section flex items-start justify-between mb-4">
     <div class="avatar">{{ initials }}</div>
     
     <div class="relative">
@@ -22,25 +22,32 @@
     </div>
   </div>
 
-  <!-- User Info -->
-  <h3 class="text-lg font-semibold text-white mb-1">{{ fullName }}</h3>
-  
-  <div class="flex items-center gap-2 text-sm text-slate-400 mb-3">
-    <lucide-icon [img]="Mail" [size]="14"></lucide-icon>
-    <span>{{ user.email }}</span>
+  <!-- Info Section: User Info & Role -->
+  <div class="card-info-section">
+    <!-- User Info -->
+    <div>
+      <h3 class="text-lg font-semibold text-white mb-1">{{ fullName }}</h3>
+      
+      <div class="flex items-center gap-2 text-sm text-slate-400">
+        <lucide-icon [img]="Mail" [size]="14"></lucide-icon>
+        <span class="truncate">{{ user.email }}</span>
+      </div>
+    </div>
+
+    <!-- Role Badge -->
+    @if (user.is_admin_global) {
+      <div class="flex items-center gap-2">
+        <lucide-icon [img]="Shield" [size]="16" class="text-purple-400"></lucide-icon>
+        <span class="badge badge-info">Admin Global</span>
+      </div>
+    }
   </div>
 
-  <!-- Role -->
-  @if (user.is_admin_global) {
-    <div class="flex items-center gap-2 mb-3">
-      <lucide-icon [img]="Shield" [size]="16" class="text-purple-400"></lucide-icon>
-      <span class="badge badge-info">Admin Global</span>
+  <!-- Footer Section: Farms Count -->
+  <div class="card-footer-section">
+    <div class="text-sm text-slate-400 flex items-center gap-2">
+      <lucide-icon [img]="UserIcon" [size]="14"></lucide-icon>
+      <span>Granjas (2)</span>
     </div>
-  }
-
-  <!-- Farms - placeholder for now -->
-  <div class="text-sm text-slate-400">
-    <lucide-icon [img]="UserIcon" [size]="14" class="inline mr-1"></lucide-icon>
-    Granjas (2)
   </div>
 </div>

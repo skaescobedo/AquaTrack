@@ -66,7 +66,12 @@ export class UserWizard {
   }
 
   goToRoles(): void {
-    this.activeStep.set('roles');
+    // Si es Admin Global, crear directamente sin ir al paso de roles
+    if (this.isAdminGlobal) {
+      this.onSubmit();
+    } else {
+      this.activeStep.set('roles');
+    }
   }
 
   goBack(): void {
@@ -78,9 +83,14 @@ export class UserWizard {
   }
 
   onSubmit(): void {
-    if (!this.hasAtLeastOneRole) return;
+    // Si es Admin Global, no necesita roles de granja
+    if (!this.isAdminGlobal && !this.hasAtLeastOneRole) {
+      return;
+    }
 
     const formValue = this.userForm.value;
+    
+    // Si no es Admin Global, buscar la primera granja con rol asignado
     const selectedFarm = this.farmRoles().find(fr => fr.rol_id !== null);
 
     const userData: UserCreate = {
@@ -91,8 +101,9 @@ export class UserWizard {
       email: formValue.email,
       password: formValue.password,
       is_admin_global: formValue.is_admin_global,
-      granja_id: selectedFarm?.granja_id,
-      rol_id: selectedFarm?.rol_id || undefined
+      // Solo incluir granja y rol si NO es Admin Global
+      granja_id: !formValue.is_admin_global ? selectedFarm?.granja_id : undefined,
+      rol_id: !formValue.is_admin_global ? selectedFarm?.rol_id || undefined : undefined
     };
 
     this.save.emit(userData);

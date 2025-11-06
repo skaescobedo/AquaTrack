@@ -14,7 +14,8 @@ interface FarmRole {
   selector: 'app-step-farm-assignment',
   standalone: true,
   imports: [CommonModule, LucideAngularModule],
-  templateUrl: './step-farm-assignment.html'
+  templateUrl: './step-farm-assignment.html',
+  styleUrls: ['./step-farm-assignment.scss']
 })
 export class StepFarmAssignment implements OnInit {
   readonly AlertTriangle = AlertTriangle;
@@ -26,10 +27,9 @@ export class StepFarmAssignment implements OnInit {
   farmRoles = signal<FarmRole[]>([]);
 
   roles = [
-    { id: 1, nombre: 'Admin Granja' },
-    { id: 2, nombre: 'Biólogo' },
-    { id: 3, nombre: 'Operador' },
-    { id: 4, nombre: 'Consultor' }
+    { id: 1, nombre: 'Administrador' },
+    { id: 2, nombre: 'Operador' },
+    { id: 3, nombre: 'Visualizador' }
   ];
 
   constructor(private farmService: FarmService) {}

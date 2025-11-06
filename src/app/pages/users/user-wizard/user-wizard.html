@@ -16,18 +16,20 @@
       </button>
     </div>
 
-    <!-- Steps Indicator -->
-    <div class="steps-indicator">
-      <div class="step" [class.active]="activeStep() === 'data'" [class.completed]="activeStep() === 'roles'">
-        <div class="step-number">1</div>
-        <span>Datos del Usuario</span>
+    <!-- Steps Indicator - Solo mostrar si NO es Admin Global -->
+    @if (!isAdminGlobal) {
+      <div class="steps-indicator">
+        <div class="step" [class.active]="activeStep() === 'data'" [class.completed]="activeStep() === 'roles'">
+          <div class="step-number">1</div>
+          <span>Datos del Usuario</span>
+        </div>
+        <div class="step-divider"></div>
+        <div class="step" [class.active]="activeStep() === 'roles'">
+          <div class="step-number">2</div>
+          <span>Roles y Permisos</span>
+        </div>
       </div>
-      <div class="step-divider"></div>
-      <div class="step" [class.active]="activeStep() === 'roles'">
-        <div class="step-number">2</div>
-        <span>Roles y Permisos</span>
-      </div>
-    </div>
+    }
 
     <!-- Steps -->
     <div class="modal-body">
@@ -53,8 +55,10 @@
           Cancelar
         </button>
         <button type="button" class="btn btn-primary" (click)="goToRoles()">
-          Siguiente
-          <lucide-icon [img]="ArrowRight" [size]="18"></lucide-icon>
+          {{ isAdminGlobal ? 'Crear Usuario' : 'Siguiente' }}
+          @if (!isAdminGlobal) {
+            <lucide-icon [img]="ArrowRight" [size]="18"></lucide-icon>
+          }
         </button>
       }
 

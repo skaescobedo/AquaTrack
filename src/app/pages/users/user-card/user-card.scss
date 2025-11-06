@@ -1,12 +1,44 @@
 .user-card {
   @apply bg-slate-800 rounded-xl p-5 border border-slate-700 transition-all duration-300;
+  
+  // Altura mínima fija para todas las cards
+  min-height: 240px;
+  
+  // Usar flexbox para distribuir el contenido verticalmente
+  display: flex;
+  flex-direction: column;
 
   &:hover {
     @apply border-blue-500 shadow-lg;
   }
 
+  // Header con avatar y menú
+  .card-header-section {
+    // Este contenedor no crece, mantiene su tamaño
+    flex-shrink: 0;
+  }
+
+  // Sección de información del usuario
+  .card-info-section {
+    // Esta sección crece para ocupar el espacio disponible
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  // Sección de granjas al final
+  .card-footer-section {
+    // Este contenedor no crece, mantiene su tamaño
+    flex-shrink: 0;
+    margin-top: auto; // Empuja este contenido al final
+    padding-top: 0.75rem;
+    border-top: 1px solid theme('colors.slate.700');
+  }
+
   .avatar {
     @apply w-16 h-16 bg-blue-500 rounded-full flex items-center justify-center text-white text-xl font-bold;
+    flex-shrink: 0; // El avatar no se encoge
   }
 
   .dropdown-menu {
@@ -22,6 +54,15 @@
       &:last-child {
         @apply rounded-b-lg;
       }
+    }
+  }
+
+  // Badge para Admin Global
+  .badge {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-md text-xs font-medium;
+    
+    &.badge-info {
+      @apply bg-purple-500 bg-opacity-20 text-purple-400;
     }
   }
 }
