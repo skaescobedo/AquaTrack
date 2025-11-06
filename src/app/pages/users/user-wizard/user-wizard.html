@@ -1,1 +1,77 @@
-<p>user-wizard works!</p>
+<div class="modal-overlay" (click)="onClose()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <!-- Header -->
+    <div class="modal-header">
+      <div>
+        <h2>Crear Nuevo Usuario</h2>
+        <p class="text-sm text-slate-400 mt-1">
+          {{ activeStep() === 'data' ? 'Datos básicos del usuario' : 'Asignar roles y granjas' }}
+        </p>
+      </div>
+      <button 
+        class="absolute top-4 right-4 p-2 rounded-lg hover:bg-slate-700 text-slate-400 hover:text-white transition-colors"
+        (click)="onClose()"
+      >
+        <lucide-icon [img]="X" [size]="20"></lucide-icon>
+      </button>
+    </div>
+
+    <!-- Steps Indicator -->
+    <div class="steps-indicator">
+      <div class="step" [class.active]="activeStep() === 'data'" [class.completed]="activeStep() === 'roles'">
+        <div class="step-number">1</div>
+        <span>Datos del Usuario</span>
+      </div>
+      <div class="step-divider"></div>
+      <div class="step" [class.active]="activeStep() === 'roles'">
+        <div class="step-number">2</div>
+        <span>Roles y Permisos</span>
+      </div>
+    </div>
+
+    <!-- Steps -->
+    <div class="modal-body">
+      @if (activeStep() === 'data') {
+        <app-step-user-data 
+          [form]="userForm"
+          (next)="goToRoles()"
+        />
+      }
+
+      @if (activeStep() === 'roles') {
+        <app-step-farm-assignment
+          [isAdminGlobal]="isAdminGlobal"
+          (rolesChange)="onRolesChange($event)"
+        />
+      }
+    </div>
+
+    <!-- Footer -->
+    <div class="modal-footer">
+      @if (activeStep() === 'data') {
+        <button type="button" class="btn btn-secondary" (click)="onClose()">
+          Cancelar
+        </button>
+        <button type="button" class="btn btn-primary" (click)="goToRoles()">
+          Siguiente
+          <lucide-icon [img]="ArrowRight" [size]="18"></lucide-icon>
+        </button>
+      }
+
+      @if (activeStep() === 'roles') {
+        <button type="button" class="btn btn-secondary" (click)="goBack()">
+          <lucide-icon [img]="ArrowLeft" [size]="18"></lucide-icon>
+          Atrás
+        </button>
+        <button 
+          type="button"
+          class="btn btn-primary"
+          [disabled]="!hasAtLeastOneRole"
+          (click)="onSubmit()"
+        >
+          Crear Usuario
+        </button>
+      }
+    </div>
+  </div>
+</div>

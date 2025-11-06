@@ -1,1 +1,31 @@
-<p>step-farm-assignment works!</p>
+<div class="fade-in">
+  <h3 class="text-lg font-semibold text-white mb-2">Asignar roles por granja</h3>
+  <p class="text-sm text-slate-400 mb-6">
+    Selecciona el rol que tendrá el usuario en cada granja. Puedes asignar diferentes roles en diferentes granjas.
+  </p>
+
+  <div class="space-y-4">
+    @for (farmRole of farmRoles(); track farmRole.granja_id) {
+      <div class="farm-role-row">
+        <span class="farm-name">{{ farmRole.granja_nombre }}</span>
+        <select 
+          class="role-select"
+          [value]="farmRole.rol_id || 0"
+          (change)="updateFarmRole(farmRole.granja_id, +$any($event.target).value)"
+        >
+          <option [value]="0">Sin acceso</option>
+          @for (role of roles; track role.id) {
+            <option [value]="role.id">{{ role.nombre }}</option>
+          }
+        </select>
+      </div>
+    }
+  </div>
+
+  @if (!hasAtLeastOneRole) {
+    <div class="alert alert-warning mt-6">
+      <lucide-icon [img]="AlertTriangle" [size]="18"></lucide-icon>
+      <span>Debes asignar al menos un rol en una granja para continuar</span>
+    </div>
+  }
+</div>

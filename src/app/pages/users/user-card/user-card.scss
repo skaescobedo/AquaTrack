@@ -1,0 +1,27 @@
+.user-card {
+  @apply bg-slate-800 rounded-xl p-5 border border-slate-700 transition-all duration-300;
+
+  &:hover {
+    @apply border-blue-500 shadow-lg;
+  }
+
+  .avatar {
+    @apply w-16 h-16 bg-blue-500 rounded-full flex items-center justify-center text-white text-xl font-bold;
+  }
+
+  .dropdown-menu {
+    @apply absolute right-0 mt-2 w-56 bg-slate-800 border border-slate-700 rounded-lg shadow-xl z-10;
+
+    .dropdown-item {
+      @apply w-full px-4 py-2 text-left text-sm text-slate-300 hover:bg-slate-700 transition-colors;
+
+      &:first-child {
+        @apply rounded-t-lg;
+      }
+
+      &:last-child {
+        @apply rounded-b-lg;
+      }
+    }
+  }
+}

@@ -1,0 +1,36 @@
+.users-page {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.page-header-actions {
+  @apply flex items-center justify-between mb-8;
+
+  .left {
+    .title {
+      @apply text-3xl font-bold text-white mb-2;
+    }
+
+    .subtitle {
+      @apply text-slate-400;
+    }
+  }
+
+  .right {
+    @apply flex gap-2;
+  }
+}
+
+@media (max-width: 768px) {
+  .page-header-actions {
+    @apply flex-col items-start gap-4;
+
+    .right {
+      @apply w-full;
+
+      button {
+        @apply w-full;
+      }
+    }
+  }
+}

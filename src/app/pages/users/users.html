@@ -1,1 +1,67 @@
-<p>users works!</p>
+<div class="users-page">
+  <!-- Header -->
+  <div class="page-header-actions">
+    <div class="left">
+      <h1 class="title">Gestión de Usuarios</h1>
+      <p class="subtitle">Administra usuarios y sus permisos</p>
+    </div>
+    <div class="right">
+      @if (isAdminGlobal) {
+        <button 
+          class="btn btn-primary"
+          (click)="openCreateModal()"
+        >
+          <lucide-icon [img]="UserPlus" [size]="20"></lucide-icon>
+          <span>Nuevo Usuario</span>
+        </button>
+      }
+    </div>
+  </div>
+
+  <!-- Loading -->
+  @if (loading()) {
+    <div class="flex justify-center items-center py-20">
+      <div class="spinner spinner-lg"></div>
+    </div>
+  }
+
+  <!-- Error -->
+  @if (error()) {
+    <div class="alert alert-danger">
+      {{ error() }}
+    </div>
+  }
+
+  <!-- Users Grid -->
+  @if (!loading() && !error()) {
+    @if (users().length > 0) {
+      <div class="grid-container cols-3 fade-in">
+        @for (user of users(); track user.usuario_id) {
+          <app-user-card 
+            [user]="user"
+            (edit)="onEditUser($event)"
+            (changePermissions)="onChangePermissions($event)"
+            (resetPassword)="onResetPassword($event)"
+            (deactivate)="onDeactivateUser($event)"
+          />
+        }
+      </div>
+    } @else {
+      <div class="empty-state">
+        <div class="icon">
+          <lucide-icon [img]="UserPlus" [size]="64" class="text-slate-600"></lucide-icon>
+        </div>
+        <h3 class="title">No hay usuarios</h3>
+        <p class="message">Crea el primer usuario para comenzar</p>
+      </div>
+    }
+  }
+</div>
+
+<!-- Modal Crear Usuario -->
+@if (showCreateModal()) {
+  <app-user-wizard
+    (close)="closeCreateModal()"
+    (save)="onSaveUser($event)"
+  />
+}

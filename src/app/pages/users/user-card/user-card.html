@@ -1,1 +1,46 @@
-<p>user-card works!</p>
+<div class="user-card">
+  <!-- Avatar & Menu -->
+  <div class="flex items-start justify-between mb-4">
+    <div class="avatar">{{ initials }}</div>
+    
+    <div class="relative">
+      <button 
+        class="btn btn-ghost btn-icon"
+        (click)="toggleMenu()"
+      >
+        <lucide-icon [img]="MoreVertical" [size]="20"></lucide-icon>
+      </button>
+
+      @if (showMenu) {
+        <div class="dropdown-menu">
+          <button class="dropdown-item" (click)="onEdit()">Editar información</button>
+          <button class="dropdown-item" (click)="onChangePermissions()">Cambiar permisos</button>
+          <button class="dropdown-item" (click)="onResetPassword()">Restablecer contraseña</button>
+          <button class="dropdown-item text-red-400" (click)="onDeactivate()">Desactivar usuario</button>
+        </div>
+      }
+    </div>
+  </div>
+
+  <!-- User Info -->
+  <h3 class="text-lg font-semibold text-white mb-1">{{ fullName }}</h3>
+  
+  <div class="flex items-center gap-2 text-sm text-slate-400 mb-3">
+    <lucide-icon [img]="Mail" [size]="14"></lucide-icon>
+    <span>{{ user.email }}</span>
+  </div>
+
+  <!-- Role -->
+  @if (user.is_admin_global) {
+    <div class="flex items-center gap-2 mb-3">
+      <lucide-icon [img]="Shield" [size]="16" class="text-purple-400"></lucide-icon>
+      <span class="badge badge-info">Admin Global</span>
+    </div>
+  }
+
+  <!-- Farms - placeholder for now -->
+  <div class="text-sm text-slate-400">
+    <lucide-icon [img]="UserIcon" [size]="14" class="inline mr-1"></lucide-icon>
+    Granjas (2)
+  </div>
+</div>

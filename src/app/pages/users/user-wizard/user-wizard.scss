@@ -1,0 +1,63 @@
+.modal-content {
+  @apply max-w-2xl;
+}
+
+.steps-indicator {
+  @apply flex items-center justify-center px-6 py-4 border-b border-slate-700;
+
+  .step {
+    @apply flex items-center gap-2 text-slate-400;
+
+    .step-number {
+      @apply w-8 h-8 rounded-full bg-slate-700 flex items-center justify-center font-semibold transition-colors;
+    }
+
+    &.active {
+      @apply text-blue-400;
+
+      .step-number {
+        @apply bg-blue-500 text-white;
+      }
+    }
+
+    &.completed {
+      @apply text-green-400;
+
+      .step-number {
+        @apply bg-green-500 text-white;
+      }
+    }
+  }
+
+  .step-divider {
+    @apply w-20 h-0.5 bg-slate-700 mx-4;
+  }
+}
+
+.farm-role-row {
+  @apply flex items-center justify-between p-4 bg-slate-900 rounded-lg border border-slate-700;
+
+  .farm-name {
+    @apply text-white font-medium;
+  }
+
+  .role-select {
+    @apply min-w-[200px] px-4 py-2.5 bg-slate-800 border border-slate-600 rounded-lg text-slate-300 cursor-pointer transition-colors;
+
+    &:hover {
+      @apply border-slate-500;
+    }
+
+    &:focus {
+      @apply outline-none border-blue-500 ring-2 ring-blue-500 ring-opacity-30;
+    }
+
+    option {
+      @apply bg-slate-800 text-slate-300;
+    }
+  }
+}
+
+.alert-warning {
+  @apply bg-yellow-500 bg-opacity-10 border border-yellow-500 text-yellow-400 p-4 rounded-lg flex items-center gap-2;
+}
