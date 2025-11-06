@@ -65,3 +65,38 @@
     (save)="onSaveUser($event)"
   />
 }
+
+<!-- Modal Editar Usuario -->
+@if (showEditModal() && selectedUser) {
+  <app-user-edit-modal
+    [user]="selectedUser"
+    (close)="closeEditModal()"
+    (saved)="onUserUpdated($event)"
+  />
+}
+
+<!-- Modal Restablecer Contraseña -->
+@if (showResetPasswordModal() && selectedUser) {
+  <app-reset-password-modal
+    [user]="selectedUser"
+    (close)="closeResetPasswordModal()"
+  />
+}
+
+<!-- Modal Cambiar Permisos -->
+@if (showPermissionsModal() && selectedUser) {
+  <app-change-permissions-modal
+    [user]="selectedUser"
+    (close)="closePermissionsModal()"
+    (updated)="onPermissionsUpdated()"
+  />
+}
+
+<!-- Modal Desactivar Usuario -->
+@if (showDeactivateModal() && selectedUser) {
+  <app-deactivate-user-modal
+    [user]="selectedUser"
+    (close)="closeDeactivateModal()"
+    (deactivated)="onUserDeactivated()"
+  />
+}

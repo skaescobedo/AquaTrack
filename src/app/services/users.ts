@@ -52,4 +52,7 @@ export class UserService {
   getUserFarms(userId: number): Observable<UserFarm[]> {
     return this.http.get<UserFarm[]>(`${this.API_URL}/${userId}/farms`);
   }
+  updateUserFarmRole(userId: number, farmId: number, data: { rol_id: number }): Observable<any> {
+    return this.http.patch(`${this.API_URL}/${userId}/farms/${farmId}`, data);
+  }
 }

@@ -1,15 +1,16 @@
 .user-card {
   @apply bg-slate-800 rounded-xl p-5 border border-slate-700 transition-all duration-300;
   
-  // Altura mínima fija para todas las cards
-  min-height: 240px;
+  // Altura mínima aumentada para que todas las cards tengan el mismo tamaño que la más grande
+  min-height: 280px;
   
   // Usar flexbox para distribuir el contenido verticalmente
   display: flex;
   flex-direction: column;
 
   &:hover {
-    @apply border-blue-500 shadow-lg;
+    @apply border-blue-500 shadow-xl;
+    transform: translateY(-4px);
   }
 
   // Header con avatar y menú

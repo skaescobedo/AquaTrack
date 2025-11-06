@@ -1,0 +1,57 @@
+<div class="modal-overlay" (click)="onClose()">
+  <div class="modal-content modal-small" (click)="$event.stopPropagation()">
+    <!-- Header -->
+    <div class="modal-header">
+      <div class="flex items-center gap-3">
+        <div class="icon-wrapper bg-red-500 bg-opacity-20">
+          <lucide-icon [img]="UserX" [size]="24" class="text-red-400"></lucide-icon>
+        </div>
+        <div>
+          <h2>Desactivar Usuario</h2>
+        </div>
+      </div>
+      <button class="btn btn-ghost btn-icon" (click)="onClose()">
+        <lucide-icon [img]="X" [size]="20"></lucide-icon>
+      </button>
+    </div>
+
+    <!-- Body -->
+    <div class="modal-body">
+      @if (error) {
+        <div class="error-banner">
+          <lucide-icon [img]="AlertTriangle" [size]="20" class="error-icon"></lucide-icon>
+          <span>{{ error }}</span>
+        </div>
+      }
+
+      <div class="warning-box">
+        <lucide-icon [img]="AlertTriangle" [size]="24" class="text-yellow-400"></lucide-icon>
+        <div>
+          <p class="font-semibold text-white">¿Estás seguro de desactivar este usuario?</p>
+          <p class="text-sm text-slate-400 mt-2">
+            <strong>{{ user.nombre }} {{ user.apellido1 }}</strong> ({{ user.email }})
+          </p>
+          <p class="text-sm text-slate-400 mt-2">
+            El usuario no podrá iniciar sesión, pero su información se mantendrá en el sistema.
+            Puedes reactivarlo más tarde si es necesario.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="modal-footer">
+      <button class="btn btn-ghost" (click)="onClose()" [disabled]="isLoading">
+        Cancelar
+      </button>
+      <button class="btn btn-danger" (click)="onConfirm()" [disabled]="isLoading">
+        @if (isLoading) {
+          <span class="spinner"></span>
+          <span>Desactivando...</span>
+        } @else {
+          <span>Sí, desactivar</span>
+        }
+      </button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,89 @@
+@import '../user-edit-modal/user-edit-modal.scss';
+
+.modal-large {
+  max-width: 900px;
+}
+
+.admin-global-badge {
+  @apply flex gap-4 p-4 bg-purple-500 bg-opacity-10 border border-purple-500 rounded-lg mb-6;
+}
+
+.section {
+  @apply mb-6;
+
+  &:last-child {
+    @apply mb-0;
+  }
+}
+
+.section-title {
+  @apply text-lg font-semibold text-white m-0;
+}
+
+.assign-form {
+  @apply bg-slate-900 rounded-lg p-4 border border-slate-700 mb-4 space-y-3;
+}
+
+.form-select {
+  @apply w-full px-4 py-2.5 bg-slate-800 border border-slate-600 rounded-lg text-slate-300 cursor-pointer transition-colors;
+
+  &:hover {
+    @apply border-slate-500;
+  }
+
+  &:focus {
+    @apply outline-none border-blue-500 ring-2 ring-blue-500 ring-opacity-30;
+  }
+
+  &-sm {
+    @apply py-1.5 px-3 text-sm;
+  }
+}
+
+.farms-grid {
+  @apply grid grid-cols-1 md:grid-cols-2 gap-4;
+}
+
+.farm-permission-card {
+  @apply bg-slate-900 rounded-lg p-4 border border-slate-700 transition-colors;
+
+  &:hover {
+    @apply border-slate-600;
+  }
+
+  .card-header {
+    @apply flex items-start justify-between;
+  }
+}
+
+.btn-edit-role {
+  @apply inline-flex items-center justify-center p-1 text-slate-400 hover:text-blue-400 hover:bg-slate-800 rounded transition-colors;
+}
+
+.edit-role-form {
+  @apply flex items-center gap-2 mt-2;
+}
+
+.scopes-list {
+  @apply flex flex-wrap gap-2 mt-3;
+}
+
+.scope-badge {
+  @apply inline-block px-2 py-1 bg-slate-700 text-slate-300 text-xs rounded;
+}
+
+.empty-state {
+  @apply flex flex-col items-center justify-center py-12 text-center;
+
+  p {
+    @apply mt-4 m-0;
+  }
+}
+
+.btn-xs {
+  @apply text-xs px-2 py-1;
+}
+
+.btn-sm {
+  @apply text-sm px-3 py-1.5;
+}
