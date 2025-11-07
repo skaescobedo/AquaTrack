@@ -1,11 +1,12 @@
 import { Component, EventEmitter, Input, Output, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms'; // ← AGREGAR ESTA LÍNEA
+import { FormsModule } from '@angular/forms';
 import { LucideAngularModule, X, Shield, Building2, Trash2, AlertCircle, Plus, Edit } from 'lucide-angular';
 import { UserOut, UserFarm, AssignUserToFarm } from '../../../models/user.model';
 import { UserService } from '../../../services/users';
 import { FarmService } from '../../../services/farms';
 import { Farm } from '../../../models/farm.model';
+import { ConfirmDialog } from '../../../shared/confirm-dialog/confirm-dialog';
 
 interface Role {
   id: number;
@@ -16,7 +17,7 @@ interface Role {
 @Component({
   selector: 'app-change-permissions-modal',
   standalone: true,
-  imports: [CommonModule, LucideAngularModule, FormsModule], // ← AGREGAR FormsModule AQUÍ
+  imports: [CommonModule, LucideAngularModule, FormsModule, ConfirmDialog],
   templateUrl: './change-permissions-modal.html',
   styleUrls: ['./change-permissions-modal.scss']
 })
@@ -54,6 +55,15 @@ export class ChangePermissionsModal implements OnInit {
   selectedRoleId: number | null = null;
   editingFarmId: number | null = null;
   newRoleId: number | null = null;
+
+  // Estados para el confirm dialog
+  showConfirmDialog = false;
+  confirmDialogData: {
+    title: string;
+    message: string;
+    action: () => void;
+  } | null = null;
+  isConfirmLoading = false;
 
   constructor(
     private userService: UserService,
@@ -168,17 +178,46 @@ export class ChangePermissionsModal implements OnInit {
   // ==================== QUITAR DE GRANJA ====================
   removeFromFarm(userFarm: UserFarm): void {
     const farmName = userFarm.granja_nombre;
-    if (!confirm(`¿Quitar acceso de ${this.user.nombre} a "${farmName}"?`)) return;
+    
+    // Configurar el diálogo de confirmación
+    this.confirmDialogData = {
+      title: 'localhost:4200 dice',
+      message: `¿Quitar acceso de ${this.user.nombre} a "${farmName}"?`,
+      action: () => this.confirmRemoveFromFarm(userFarm)
+    };
+    this.showConfirmDialog = true;
+  }
+
+  confirmRemoveFromFarm(userFarm: UserFarm): void {
+    this.isConfirmLoading = true;
 
     this.userService.removeFromFarm(this.user.usuario_id, userFarm.granja_id).subscribe({
       next: () => {
+        this.isConfirmLoading = false;
+        this.showConfirmDialog = false;
+        this.confirmDialogData = null;
         this.loadData(); // Recargar datos
         this.updated.emit();
       },
       error: (err) => {
+        this.isConfirmLoading = false;
         this.error = err.error?.detail || 'Error al quitar acceso';
+        this.showConfirmDialog = false;
+        this.confirmDialogData = null;
       }
     });
+  }
+
+  onConfirmDialogCancel(): void {
+    this.showConfirmDialog = false;
+    this.confirmDialogData = null;
+    this.isConfirmLoading = false;
+  }
+
+  onConfirmDialogConfirm(): void {
+    if (this.confirmDialogData?.action) {
+      this.confirmDialogData.action();
+    }
   }
 
   onClose(): void {
