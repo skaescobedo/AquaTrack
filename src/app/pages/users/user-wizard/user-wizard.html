@@ -8,10 +8,7 @@
           {{ activeStep() === 'data' ? 'Datos básicos del usuario' : 'Asignar roles y granjas' }}
         </p>
       </div>
-      <button 
-        class="absolute top-4 right-4 p-2 rounded-lg hover:bg-slate-700 text-slate-400 hover:text-white transition-colors"
-        (click)="onClose()"
-      >
+      <button class="btn btn-ghost btn-icon" (click)="onClose()">
         <lucide-icon [img]="X" [size]="20"></lucide-icon>
       </button>
     </div>

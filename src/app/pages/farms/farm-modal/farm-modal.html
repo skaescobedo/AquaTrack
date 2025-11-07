@@ -2,12 +2,11 @@
   <div class="modal-content" (click)="$event.stopPropagation()">
     <!-- Header -->
     <div class="modal-header">
-      <h2>Crear Nueva Granja</h2>
-      <p class="text-sm text-slate-400 mt-1">Ingresa los detalles de la nueva granja</p>
-      <button 
-        class="absolute top-4 right-4 p-2 rounded-lg hover:bg-slate-700 text-slate-400 hover:text-white transition-colors"
-        (click)="onClose()"
-      >
+      <div>
+        <h2>Crear Nueva Granja</h2>
+        <p class="text-sm text-slate-400 mt-1">Ingresa los detalles de la nueva granja</p>
+      </div>
+      <button class="btn btn-ghost btn-icon" (click)="onClose()">
         <lucide-icon [img]="X" [size]="20"></lucide-icon>
       </button>
     </div>
