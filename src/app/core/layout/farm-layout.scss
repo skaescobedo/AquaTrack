@@ -1,0 +1,114 @@
+@import '../../../theme/variables';
+
+.app-layout {
+  @apply flex h-screen overflow-hidden bg-slate-900;
+}
+
+// ================== SIDEBAR ==================
+.sidebar {
+  @apply flex flex-col w-64 bg-slate-800 border-r border-slate-700 transition-transform duration-300;
+
+  &.closed {
+    @apply -translate-x-full lg:translate-x-0 lg:w-16;
+
+    .back-button span,
+    .farm-info,
+    .nav-item .label {
+      @apply lg:hidden;
+    }
+  }
+
+  @media (max-width: 1024px) {
+    @apply fixed left-0 top-0 bottom-0 z-50;
+  }
+}
+
+.back-button {
+  @apply flex items-center gap-3 px-6 py-4 text-slate-300 hover:text-white hover:bg-slate-700 transition-colors border-b border-slate-700;
+
+  span {
+    @apply font-medium;
+  }
+}
+
+.farm-info {
+  @apply px-6 py-4 border-b border-slate-700;
+
+  .farm-name {
+    @apply text-lg font-semibold text-white m-0;
+  }
+
+  .farm-location {
+    @apply text-sm text-slate-400 mt-1 m-0;
+  }
+}
+
+.sidebar-nav {
+  @apply flex-1 overflow-y-auto py-4;
+
+  .nav-item {
+    @apply flex items-center gap-3 px-6 py-3 text-slate-300 hover:bg-slate-700 hover:text-white transition-colors cursor-pointer;
+
+    .icon {
+      @apply flex-shrink-0;
+    }
+
+    &.active {
+      @apply bg-blue-500 bg-opacity-20 text-blue-400 border-l-4 border-blue-500;
+    }
+  }
+}
+
+.sidebar-close-btn {
+  @apply absolute top-4 right-4 p-2 text-slate-400 hover:text-white hover:bg-slate-700 rounded-lg transition-colors lg:hidden;
+}
+
+// ================== MAIN CONTENT ==================
+.main-content {
+  @apply flex-1 flex flex-col overflow-hidden;
+}
+
+.topbar {
+  @apply h-16 bg-slate-800 border-b border-slate-700 px-6 flex items-center justify-between;
+
+  .topbar-left {
+    @apply flex items-center gap-4;
+  }
+
+  .topbar-right {
+    @apply flex items-center gap-4;
+  }
+
+  .mobile-menu-toggle {
+    @apply p-2 text-slate-300 hover:text-white hover:bg-slate-700 rounded-lg transition-colors lg:hidden;
+  }
+
+  .user-menu {
+    @apply flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-700 cursor-pointer transition-colors;
+
+    .avatar {
+      @apply w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center text-white font-semibold text-sm;
+    }
+
+    .user-info {
+      @apply hidden sm:flex flex-col;
+
+      .name {
+        @apply text-sm font-medium text-white;
+      }
+
+      .email {
+        @apply text-xs text-slate-400;
+      }
+    }
+  }
+}
+
+.content-area {
+  @apply flex-1 overflow-y-auto p-6;
+}
+
+// ================== MOBILE OVERLAY ==================
+.sidebar-overlay {
+  @apply fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden;
+}

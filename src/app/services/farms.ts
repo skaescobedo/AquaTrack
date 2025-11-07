@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { Farm, FarmCreate, FarmUpdate } from '../models/farm.model';
@@ -16,8 +16,10 @@ export class FarmService {
     return this.http.get<Farm[]>(this.API_URL);
   }
 
+  // Cambiar para obtener la granja de la lista en lugar de endpoint individual
   getFarm(id: number): Observable<Farm> {
-    return this.http.get<Farm>(`${this.API_URL}/${id}`);
+    const params = new HttpParams().set('granja_id', id.toString());
+    return this.http.get<Farm>(`${this.API_URL}`, { params });
   }
 
   createFarm(data: FarmCreate): Observable<Farm> {

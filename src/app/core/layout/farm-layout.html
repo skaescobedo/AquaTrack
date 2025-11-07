@@ -1,0 +1,77 @@
+<div class="app-layout">
+  <!-- Sidebar -->
+  <aside class="sidebar" [class.closed]="!sidebarOpen()">
+    <!-- Back Button -->
+    <button class="back-button" (click)="goBackToFarms()">
+      <lucide-icon [img]="ArrowLeft" [size]="20"></lucide-icon>
+      <span>Volver a Mis Granjas</span>
+    </button>
+
+    <!-- Farm Info -->
+    <div class="farm-info">
+      @if (currentFarm()) {
+        <h2 class="farm-name">{{ currentFarm()!.nombre }}</h2>
+        <p class="farm-location">{{ currentFarm()!.ubicacion || 'Sin ubicación' }}</p>
+      }
+    </div>
+
+    <!-- Navigation -->
+    <nav class="sidebar-nav">
+      @for (item of farmNavItems; track item.route) {
+        <a
+          [routerLink]="['/farms', farmId, item.route]"
+          routerLinkActive="active"
+          class="nav-item"
+          (click)="closeSidebarIfMobile()"
+        >
+          <lucide-icon [img]="item.icon" [size]="20" class="icon"></lucide-icon>
+          <span class="label">{{ item.label }}</span>
+        </a>
+      }
+    </nav>
+
+    <!-- Close button para mobile -->
+    @if (isMobile()) {
+      <button class="sidebar-close-btn" (click)="toggleSidebar()">
+        <lucide-icon [img]="X" [size]="20"></lucide-icon>
+      </button>
+    }
+  </aside>
+
+  <!-- Main Content Area -->
+  <div class="main-content">
+    <!-- Top Bar -->
+    <header class="topbar">
+      <div class="topbar-left">
+        <button class="mobile-menu-toggle" (click)="toggleSidebar()">
+          <lucide-icon [img]="Menu" [size]="24"></lucide-icon>
+        </button>
+      </div>
+
+      <div class="topbar-right">
+        @if (currentUser) {
+          <div class="user-menu">
+            <div class="avatar">{{ userInitials }}</div>
+            <div class="user-info">
+              <div class="name">{{ currentUser.nombre }} {{ currentUser.apellido1 }}</div>
+              <div class="email">{{ currentUser.email }}</div>
+            </div>
+            @if (currentUser.is_admin_global) {
+              <span class="badge badge-info">Admin Global</span>
+            }
+          </div>
+        }
+      </div>
+    </header>
+
+    <!-- Content -->
+    <main class="content-area">
+      <router-outlet />
+    </main>
+  </div>
+
+  <!-- Mobile Overlay -->
+  @if (sidebarOpen() && isMobile()) {
+    <div class="sidebar-overlay" (click)="toggleSidebar()"></div>
+  }
+</div>

@@ -30,6 +30,23 @@ export const routes: Routes = [
   },
 
   {
+    path: 'farms/:farmId',
+    canActivate: [authGuard],
+    loadComponent: () => import('./core/layout/farm-layout').then(m => m.FarmLayout),
+    children: [
+      {
+        path: '',
+        redirectTo: 'dashboard',
+        pathMatch: 'full'
+      },
+      {
+        path: 'dashboard',
+        loadComponent: () => import('./pages/dashboard/cycle-dashboard/cycle-dashboard').then(m => m.CycleDashboard)
+      },
+    ]
+  },
+
+  {
     path: '**',
     redirectTo: 'farms'
   }
