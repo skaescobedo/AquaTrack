@@ -1,15 +1,15 @@
-// styles.scss - Archivo principal de estilos
-@import 'tailwindcss/base';
-@import 'tailwindcss/components';
-@import 'tailwindcss/utilities';
+// Tailwind imports - mantener con @import porque no son archivos Sass reales
+// Theme styles - usar @forward para exportarlos
+@forward '_variables';
+@forward '_buttons';
+@forward '_cards';
+@forward '_forms';
+@forward '_layout';
+@forward '_utilities';
 
-// Theme components
-@import '_variables';
-@import '_buttons';
-@import '_cards';
-@import '_forms';
-@import '_layout';
-@import '_utilities';
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 // Reset y estilos globales
 * {

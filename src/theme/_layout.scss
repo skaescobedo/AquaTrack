@@ -1,5 +1,5 @@
 // _layout.scss - Estilos del layout principal
-@import 'variables';
+@use 'variables';
 
 .app-layout {
   @apply flex h-screen bg-slate-900 overflow-hidden;

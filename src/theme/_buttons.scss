@@ -1,5 +1,5 @@
 // _buttons.scss - Estilos de botones reutilizables
-@import 'variables';
+@use 'variables';
 
 .btn {
   @apply px-4 py-2 rounded-lg font-medium transition-all duration-300 inline-flex items-center justify-center gap-2;

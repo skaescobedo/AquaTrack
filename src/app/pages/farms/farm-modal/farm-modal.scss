@@ -1,4 +1,4 @@
-@import '../../users/user-edit-modal/user-edit-modal.scss';
+@use '../../users/user-edit-modal/user-edit-modal.scss';
 
 .modal-content {
   @apply max-w-2xl;
