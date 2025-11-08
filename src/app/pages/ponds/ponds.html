@@ -1,1 +1,113 @@
-<p>ponds works!</p>
+<div class="ponds-page">
+  <!-- Page Header -->
+  <div class="page-header-actions">
+    <div class="left">
+      <h1 class="title">Estanques</h1>
+      <p class="subtitle">Gestiona los estanques de {{ farmName }}</p>
+    </div>
+    <div class="right">
+      @if (canManagePonds) {
+        <button 
+          class="btn btn-primary"
+          (click)="openCreateModal()"
+        >
+          <lucide-icon [img]="Plus" [size]="20"></lucide-icon>
+          <span>Nuevo Estanque</span>
+        </button>
+      }
+    </div>
+  </div>
+
+  <!-- Summary Card -->
+  @if (!loading() && currentFarm()) {
+    <div class="summary-card">
+      <h3 class="summary-title">Resumen de Superficie</h3>
+      <div class="summary-grid">
+        <div class="summary-item">
+          <span class="summary-label">Total Granja</span>
+          <span class="summary-value">{{ m2ToHa(totalSuperficieGranja) }} ha</span>
+        </div>
+        <div class="summary-item">
+          <span class="summary-label">Superficie Vigente</span>
+          <span class="summary-value text-blue-400">{{ m2ToHa(superficieVigente) }} ha</span>
+        </div>
+        <div class="summary-item">
+          <span class="summary-label">% Utilizado</span>
+          <span class="summary-value">{{ porcentajeUtilizado.toFixed(1) }}%</span>
+        </div>
+      </div>
+    </div>
+  }
+
+  <!-- Loading State -->
+  @if (loading()) {
+    <div class="flex justify-center items-center py-20">
+      <div class="spinner spinner-lg"></div>
+    </div>
+  }
+
+  <!-- Error State -->
+  @if (error()) {
+    <div class="alert alert-danger">
+      {{ error() }}
+    </div>
+  }
+
+  <!-- Ponds Grid -->
+  @if (!loading() && !error()) {
+    <!-- Vigente Ponds -->
+    @if (vigentePonds.length > 0) {
+      <div class="grid-container cols-3 fade-in">
+        @for (pond of vigentePonds; track pond.estanque_id) {
+          <app-pond-card [pond]="pond" />
+        }
+      </div>
+    }
+
+    <!-- Non-Vigente Ponds Section -->
+    @if (nonVigentePonds.length > 0) {
+      <div class="mt-8">
+        <h2 class="text-xl font-semibold text-slate-300 mb-4">Estanques No Vigentes</h2>
+        <div class="grid-container cols-3 fade-in">
+          @for (pond of nonVigentePonds; track pond.estanque_id) {
+            <app-pond-card [pond]="pond" />
+          }
+        </div>
+      </div>
+    }
+
+    <!-- Empty State -->
+    @if (ponds().length === 0) {
+      <div class="empty-state">
+        <div class="icon">
+          <lucide-icon [img]="Waves" [size]="64" class="text-slate-600"></lucide-icon>
+        </div>
+        <h3 class="title">No hay estanques registrados</h3>
+        <p class="message">
+          @if (canManagePonds) {
+            Crea un nuevo estanque para comenzar a gestionar la producción
+          } @else {
+            Aún no hay estanques configurados para esta granja
+          }
+        </p>
+        @if (canManagePonds) {
+          <button 
+            class="btn btn-primary"
+            (click)="openCreateModal()"
+          >
+            Crear mi primer estanque
+          </button>
+        }
+      </div>
+    }
+  }
+</div>
+
+<!-- Modal -->
+@if (showModal()) {
+  <app-pond-modal
+    [farmId]="farmId!"
+    (close)="closeModal()"
+    (save)="onSavePond($event)"
+  />
+}

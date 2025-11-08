@@ -1,1 +1,100 @@
-<p>pond-modal works!</p>
+<div class="modal-overlay" (click)="onClose()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <!-- Header -->
+    <div class="modal-header">
+      <div class="flex items-center gap-3">
+        <div class="icon-wrapper">
+          <lucide-icon [img]="Waves" [size]="24"></lucide-icon>
+        </div>
+        <h2>Crear Nuevo Estanque</h2>
+      </div>
+      <button type="button" class="close-button" (click)="onClose()">
+        <lucide-icon [img]="X" [size]="20"></lucide-icon>
+      </button>
+    </div>
+
+    <!-- Form -->
+    <form [formGroup]="pondForm" (ngSubmit)="onSubmit()">
+      <div class="modal-body">
+        <!-- Nombre -->
+        <div class="form-group">
+          <label for="nombre" class="required">Nombre del Estanque</label>
+          <input
+            id="nombre"
+            type="text"
+            class="form-input"
+            placeholder="ej. Estanque A1"
+            formControlName="nombre"
+            [class.error]="pondForm.get('nombre')?.invalid && pondForm.get('nombre')?.touched"
+          />
+          @if (pondForm.get('nombre')?.hasError('required') && pondForm.get('nombre')?.touched) {
+            <span class="error-message">El nombre es requerido</span>
+          }
+        </div>
+
+        <!-- Superficie -->
+        <div class="form-group">
+          <label for="superficie_m2" class="required">Superficie (m²)</label>
+          <input
+            id="superficie_m2"
+            type="number"
+            class="form-input"
+            placeholder="ej. 5000"
+            formControlName="superficie_m2"
+            step="0.01"
+            min="1"
+            [class.error]="pondForm.get('superficie_m2')?.invalid && pondForm.get('superficie_m2')?.touched"
+          />
+          @if (superficieHa > 0) {
+            <span class="hint">≈ {{ superficieHa.toFixed(2) }} hectáreas</span>
+          }
+          @if (pondForm.get('superficie_m2')?.hasError('required') && pondForm.get('superficie_m2')?.touched) {
+            <span class="error-message">La superficie es requerida</span>
+          }
+          @if (pondForm.get('superficie_m2')?.hasError('min') && pondForm.get('superficie_m2')?.touched) {
+            <span class="error-message">La superficie debe ser mayor a 0</span>
+          }
+        </div>
+
+        <!-- Is Vigente -->
+        <div class="form-group">
+          <div class="checkbox-group">
+            <input
+              id="is_vigente"
+              type="checkbox"
+              formControlName="is_vigente"
+            />
+            <label for="is_vigente">Marcar como vigente</label>
+          </div>
+          <span class="hint">Los estanques vigentes se contabilizan en la superficie operativa de la granja</span>
+        </div>
+
+        <!-- Error -->
+        @if (error) {
+          <div class="alert alert-danger">
+            {{ error }}
+          </div>
+        }
+      </div>
+
+      <!-- Footer -->
+      <div class="modal-footer">
+        <button 
+          type="button" 
+          class="btn btn-secondary"
+          (click)="onClose()"
+          [disabled]="isLoading"
+        >
+          Cancelar
+        </button>
+        <button 
+          type="submit" 
+          class="btn btn-primary"
+          [disabled]="pondForm.invalid || isLoading"
+        >
+          {{ isLoading ? 'Creando...' : 'Crear Estanque' }}
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

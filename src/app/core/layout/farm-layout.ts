@@ -1,7 +1,7 @@
 import { Component, signal, HostListener, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet, RouterLink, RouterLinkActive, Router, ActivatedRoute } from '@angular/router';
-import { LucideAngularModule, Home, ArrowLeft, Menu, X } from 'lucide-angular';
+import { LucideAngularModule, Home, ArrowLeft, Menu, X, Waves, Sprout, Activity, Package, TrendingUp, FileText, History, ListChecks } from 'lucide-angular';
 import { AuthService } from '../../services/auth';
 import { FarmService } from '../../services/farms';
 import { Farm } from '../../models/farm.model';
@@ -33,6 +33,14 @@ export class FarmLayout implements OnInit {
 
   farmNavItems: FarmNavItem[] = [
     { label: 'Panel de Ciclo', icon: Home, route: 'dashboard' },
+    { label: 'Estanques', icon: Waves, route: 'ponds' },
+    { label: 'Siembras', icon: Sprout, route: 'seedings' },
+    { label: 'Biometrías', icon: Activity, route: 'biometrics' },
+    { label: 'Cosechas', icon: Package, route: 'harvests' },
+    { label: 'Proyecciones', icon: TrendingUp, route: 'projections' },
+    { label: 'Reportes', icon: FileText, route: 'reports' },
+    { label: 'Historial de Ciclos', icon: History, route: 'history' },
+    { label: 'Bitácora de Tareas', icon: ListChecks, route: 'tasks' },
   ];
 
   constructor(

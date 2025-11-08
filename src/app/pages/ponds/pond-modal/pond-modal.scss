@@ -1,0 +1,91 @@
+@use '../../../../theme/variables';
+
+// Importar estilos base de modales
+@use '../../users/user-edit-modal/user-edit-modal.scss';
+
+.modal-content {
+  @apply max-w-lg;
+}
+
+.icon-wrapper {
+  @apply w-12 h-12 bg-blue-500 bg-opacity-20 rounded-lg flex items-center justify-center text-blue-400;
+}
+
+.close-button {
+  @apply p-2 rounded-lg text-slate-400 hover:text-white hover:bg-slate-700 transition-colors;
+}
+
+.form-group {
+  @apply mb-4;
+
+  &:last-child {
+    @apply mb-0;
+  }
+}
+
+.form-input {
+  @apply w-full px-4 py-2.5 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-slate-400 transition-colors;
+
+  &:focus {
+    @apply outline-none border-blue-500 ring-2 ring-blue-500 ring-opacity-30;
+  }
+
+  &.error {
+    @apply border-red-500;
+  }
+
+  &:disabled {
+    @apply bg-slate-800 cursor-not-allowed opacity-50;
+  }
+}
+
+label {
+  @apply block text-sm font-medium text-slate-300 mb-2;
+
+  &.required::after {
+    content: ' *';
+    @apply text-red-400;
+  }
+}
+
+.hint {
+  @apply block text-xs text-slate-400 mt-1;
+}
+
+.error-message {
+  @apply block text-xs text-red-400 mt-1;
+}
+
+.checkbox-group {
+  @apply flex items-center gap-2;
+
+  input[type="checkbox"] {
+    @apply w-4 h-4 text-blue-500 bg-slate-700 border-slate-600 rounded focus:ring-2 focus:ring-blue-500;
+  }
+
+  label {
+    @apply text-sm text-slate-300 mb-0;
+
+    &::after {
+      content: none;
+    }
+  }
+}
+
+.btn-secondary {
+  @apply px-4 py-2.5 rounded-lg font-medium text-slate-300 bg-slate-700 transition-colors;
+  @apply hover:bg-slate-600;
+
+  &:disabled {
+    @apply opacity-50 cursor-not-allowed;
+  }
+}
+
+.btn-primary {
+  @apply px-4 py-2.5 rounded-lg font-medium text-white bg-blue-500 transition-colors;
+  @apply hover:bg-blue-600;
+
+  &:disabled {
+    @apply opacity-50 cursor-not-allowed;
+  }
+}

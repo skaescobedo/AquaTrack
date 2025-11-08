@@ -1,1 +1,45 @@
-<p>pond-card works!</p>
+<div class="pond-card" [class]="vigenteClass">
+  <!-- Header -->
+  <div class="pond-header">
+    <div class="pond-icon" [class.opacity-50]="!pond.is_vigente">
+      <lucide-icon [img]="Waves" [size]="24"></lucide-icon>
+    </div>
+    <div class="badges">
+      <span class="badge" [ngClass]="statusClass">
+        {{ statusLabel }}
+      </span>
+      @if (!pond.is_vigente) {
+        <span class="badge badge-neutral">No Vigente</span>
+      }
+    </div>
+  </div>
+
+  <!-- Content -->
+  <div class="pond-content" [class.opacity-60]="!pond.is_vigente">
+    <h3 class="pond-title">{{ pond.nombre }}</h3>
+    
+    @if (pond.notas) {
+      <p class="pond-notes">{{ pond.notas }}</p>
+    }
+  </div>
+
+  <!-- Info -->
+  <div class="pond-info" [class.opacity-60]="!pond.is_vigente">
+    <div class="pond-stat">
+      <lucide-icon [img]="Maximize2" [size]="16"></lucide-icon>
+      <span>Superficie: {{ superficieHa }} ha</span>
+    </div>
+    <div class="pond-stat-secondary">
+      {{ superficieM2Formatted }} m²
+    </div>
+  </div>
+
+  <!-- Actions -->
+  @if (pond.is_vigente) {
+    <div class="pond-actions">
+      <button class="btn btn-primary btn-sm w-full">
+        Ver panel
+      </button>
+    </div>
+  }
+</div>

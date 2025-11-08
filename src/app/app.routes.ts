@@ -43,6 +43,38 @@ export const routes: Routes = [
         path: 'dashboard',
         loadComponent: () => import('./pages/dashboard/cycle-dashboard/cycle-dashboard').then(m => m.CycleDashboard)
       },
+      {
+        path: 'ponds',
+        loadComponent: () => import('./pages/ponds/ponds').then(m => m.Ponds)
+      },
+      {
+        path: 'seedings',
+        loadComponent: () => import('./pages/seeding/seeding').then(m => m.Seeding)
+      },
+      {
+        path: 'biometrics',
+        loadComponent: () => import('./pages/biometry/biometry').then(m => m.Biometry)
+      },
+      {
+        path: 'harvests',
+        loadComponent: () => import('./pages/harvest/harvest').then(m => m.Harvest)
+      },
+      {
+        path: 'projections',
+        loadComponent: () => import('./pages/projections/projections').then(m => m.Projections)
+      },
+      {
+        path: 'reports',
+        loadComponent: () => import('./pages/reports/reports').then(m => m.Reports)
+      },
+      {
+        path: 'history',
+        loadComponent: () => import('./pages/history/history').then(m => m.History)
+      },
+      {
+        path: 'tasks',
+        loadComponent: () => import('./pages/tasks/tasks').then(m => m.Tasks)
+      },
     ]
   },
 
