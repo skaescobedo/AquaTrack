@@ -94,7 +94,7 @@ export class PondDashboard implements OnInit {
   goBack(): void {
     const farmId = this.farmId();
     if (farmId) {
-      this.router.navigate(['/farms', farmId, 'dashboard']);
+      this.router.navigate(['/farms', farmId, 'ponds']);
     }
   }
 
