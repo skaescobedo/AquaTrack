@@ -148,16 +148,30 @@ export class AuthService {
 
   /**
    * Verificar si hay sesión activa al iniciar la app
+   * MEJORADO: Solo cierra sesión si el token es realmente inválido (401)
    */
   private checkAuthStatus(): void {
     const token = this.getToken();
     console.log('🔍 Verificando estado de autenticación inicial:', !!token);
     
     if (token) {
+      // Intentar cargar perfil, pero ser más tolerante con errores
       this.loadUserProfile().subscribe({
-        error: () => {
-          console.warn('⚠️ Token inválido o expirado, cerrando sesión');
-          this.logout();
+        next: (user) => {
+          console.log('✅ Sesión restaurada para:', user.username);
+        },
+        error: (err) => {
+          // Solo cerrar sesión si el error es 401 (token inválido/expirado)
+          if (err.status === 401) {
+            console.warn('⚠️ Token inválido o expirado, cerrando sesión');
+            this.logout();
+          } else {
+            // Para otros errores (red, servidor, etc.), mantener el token
+            // El usuario podrá intentar de nuevo cuando navegue
+            console.warn('⚠️ Error cargando perfil, pero token se mantiene:', err.status);
+            // Marcar como autenticado basado en el token
+            this.isAuthenticatedSignal.set(true);
+          }
         }
       });
     }
