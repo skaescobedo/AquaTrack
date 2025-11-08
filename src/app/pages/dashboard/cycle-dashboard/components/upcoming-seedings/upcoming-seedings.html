@@ -1,0 +1,38 @@
+<div class="upcoming-seedings-section">
+  <div class="section-header">
+    <div class="flex items-center gap-2">
+      <lucide-icon [img]="Sprout" [size]="20" class="text-green-400"></lucide-icon>
+      <h3 class="section-title">Próximas Siembras</h3>
+    </div>
+    <span class="badge badge-neutral">{{ siembras.length }} pendientes</span>
+  </div>
+
+  <div class="seedings-grid">
+    @for (siembra of siembras; track siembra.estanque_id) {
+      <div class="seeding-card" [class.atrasada]="siembra.estado === 'atrasada'">
+        <div class="card-header">
+          <div>
+            <h4 class="estanque-nombre">{{ siembra.estanque_nombre }}</h4>
+            <p class="fecha">{{ formatDate(siembra.fecha_tentativa) }}</p>
+          </div>
+          <span class="badge" [ngClass]="getEstadoBadgeClass(siembra.estado)">
+            {{ siembra.estado }}
+          </span>
+        </div>
+
+        <div class="card-body">
+          @if (siembra.dias_diferencia < 0) {
+            <div class="alert-atrasada">
+              <lucide-icon [img]="AlertTriangle" [size]="16"></lucide-icon>
+              <span>{{ Math.abs(siembra.dias_diferencia) }} días atrasada</span>
+            </div>
+          } @else {
+            <div class="dias-restantes">
+              En {{ siembra.dias_diferencia }} días
+            </div>
+          }
+        </div>
+      </div>
+    }
+  </div>
+</div>

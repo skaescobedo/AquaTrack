@@ -36,7 +36,7 @@
       <!-- Header -->
       <div class="dashboard-header">
         <div>
-          <h1 class="title">{{ activeCycle()!.nombre }}</h1>
+          <h1 class="title">{{ overview()!.nombre }}</h1>
           <p class="subtitle">
             Iniciado el {{ formatDate(activeCycle()!.fecha_inicio) }}
           </p>
@@ -46,108 +46,29 @@
         </div>
       </div>
 
-      <!-- Metrics Grid -->
+      <!-- Metrics (Componente modular) -->
       @if (overview()) {
-        <div class="metrics-grid">
-          <!-- Días de Ciclo -->
-          <div class="metric-card">
-            <div class="metric-icon">
-              <lucide-icon [img]="Calendar" [size]="24"></lucide-icon>
-            </div>
-            <div class="metric-content">
-              <h3 class="metric-label">Días de Ciclo</h3>
-              <p class="metric-value">{{ overview()!.kpis.dias_ciclo }}</p>
-              <p class="metric-subtitle">días transcurridos</p>
-            </div>
-          </div>
+        <app-cycle-metrics [kpis]="overview()!.kpis" />
+      }
 
-          <!-- Biomasa Total -->
-          <div class="metric-card">
-            <div class="metric-icon">
-              <lucide-icon [img]="Fish" [size]="24"></lucide-icon>
-            </div>
-            <div class="metric-content">
-              <h3 class="metric-label">Biomasa Total</h3>
-              <p class="metric-value">{{ overview()!.kpis.biomasa_total_kg | number:'1.0-1' }} kg</p>
-              <p class="metric-subtitle">estimada</p>
-            </div>
-          </div>
+      <!-- Charts (Componente modular) -->
+      @if (overview()) {
+        <app-cycle-charts [graficas]="overview()!.graficas" />
+      }
 
-          <!-- Densidad Promedio -->
-          <div class="metric-card">
-            <div class="metric-icon">
-              <lucide-icon [img]="Droplets" [size]="24"></lucide-icon>
-            </div>
-            <div class="metric-content">
-              <h3 class="metric-label">Densidad Promedio</h3>
-              <p class="metric-value">{{ overview()!.kpis.densidad_promedio_org_m2 | number:'1.2-2' }} org/m²</p>
-              <p class="metric-subtitle">en estanques</p>
-            </div>
-          </div>
+      <!-- Upcoming Seedings (Condicional) -->
+      @if (hasUpcomingSeedings) {
+        <app-upcoming-seedings [siembras]="overview()!.proximas_siembras" />
+      }
 
-          <!-- Estanques Activos -->
-          <div class="metric-card">
-            <div class="metric-icon">
-              <lucide-icon [img]="Droplets" [size]="24"></lucide-icon>
-            </div>
-            <div class="metric-content">
-              <h3 class="metric-label">Estanques Activos</h3>
-              <p class="metric-value">{{ overview()!.kpis.estados.activos }}</p>
-              <p class="metric-subtitle">de {{ overview()!.kpis.sample_sizes.ponds_total }} totales</p>
-            </div>
-          </div>
+      <!-- Upcoming Harvests (Condicional) -->
+      @if (hasUpcomingHarvests) {
+        <app-upcoming-harvests [cosechas]="overview()!.proximas_cosechas" />
+      }
 
-          <!-- SOB Operativo -->
-          <div class="metric-card">
-            <div class="metric-icon">
-              <lucide-icon [img]="Activity" [size]="24"></lucide-icon>
-            </div>
-            <div class="metric-content">
-              <h3 class="metric-label">SOB Operativo Prom.</h3>
-              <p class="metric-value">{{ overview()!.kpis.sob_operativo_prom_pct | number:'1.1-1' }}%</p>
-              <p class="metric-subtitle">supervivencia</p>
-            </div>
-          </div>
-
-          <!-- Peso Promedio -->
-          <div class="metric-card">
-            <div class="metric-icon">
-              <lucide-icon [img]="TrendingUp" [size]="24"></lucide-icon>
-            </div>
-            <div class="metric-content">
-              <h3 class="metric-label">PP Promedio</h3>
-              <p class="metric-value">{{ overview()!.kpis.pp_promedio_g | number:'1.1-1' }} g</p>
-              <p class="metric-subtitle">peso promedio</p>
-            </div>
-          </div>
-        </div>
-
-        <!-- Charts Section -->
-        <div class="charts-section">
-          <div class="chart-card">
-            <h3 class="chart-title">Gráfico de Crecimiento del Ciclo</h3>
-            <p class="chart-subtitle">Peso promedio a través de las semanas</p>
-            <div class="chart-placeholder">
-              <p class="text-slate-400 text-center">
-                Gráfico de crecimiento semanal
-                <br />
-                <span class="text-sm">(Implementar con recharts)</span>
-              </p>
-            </div>
-          </div>
-
-          <div class="chart-card">
-            <h3 class="chart-title">Evolución de Biomasa</h3>
-            <p class="chart-subtitle">Biomasa total del ciclo en kg</p>
-            <div class="chart-placeholder">
-              <p class="text-slate-400 text-center">
-                Evolución de biomasa
-                <br />
-                <span class="text-sm">(Implementar con recharts)</span>
-              </p>
-            </div>
-          </div>
-        </div>
+      <!-- Pond Details Table -->
+      @if (overview()) {
+        <app-pond-details-table [estanques]="overview()!.por_estanque" />
       }
     </div>
   }

@@ -1,0 +1,22 @@
+@import '../../../../../../theme/variables';
+
+.charts-section {
+  @apply grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6;
+
+  // Tercer gráfico ocupa 2 columnas en pantallas grandes
+  .chart-card:last-child {
+    @apply lg:col-span-2;
+  }
+}
+
+.chart-card {
+  @apply bg-slate-800 rounded-xl p-6 border border-slate-700;
+
+  .chart-title {
+    @apply text-lg font-semibold text-white m-0 mb-1;
+  }
+
+  .chart-subtitle {
+    @apply text-sm text-slate-400 mb-4 m-0;
+  }
+}

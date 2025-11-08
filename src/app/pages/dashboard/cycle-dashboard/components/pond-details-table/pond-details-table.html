@@ -1,0 +1,67 @@
+<div class="pond-details-section">
+  <div class="section-header">
+    <div class="flex items-center gap-2">
+      <lucide-icon [img]="Waves" [size]="20" class="text-cyan-400"></lucide-icon>
+      <h3 class="section-title">Detalle por Estanque</h3>
+      <span class="badge badge-neutral">{{ estanques.length }} estanques</span>
+    </div>
+    
+    <div class="header-actions">
+      <button class="btn-icon" (click)="toggleColumnSelector()" title="Configurar columnas">
+        <lucide-icon [img]="Settings" [size]="18"></lucide-icon>
+      </button>
+      <button class="btn-collapse" (click)="toggleCollapse()">
+        {{ isCollapsed() ? 'Expandir' : 'Contraer' }}
+      </button>
+    </div>
+  </div>
+
+  <!-- Column Selector -->
+  @if (showColumnSelector()) {
+    <div class="column-selector">
+      <h4 class="selector-title">Columnas visibles:</h4>
+      <div class="columns-grid">
+        @for (col of columns(); track col.key) {
+          <button 
+            class="column-toggle"
+            [class.active]="col.visible"
+            (click)="toggleColumn(col.key)"
+            [disabled]="col.key === 'nombre'"
+          >
+            <lucide-icon 
+              [img]="col.visible ? Eye : EyeOff" 
+              [size]="16"
+            ></lucide-icon>
+            <span>{{ col.label }}</span>
+          </button>
+        }
+      </div>
+    </div>
+  }
+
+  <!-- Table -->
+  @if (!isCollapsed()) {
+    <div class="table-container">
+      <table class="pond-table">
+        <thead>
+          <tr>
+            @for (col of visibleColumns; track col.key) {
+              <th>{{ col.label }}</th>
+            }
+          </tr>
+        </thead>
+        <tbody>
+          @for (estanque of estanques; track estanque.estanque_id) {
+            <tr>
+              @for (col of visibleColumns; track col.key) {
+                <td [ngClass]="col.key === 'sob_vigente_pct' ? getSOBClass(estanque.sob_vigente_pct) : ''">
+                  {{ getCellValue(estanque, col) }}
+                </td>
+              }
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</div>

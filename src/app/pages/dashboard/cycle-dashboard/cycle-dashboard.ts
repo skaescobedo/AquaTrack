@@ -1,27 +1,38 @@
 import { Component, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
-import { LucideAngularModule, Calendar, Plus, TrendingUp, Fish, Droplets, Activity } from 'lucide-angular';
+import { LucideAngularModule, Calendar, Plus } from 'lucide-angular';
 import { CycleService } from '../../../services/cycles';
 import { AnalyticsService } from '../../../services/analytics';
 import { Cycle } from '../../../models/cycle.model';
 import { CycleOverview } from '../../../models/analytics.model';
 import { catchError, of } from 'rxjs';
 
+// Componentes modulares
+import { CycleMetrics } from './components/cycle-metrics/cycle-metrics';
+import { CycleCharts } from './components/cycle-charts/cycle-charts';
+import { UpcomingSeedings } from './components/upcoming-seedings/upcoming-seedings';
+import { UpcomingHarvests } from './components/upcoming-harvests/upcoming-harvests';
+import { PondDetailsTable } from './components/pond-details-table/pond-details-table';
+
 @Component({
   selector: 'app-cycle-dashboard',
   standalone: true,
-  imports: [CommonModule, LucideAngularModule],
+  imports: [
+    CommonModule, 
+    LucideAngularModule,
+    CycleMetrics,
+    CycleCharts,
+    UpcomingSeedings,
+    UpcomingHarvests,
+    PondDetailsTable
+  ],
   templateUrl: './cycle-dashboard.html',
   styleUrls: ['./cycle-dashboard.scss']
 })
 export class CycleDashboard implements OnInit {
   readonly Calendar = Calendar;
   readonly Plus = Plus;
-  readonly TrendingUp = TrendingUp;
-  readonly Fish = Fish;
-  readonly Droplets = Droplets;
-  readonly Activity = Activity;
 
   farmId: number | null = null;
   activeCycle = signal<Cycle | null>(null);
@@ -53,12 +64,10 @@ export class CycleDashboard implements OnInit {
 
     this.cycleService.getActiveCycle(this.farmId).pipe(
       catchError((err) => {
-        // Si es 404, significa que no hay ciclo activo (no es un error)
         if (err.status === 404) {
           console.log('No hay ciclo activo para esta granja');
           return of(null);
         }
-        // Otros errores sí son problemáticos
         console.error('Error cargando ciclo activo:', err);
         this.error.set('Error al cargar el ciclo activo');
         return of(null);
@@ -113,5 +122,13 @@ export class CycleDashboard implements OnInit {
 
   get hasCycle(): boolean {
     return this.activeCycle() !== null;
+  }
+
+  get hasUpcomingSeedings(): boolean {
+    return !!this.overview() && this.overview()!.proximas_siembras.length > 0;
+  }
+
+  get hasUpcomingHarvests(): boolean {
+    return !!this.overview() && this.overview()!.proximas_cosechas.length > 0;
   }
 }

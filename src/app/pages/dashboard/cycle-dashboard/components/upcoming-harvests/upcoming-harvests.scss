@@ -1,0 +1,57 @@
+@import '../../../../../../theme/variables';
+
+.upcoming-harvests-section {
+  @apply mt-6;
+}
+
+.section-header {
+  @apply flex items-center justify-between mb-4;
+
+  .section-title {
+    @apply text-xl font-semibold text-white m-0;
+  }
+}
+
+.harvests-timeline {
+  @apply grid grid-cols-1 md:grid-cols-3 gap-4;
+}
+
+.harvest-card {
+  @apply bg-slate-800 rounded-xl p-5 border border-slate-700 hover:border-blue-500 transition-colors;
+
+  .card-header {
+    @apply mb-4;
+
+    .ola-number {
+      @apply w-10 h-10 bg-blue-500 bg-opacity-20 text-blue-400 rounded-lg flex items-center justify-center text-lg font-bold;
+    }
+
+    .ola-nombre {
+      @apply text-base font-semibold text-white m-0 mb-1;
+    }
+
+    .badge-sm {
+      @apply px-2 py-0.5 text-xs;
+    }
+  }
+
+  .card-body {
+    @apply space-y-3;
+
+    .info-row {
+      @apply flex items-center gap-2 text-sm;
+    }
+
+    .dias-label {
+      @apply text-slate-400 flex-1;
+    }
+
+    .estanques-count {
+      @apply text-blue-400 font-medium;
+    }
+  }
+
+  .card-footer {
+    @apply mt-4 pt-4 border-t border-slate-700;
+  }
+}

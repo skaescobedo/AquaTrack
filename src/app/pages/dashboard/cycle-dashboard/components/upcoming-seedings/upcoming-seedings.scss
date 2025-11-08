@@ -1,0 +1,47 @@
+@import '../../../../../../theme/variables';
+
+.upcoming-seedings-section {
+  @apply mt-6;
+}
+
+.section-header {
+  @apply flex items-center justify-between mb-4;
+
+  .section-title {
+    @apply text-xl font-semibold text-white m-0;
+  }
+}
+
+.seedings-grid {
+  @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4;
+}
+
+.seeding-card {
+  @apply bg-slate-800 rounded-xl p-4 border border-slate-700 transition-colors;
+
+  &.atrasada {
+    @apply border-red-500 border-l-4;
+  }
+
+  .card-header {
+    @apply flex items-start justify-between mb-3;
+
+    .estanque-nombre {
+      @apply text-lg font-semibold text-white m-0;
+    }
+
+    .fecha {
+      @apply text-sm text-slate-400 mt-1 m-0;
+    }
+  }
+
+  .card-body {
+    .alert-atrasada {
+      @apply flex items-center gap-2 text-red-400 text-sm;
+    }
+
+    .dias-restantes {
+      @apply text-sm text-slate-400;
+    }
+  }
+}

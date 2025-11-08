@@ -1,0 +1,61 @@
+<div class="charts-section">
+  <!-- Gráfico de Crecimiento -->
+  <div class="chart-card">
+    <h3 class="chart-title">Gráfico de Crecimiento del Ciclo</h3>
+    <p class="chart-subtitle">Peso promedio proyectado a través de las semanas</p>
+    @if (crecimientoOptions()) {
+      <apx-chart
+        [series]="crecimientoOptions()!.series!"
+        [chart]="crecimientoOptions()!.chart!"
+        [xaxis]="crecimientoOptions()!.xaxis!"
+        [yaxis]="crecimientoOptions()!.yaxis!"
+        [stroke]="crecimientoOptions()!.stroke!"
+        [markers]="crecimientoOptions()!.markers!"
+        [dataLabels]="crecimientoOptions()!.dataLabels!"
+        [grid]="crecimientoOptions()!.grid!"
+        [tooltip]="crecimientoOptions()!.tooltip!"
+        [colors]="crecimientoOptions()!.colors!"
+      ></apx-chart>
+    }
+  </div>
+
+  <!-- Gráfico de Biomasa -->
+  <div class="chart-card">
+    <h3 class="chart-title">Evolución de Biomasa</h3>
+    <p class="chart-subtitle">Biomasa total proyectada del ciclo en kg</p>
+    @if (biomasaOptions()) {
+      <apx-chart
+        [series]="biomasaOptions()!.series!"
+        [chart]="biomasaOptions()!.chart!"
+        [xaxis]="biomasaOptions()!.xaxis!"
+        [yaxis]="biomasaOptions()!.yaxis!"
+        [stroke]="biomasaOptions()!.stroke!"
+        [markers]="biomasaOptions()!.markers!"
+        [dataLabels]="biomasaOptions()!.dataLabels!"
+        [grid]="biomasaOptions()!.grid!"
+        [tooltip]="biomasaOptions()!.tooltip!"
+        [colors]="biomasaOptions()!.colors!"
+      ></apx-chart>
+    }
+  </div>
+
+  <!-- Gráfico de Densidad -->
+  <div class="chart-card">
+    <h3 class="chart-title">Evolución de Densidad</h3>
+    <p class="chart-subtitle">Densidad de organismos por mortalidad y cosechas</p>
+    @if (densidadOptions()) {
+      <apx-chart
+        [series]="densidadOptions()!.series!"
+        [chart]="densidadOptions()!.chart!"
+        [xaxis]="densidadOptions()!.xaxis!"
+        [yaxis]="densidadOptions()!.yaxis!"
+        [stroke]="densidadOptions()!.stroke!"
+        [markers]="densidadOptions()!.markers!"
+        [dataLabels]="densidadOptions()!.dataLabels!"
+        [grid]="densidadOptions()!.grid!"
+        [tooltip]="densidadOptions()!.tooltip!"
+        [colors]="densidadOptions()!.colors!"
+      ></apx-chart>
+    }
+  </div>
+</div>

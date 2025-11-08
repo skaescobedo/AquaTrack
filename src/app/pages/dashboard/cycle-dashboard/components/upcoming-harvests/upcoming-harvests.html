@@ -1,0 +1,45 @@
+<div class="upcoming-harvests-section">
+  <div class="section-header">
+    <div class="flex items-center gap-2">
+      <lucide-icon [img]="Package" [size]="20" class="text-blue-400"></lucide-icon>
+      <h3 class="section-title">Próximas Cosechas</h3>
+    </div>
+    <span class="badge badge-neutral">{{ cosechas.length }} programadas</span>
+  </div>
+
+  <div class="harvests-timeline">
+    @for (cosecha of cosechas; track cosecha.ola_id) {
+      <div class="harvest-card">
+        <div class="card-header">
+          <div class="flex items-center gap-2">
+            <span class="ola-number">{{ cosecha.ola_id }}</span>
+            <div>
+              <h4 class="ola-nombre">{{ cosecha.nombre }}</h4>
+              <span class="badge badge-sm" [ngClass]="getTipoBadgeClass(cosecha.tipo)">
+                {{ cosecha.tipo }}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-body">
+          <div class="info-row">
+            <lucide-icon [img]="Calendar" [size]="16" class="text-slate-400"></lucide-icon>
+            <span class="text-slate-300">{{ formatDateRange(cosecha.ventana_inicio, cosecha.ventana_fin) }}</span>
+          </div>
+
+          <div class="info-row">
+            <span class="dias-label">En {{ cosecha.dias_hasta_inicio }} días</span>
+            <span class="estanques-count">{{ cosecha.estanques_pendientes }} estanques</span>
+          </div>
+        </div>
+
+        <div class="card-footer">
+          <span class="badge" [ngClass]="getEstadoBadgeClass(cosecha.estado)">
+            {{ cosecha.estado }}
+          </span>
+        </div>
+      </div>
+    }
+  </div>
+</div>

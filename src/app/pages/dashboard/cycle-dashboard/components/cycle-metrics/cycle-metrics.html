@@ -1,0 +1,73 @@
+<div class="metrics-grid">
+  <!-- Días de Ciclo -->
+  <div class="metric-card">
+    <div class="metric-icon">
+      <lucide-icon [img]="Calendar" [size]="24"></lucide-icon>
+    </div>
+    <div class="metric-content">
+      <h3 class="metric-label">Días de Ciclo</h3>
+      <p class="metric-value">{{ kpis.dias_ciclo }}</p>
+      <p class="metric-subtitle">días transcurridos</p>
+    </div>
+  </div>
+
+  <!-- Biomasa Total -->
+  <div class="metric-card">
+    <div class="metric-icon">
+      <lucide-icon [img]="Fish" [size]="24"></lucide-icon>
+    </div>
+    <div class="metric-content">
+      <h3 class="metric-label">Biomasa Total</h3>
+      <p class="metric-value">{{ kpis.biomasa_total_kg | number:'1.0-1' }} kg</p>
+      <p class="metric-subtitle">estimada</p>
+    </div>
+  </div>
+
+  <!-- Densidad Promedio -->
+  <div class="metric-card">
+    <div class="metric-icon">
+      <lucide-icon [img]="Droplets" [size]="24"></lucide-icon>
+    </div>
+    <div class="metric-content">
+      <h3 class="metric-label">Densidad Promedio</h3>
+      <p class="metric-value">{{ kpis.densidad_promedio_org_m2 | number:'1.2-2' }} org/m²</p>
+      <p class="metric-subtitle">en estanques</p>
+    </div>
+  </div>
+
+  <!-- Estanques Activos -->
+  <div class="metric-card">
+    <div class="metric-icon">
+      <lucide-icon [img]="Droplets" [size]="24"></lucide-icon>
+    </div>
+    <div class="metric-content">
+      <h3 class="metric-label">Estanques Activos</h3>
+      <p class="metric-value">{{ kpis.estados.activos }}</p>
+      <p class="metric-subtitle">de {{ kpis.sample_sizes.ponds_total }} totales</p>
+    </div>
+  </div>
+
+  <!-- SOB Operativo -->
+  <div class="metric-card">
+    <div class="metric-icon">
+      <lucide-icon [img]="Activity" [size]="24"></lucide-icon>
+    </div>
+    <div class="metric-content">
+      <h3 class="metric-label">SOB Operativo Prom.</h3>
+      <p class="metric-value">{{ kpis.sob_operativo_prom_pct | number:'1.1-1' }}%</p>
+      <p class="metric-subtitle">supervivencia</p>
+    </div>
+  </div>
+
+  <!-- Peso Promedio -->
+  <div class="metric-card">
+    <div class="metric-icon">
+      <lucide-icon [img]="TrendingUp" [size]="24"></lucide-icon>
+    </div>
+    <div class="metric-content">
+      <h3 class="metric-label">PP Promedio</h3>
+      <p class="metric-value">{{ kpis.pp_promedio_g | number:'1.1-1' }} g</p>
+      <p class="metric-subtitle">peso promedio</p>
+    </div>
+  </div>
+</div>
