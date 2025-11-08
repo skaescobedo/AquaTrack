@@ -1,0 +1,148 @@
+<div class="modal-overlay" *ngIf="show" (click)="close()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <!-- Header -->
+    <div class="modal-header">
+      <div>
+        <h2 class="modal-title">Crear Nuevo Ciclo</h2>
+        <p class="modal-subtitle">{{ farmName }}</p>
+      </div>
+      <button 
+        type="button" 
+        class="close-button" 
+        (click)="close()"
+        [disabled]="isSubmitting()">
+        <lucide-icon [img]="X" [size]="20"></lucide-icon>
+      </button>
+    </div>
+
+    <!-- Form -->
+    <form [formGroup]="cycleForm" (ngSubmit)="onSubmit()">
+      <div class="modal-body">
+        <!-- Nombre del Ciclo -->
+        <div class="form-group">
+          <label for="nombre" class="form-label">
+            Nombre del Ciclo <span class="required">*</span>
+          </label>
+          <input
+            id="nombre"
+            type="text"
+            class="form-input"
+            placeholder="ej. Ciclo 2025-1"
+            formControlName="nombre"
+            [class.error]="cycleForm.get('nombre')?.invalid && cycleForm.get('nombre')?.touched">
+        </div>
+
+        <!-- Fechas -->
+        <div class="form-row">
+          <!-- Fecha de Inicio -->
+          <div class="form-group">
+            <label for="fecha_inicio" class="form-label">
+              Fecha de Inicio <span class="required">*</span>
+            </label>
+            <input
+              id="fecha_inicio"
+              type="date"
+              class="form-input"
+              formControlName="fecha_inicio"
+              [class.error]="cycleForm.get('fecha_inicio')?.invalid && cycleForm.get('fecha_inicio')?.touched">
+            <span class="form-hint">Primera siembra planificada</span>
+          </div>
+
+          <!-- Fecha Fin Planificada -->
+          <div class="form-group">
+            <label for="fecha_fin_planificada" class="form-label">
+              Fecha Fin Planificada
+            </label>
+            <input
+              id="fecha_fin_planificada"
+              type="date"
+              class="form-input"
+              formControlName="fecha_fin_planificada">
+            <span class="form-hint">Opcional</span>
+          </div>
+        </div>
+
+        <!-- Proyección con IA -->
+        <div class="projection-section">
+          <div class="projection-header">
+            <lucide-icon [img]="Upload" [size]="20"></lucide-icon>
+            <span class="projection-title">Proyección con IA (Opcional)</span>
+          </div>
+          <p class="projection-description">
+            Sube un archivo de proyección (Excel, CSV o PDF) y el sistema creará 
+            automáticamente el plan de siembras y olas de cosecha.
+          </p>
+
+          <!-- Archivo de Proyección -->
+          <div class="file-upload-container">
+            <input
+              id="projectionFile"
+              type="file"
+              class="file-input"
+              accept=".xlsx,.xls,.csv,.pdf"
+              (change)="onFileSelected($event)"
+              [disabled]="isSubmitting()">
+            
+            <label for="projectionFile" class="file-upload-label">
+              <div class="file-upload-content">
+                <lucide-icon [img]="Upload" [size]="24" class="upload-icon"></lucide-icon>
+                <div class="file-upload-text">
+                  <span class="file-upload-action">Seleccionar archivo</span>
+                  <span class="file-upload-hint">Excel, CSV o PDF</span>
+                </div>
+              </div>
+            </label>
+
+            <!-- Archivo seleccionado -->
+            <div *ngIf="selectedFile()" class="selected-file">
+              <span class="file-name">{{ selectedFile()!.name }}</span>
+              <button 
+                type="button" 
+                class="remove-file-button" 
+                (click)="removeFile()"
+                [disabled]="isSubmitting()">
+                <lucide-icon [img]="X" [size]="16"></lucide-icon>
+              </button>
+            </div>
+          </div>
+
+          <!-- Descripción de proyección (solo si hay archivo) -->
+          <div *ngIf="selectedFile()" class="form-group">
+            <label for="descripcion_proyeccion" class="form-label">
+              Descripción de la proyección (opcional)
+            </label>
+            <input
+              id="descripcion_proyeccion"
+              type="text"
+              class="form-input"
+              placeholder="ej. Proyección optimista Q1 2025"
+              formControlName="descripcion_proyeccion">
+          </div>
+        </div>
+
+        <!-- Error message -->
+        <div *ngIf="error()" class="error-message">
+          {{ error() }}
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <div class="modal-footer">
+        <button 
+          type="button" 
+          class="btn-secondary" 
+          (click)="close()"
+          [disabled]="isSubmitting()">
+          Cancelar
+        </button>
+        <button 
+          type="submit" 
+          class="btn-primary"
+          [disabled]="cycleForm.invalid || isSubmitting()">
+          <span *ngIf="!isSubmitting()">Crear Ciclo</span>
+          <span *ngIf="isSubmitting()">Creando...</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

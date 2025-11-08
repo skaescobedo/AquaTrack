@@ -21,6 +21,7 @@ export class AuthService {
 
   currentUser = signal<User | null>(null);
   isAuthenticatedSignal = signal<boolean>(false);
+  private profileLoadAttempted = false;
 
   constructor(
     private http: HttpClient,
@@ -76,11 +77,17 @@ export class AuthService {
    */
   loadUserProfile(): Observable<User> {
     console.log('📤 Cargando perfil de usuario...');
+    
     return this.http.get<User>(`${this.API_URL}/me`).pipe(
       tap(user => {
         console.log('✅ Perfil cargado:', user);
         this.currentUser.set(user);
         this.isAuthenticatedSignal.set(true);
+        this.profileLoadAttempted = true;
+      }),
+      catchError(error => {
+        this.profileLoadAttempted = true;
+        return throwError(() => error);
       })
     );
   }
@@ -93,6 +100,7 @@ export class AuthService {
     this.removeToken();
     this.currentUser.set(null);
     this.isAuthenticatedSignal.set(false);
+    this.profileLoadAttempted = false;
     this.router.navigate(['/login']);
   }
 
@@ -148,32 +156,44 @@ export class AuthService {
 
   /**
    * Verificar si hay sesión activa al iniciar la app
-   * MEJORADO: Solo cierra sesión si el token es realmente inválido (401)
+   * MEJORADO: Solo limpia sesión si es error 401/403 (token inválido)
+   * Para otros errores, mantiene el token y el usuario puede reintentar
    */
   private checkAuthStatus(): void {
     const token = this.getToken();
     console.log('🔍 Verificando estado de autenticación inicial:', !!token);
     
     if (token) {
-      // Intentar cargar perfil, pero ser más tolerante con errores
+      // Marcar como autenticado basado en el token
+      // Esto permite que el guard deje pasar
+      this.isAuthenticatedSignal.set(true);
+      
+      // Intentar cargar el perfil
       this.loadUserProfile().subscribe({
         next: (user) => {
           console.log('✅ Sesión restaurada para:', user.username);
         },
         error: (err) => {
-          // Solo cerrar sesión si el error es 401 (token inválido/expirado)
-          if (err.status === 401) {
+          console.error('❌ Error restaurando sesión:', err);
+          
+          // CRÍTICO: Solo cerrar sesión si es error de autenticación
+          if (err.status === 401 || err.status === 403) {
             console.warn('⚠️ Token inválido o expirado, cerrando sesión');
-            this.logout();
+            this.removeToken();
+            this.currentUser.set(null);
+            this.isAuthenticatedSignal.set(false);
+            // No redirigir aquí, dejar que el guard lo maneje
           } else {
-            // Para otros errores (red, servidor, etc.), mantener el token
-            // El usuario podrá intentar de nuevo cuando navegue
-            console.warn('⚠️ Error cargando perfil, pero token se mantiene:', err.status);
-            // Marcar como autenticado basado en el token
-            this.isAuthenticatedSignal.set(true);
+            // Para otros errores (red, servidor, etc.)
+            // Mantener el token y la señal de autenticación
+            // El usuario podrá ver la app y los componentes pueden reintentar
+            console.warn('⚠️ Error de red/servidor, manteniendo sesión. Código:', err.status);
+            // NO establecer currentUser, los componentes deben manejar este caso
           }
         }
       });
+    } else {
+      console.log('ℹ️ No hay token guardado');
     }
   }
 
@@ -219,5 +239,19 @@ export class AuthService {
     
     const farm = user.farms.find(f => f.granja_id === farmId);
     return farm?.rol || null;
+  }
+
+  /**
+   * Verificar si el perfil del usuario ya se intentó cargar
+   */
+  get hasAttemptedProfileLoad(): boolean {
+    return this.profileLoadAttempted;
+  }
+
+  /**
+   * Forzar recarga del perfil (útil para cuando hay error de red temporal)
+   */
+  retryLoadProfile(): Observable<User> {
+    return this.loadUserProfile();
   }
 }

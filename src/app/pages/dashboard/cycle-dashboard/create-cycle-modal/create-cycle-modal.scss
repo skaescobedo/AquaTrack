@@ -1,0 +1,208 @@
+@use '../../../../../theme/variables';
+
+// Importar estilos base de modales
+@use '../../../users/user-edit-modal/user-edit-modal.scss';
+
+.modal-content {
+  @apply max-w-2xl;
+}
+
+// Header personalizado para este modal
+.modal-header {
+  h2 {
+    @apply text-xl font-semibold text-white m-0;
+  }
+
+  .modal-subtitle {
+    @apply text-slate-400 text-sm mt-1;
+  }
+
+  .close-button {
+    @apply p-2 rounded-lg text-slate-400 hover:text-white hover:bg-slate-700 transition-colors;
+    
+    &:disabled {
+      @apply opacity-50 cursor-not-allowed;
+    }
+  }
+}
+
+// Body
+.modal-body {
+  @apply p-6 space-y-4;
+}
+
+// Footer
+.modal-footer {
+  @apply flex justify-end gap-3 p-6 border-t border-slate-700 sticky bottom-0 bg-slate-800;
+}
+
+// Form
+.form-group {
+  @apply mb-4;
+
+  &:last-child {
+    @apply mb-0;
+  }
+}
+
+.form-label {
+  @apply block text-sm font-medium text-slate-300 mb-2;
+
+  .required {
+    @apply text-red-400;
+  }
+}
+
+.form-input {
+  @apply w-full px-4 py-2.5 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-slate-400 transition-colors;
+
+  &:focus {
+    @apply outline-none border-blue-500 ring-2 ring-blue-500 ring-opacity-30;
+  }
+
+  &.error {
+    @apply border-red-500;
+
+    &:focus {
+      @apply ring-red-500 ring-opacity-30;
+    }
+  }
+
+  &:disabled {
+    @apply bg-slate-800 cursor-not-allowed opacity-50;
+  }
+
+  // Placeholder más visible
+  &::placeholder {
+    @apply text-slate-500;
+  }
+}
+
+.form-hint {
+  @apply block text-xs text-slate-400 mt-1;
+}
+
+.form-row {
+  @apply grid grid-cols-1 md:grid-cols-2 gap-4 mb-4;
+}
+
+// Projection Section - fondo más oscuro como el diseño
+.projection-section {
+  @apply mt-4 p-5 rounded-lg;
+  background: rgba(15, 23, 42, 0.5);
+  border: 1px dashed rgba(100, 116, 139, 0.3);
+}
+
+.projection-header {
+  @apply flex items-center gap-2 text-slate-300 mb-2;
+}
+
+.projection-title {
+  @apply font-medium text-sm;
+}
+
+.projection-description {
+  @apply text-sm text-slate-400 mb-4;
+}
+
+// File Upload
+.file-upload-container {
+  @apply mb-4;
+}
+
+.file-input {
+  @apply hidden;
+}
+
+.file-upload-label {
+  @apply block w-full cursor-pointer;
+}
+
+.file-upload-content {
+  @apply flex items-center gap-4 p-4 rounded-lg transition-colors;
+  border: 2px dashed rgba(100, 116, 139, 0.4);
+  background: transparent;
+
+  &:hover {
+    border-color: rgba(59, 130, 246, 0.5);
+    background: rgba(30, 41, 59, 0.3);
+  }
+
+  .upload-icon {
+    @apply text-slate-400;
+  }
+
+  .file-upload-text {
+    @apply flex flex-col gap-1;
+  }
+
+  .file-upload-action {
+    @apply text-sm font-medium text-blue-400;
+  }
+
+  .file-upload-hint {
+    @apply text-xs text-slate-400;
+  }
+}
+
+.selected-file {
+  @apply flex items-center justify-between p-3 bg-slate-700 bg-opacity-40 rounded-lg mt-3;
+
+  .file-name {
+    @apply text-sm text-slate-300 truncate flex-1;
+  }
+
+  .remove-file-button {
+    @apply p-1.5 rounded text-slate-400 hover:text-red-400 hover:bg-slate-700 transition-colors;
+    
+    &:disabled {
+      @apply opacity-50 cursor-not-allowed;
+    }
+  }
+}
+
+// Error
+.error-message {
+  @apply flex items-center gap-2 p-3 rounded-lg text-red-400 text-sm mt-4;
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+// Buttons
+.btn-secondary {
+  @apply px-4 py-2.5 rounded-lg font-medium transition-colors;
+  background: rgba(51, 65, 85, 0.8);
+  color: #cbd5e1;
+
+  &:hover:not(:disabled) {
+    background: rgba(71, 85, 105, 0.9);
+  }
+  
+  &:disabled {
+    @apply opacity-50 cursor-not-allowed;
+  }
+}
+
+.btn-primary {
+  @apply px-4 py-2.5 rounded-lg font-medium text-white transition-colors;
+  background: #4f80ff;
+
+  &:hover:not(:disabled) {
+    background: #3d6eeb;
+  }
+  
+  &:disabled {
+    @apply opacity-50 cursor-not-allowed;
+  }
+}
+
+// Responsive
+@media (max-width: 768px) {
+  .modal-content {
+    @apply max-h-[95vh];
+  }
+
+  .form-row {
+    @apply grid-cols-1;
+  }
+}

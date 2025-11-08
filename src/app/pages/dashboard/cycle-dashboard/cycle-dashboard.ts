@@ -14,6 +14,7 @@ import { CycleCharts } from './components/cycle-charts/cycle-charts';
 import { UpcomingSeedings } from './components/upcoming-seedings/upcoming-seedings';
 import { UpcomingHarvests } from './components/upcoming-harvests/upcoming-harvests';
 import { PondDetailsTable } from './components/pond-details-table/pond-details-table';
+import { CreateCycleModal } from './create-cycle-modal/create-cycle-modal';
 
 @Component({
   selector: 'app-cycle-dashboard',
@@ -25,7 +26,8 @@ import { PondDetailsTable } from './components/pond-details-table/pond-details-t
     CycleCharts,
     UpcomingSeedings,
     UpcomingHarvests,
-    PondDetailsTable
+    PondDetailsTable,
+    CreateCycleModal
   ],
   templateUrl: './cycle-dashboard.html',
   styleUrls: ['./cycle-dashboard.scss']
@@ -35,6 +37,7 @@ export class CycleDashboard implements OnInit {
   readonly Plus = Plus;
 
   farmId: number | null = null;
+  farmName = signal<string>('');
   activeCycle = signal<Cycle | null>(null);
   overview = signal<CycleOverview | null>(null);
   loading = signal(true);
@@ -50,6 +53,11 @@ export class CycleDashboard implements OnInit {
   ngOnInit(): void {
     this.route.parent?.params.subscribe(params => {
       this.farmId = params['farmId'] ? parseInt(params['farmId']) : null;
+      
+      // TODO: Obtener el nombre de la granja desde un servicio o del state
+      // Por ahora usar un placeholder
+      this.farmName.set('Granja El Pacífico');
+      
       if (this.farmId) {
         this.loadActiveCycle();
       }

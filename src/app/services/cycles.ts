@@ -28,10 +28,18 @@ export class CycleService {
   }
 
   /**
-   * Crear nuevo ciclo
+   * Crear nuevo ciclo (básico, sin archivo)
    */
   createCycle(data: CycleCreate): Observable<Cycle> {
     return this.http.post<Cycle>(this.API_URL, data);
+  }
+
+  /**
+   * Crear nuevo ciclo con archivo de proyección (FormData)
+   * Endpoint: POST /cycles/farms/{granja_id}
+   */
+  createCycleWithFile(granjaId: number, formData: FormData): Observable<Cycle> {
+    return this.http.post<Cycle>(`${this.API_URL}/farms/${granjaId}`, formData);
   }
 
   /**

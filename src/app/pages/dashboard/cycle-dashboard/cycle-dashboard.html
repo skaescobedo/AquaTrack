@@ -72,4 +72,12 @@
       }
     </div>
   }
+
+  <!-- Modal de Crear Ciclo -->
+  <app-create-cycle-modal
+    [farmId]="farmId!"
+    [farmName]="farmName()"
+    [(show)]="showCreateModal"
+    (cycleCreated)="onCycleCreated()">
+  </app-create-cycle-modal>
 </div>

@@ -23,15 +23,73 @@ export class Farms implements OnInit {
   loading = signal(true);
   error = signal<string | null>(null);
   showModal = signal(false);
+  userLoading = signal(true);
 
   constructor(
     private farmService: FarmService,
-    private authService: AuthService,
+    public authService: AuthService,
     private router: Router
   ) {}
 
   ngOnInit(): void {
-    this.loadFarms();
+    this.waitForUserThenLoadFarms();
+  }
+
+  /**
+   * Esperar a que el usuario se cargue antes de cargar las granjas
+   */
+  private waitForUserThenLoadFarms(): void {
+    // Si el usuario ya está cargado, proceder directamente
+    if (this.authService.currentUser()) {
+      this.userLoading.set(false);
+      this.loadFarms();
+      return;
+    }
+
+    // Si ya se intentó cargar pero falló, reintentar
+    if (this.authService.hasAttemptedProfileLoad && !this.authService.currentUser()) {
+      console.log('⚠️ Usuario no cargado, reintentando...');
+      this.authService.retryLoadProfile().subscribe({
+        next: () => {
+          this.userLoading.set(false);
+          this.loadFarms();
+        },
+        error: (err) => {
+          console.error('Error recargando perfil:', err);
+          this.userLoading.set(false);
+          this.error.set('Error al cargar el perfil de usuario');
+        }
+      });
+      return;
+    }
+
+    // Esperar a que el perfil se cargue (máximo 3 segundos)
+    let attempts = 0;
+    const maxAttempts = 30; // 30 * 100ms = 3 segundos
+    
+    const checkUser = setInterval(() => {
+      attempts++;
+      
+      if (this.authService.currentUser()) {
+        clearInterval(checkUser);
+        this.userLoading.set(false);
+        this.loadFarms();
+      } else if (attempts >= maxAttempts) {
+        clearInterval(checkUser);
+        console.warn('⚠️ Timeout esperando usuario');
+        this.userLoading.set(false);
+        // Intentar recargar el perfil una vez
+        this.authService.retryLoadProfile().subscribe({
+          next: () => {
+            this.loadFarms();
+          },
+          error: (err) => {
+            console.error('Error cargando perfil:', err);
+            this.error.set('Error al cargar el perfil de usuario');
+          }
+        });
+      }
+    }, 100);
   }
 
   loadFarms(): void {
