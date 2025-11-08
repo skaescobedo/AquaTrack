@@ -15,10 +15,20 @@ export class UpcomingSeedings {
 
   readonly AlertTriangle = AlertTriangle;
   readonly Sprout = Sprout;
-  readonly Math = Math; // Hacer Math accesible en el template
+  readonly Math = Math;
+
+  /**
+   * Parsea fecha tipo DATE (YYYY-MM-DD) como fecha local
+   * sin conversión de zona horaria
+   */
+  private parseLocalDate(dateString: string): Date {
+    const [year, month, day] = dateString.split('-').map(Number);
+    // Crear fecha en zona local sin conversión UTC
+    return new Date(year, month - 1, day);
+  }
 
   formatDate(dateString: string): string {
-    const date = new Date(dateString);
+    const date = this.parseLocalDate(dateString);
     return date.toLocaleDateString('es-MX', {
       day: 'numeric',
       month: 'short',

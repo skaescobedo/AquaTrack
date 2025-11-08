@@ -16,9 +16,19 @@ export class UpcomingHarvests {
   readonly Package = Package;
   readonly Calendar = Calendar;
 
+  /**
+   * Parsea fecha tipo DATE (YYYY-MM-DD) como fecha local
+   * sin conversión de zona horaria
+   */
+  private parseLocalDate(dateString: string): Date {
+    const [year, month, day] = dateString.split('-').map(Number);
+    // Crear fecha en zona local sin conversión UTC
+    return new Date(year, month - 1, day);
+  }
+
   formatDateRange(inicio: string, fin: string): string {
-    const dateInicio = new Date(inicio);
-    const dateFin = new Date(fin);
+    const dateInicio = this.parseLocalDate(inicio);
+    const dateFin = this.parseLocalDate(fin);
     
     const formatDate = (date: Date) => {
       return date.toLocaleDateString('es-MX', {
