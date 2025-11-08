@@ -1,0 +1,41 @@
+@use '../../../../theme/variables';
+
+.pond-dashboard-page {
+  @apply min-h-full;
+}
+
+.page-header {
+  @apply mb-6;
+}
+
+.btn-back {
+  @apply inline-flex items-center gap-2 px-4 py-2 text-slate-300 hover:text-white bg-slate-800 hover:bg-slate-700 rounded-lg transition-colors mb-4;
+}
+
+.pond-title-section {
+  @apply flex items-center gap-4;
+
+  .icon-wrapper {
+    @apply w-16 h-16 bg-cyan-500 bg-opacity-20 rounded-xl flex items-center justify-center;
+  }
+
+  .title {
+    @apply text-3xl font-bold text-white m-0 mb-2;
+  }
+
+  .badges {
+    @apply flex gap-2;
+  }
+}
+
+.loading-container {
+  @apply flex flex-col items-center justify-center py-20;
+
+  .loading-text {
+    @apply mt-4 text-slate-400 m-0;
+  }
+}
+
+.charts-section {
+  @apply grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6;
+}

@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { authGuard } from './auth/guards/auth-guard';
+import { permissionsGuard } from './auth/guards/permissions-guard';
 import { LoginComponent } from './auth/login/login';
 
 export const routes: Routes = [
@@ -46,6 +47,13 @@ export const routes: Routes = [
       {
         path: 'ponds',
         loadComponent: () => import('./pages/ponds/ponds').then(m => m.Ponds)
+      },
+      // 🆕 RUTA AGREGADA: Pond Dashboard
+      {
+        path: 'ponds/:pondId/dashboard',
+        loadComponent: () => import('./pages/dashboard/pond-dashboard/pond-dashboard').then(m => m.PondDashboard),
+        canActivate: [permissionsGuard],
+        data: { requiredScope: 'ver_analytics' }
       },
       {
         path: 'seedings',

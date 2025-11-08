@@ -1,0 +1,92 @@
+<div class="kpis-section">
+  <!-- Row 1: Métricas Principales -->
+  <div class="kpis-grid">
+    <!-- Biomasa -->
+    <div class="kpi-card">
+      <div class="kpi-icon bg-blue-500 bg-opacity-20">
+        <lucide-icon [img]="Activity" [size]="24" class="text-blue-400"></lucide-icon>
+      </div>
+      <div class="kpi-content">
+        <span class="kpi-label">Biomasa Estimada</span>
+        <span class="kpi-value">{{ kpis.biomasa_estimada_kg.toFixed(1) }} kg</span>
+        <span class="kpi-detail">{{ detalles.biomasa_m2.toFixed(2) }} kg/m²</span>
+      </div>
+    </div>
+
+    <!-- Densidad -->
+    <div class="kpi-card">
+      <div class="kpi-icon bg-cyan-500 bg-opacity-20">
+        <lucide-icon [img]="Users" [size]="24" class="text-cyan-400"></lucide-icon>
+      </div>
+      <div class="kpi-content">
+        <span class="kpi-label">Densidad Actual</span>
+        <span class="kpi-value">{{ kpis.densidad_actual_org_m2.toFixed(2) }} org/m²</span>
+        <span class="kpi-detail">{{ formatNumber(kpis.org_vivos) }} organismos vivos</span>
+      </div>
+    </div>
+
+    <!-- Peso Promedio -->
+    <div class="kpi-card">
+      <div class="kpi-icon bg-purple-500 bg-opacity-20">
+        <lucide-icon [img]="TrendingUp" [size]="24" class="text-purple-400"></lucide-icon>
+      </div>
+      <div class="kpi-content">
+        <span class="kpi-label">Peso Promedio</span>
+        <span class="kpi-value">{{ kpis.pp_g.toFixed(2) }} g</span>
+        <div class="kpi-detail">
+          <span class="badge" [ngClass]="getPPSourceBadge(kpis.pp_fuente)">
+            {{ getSourceLabel(kpis.pp_fuente) }}
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Supervivencia (SOB) -->
+    <div class="kpi-card">
+      <div class="kpi-icon bg-green-500 bg-opacity-20">
+        <lucide-icon [img]="Percent" [size]="24" class="text-green-400"></lucide-icon>
+      </div>
+      <div class="kpi-content">
+        <span class="kpi-label">Supervivencia (SOB)</span>
+        <span class="kpi-value" [ngClass]="getSOBClass(kpis.supervivencia_pct)">
+          {{ kpis.supervivencia_pct.toFixed(1) }}%
+        </span>
+        <div class="kpi-detail">
+          <span class="badge" [ngClass]="getSOBSourceBadge(kpis.sob_fuente)">
+            {{ getSourceLabel(kpis.sob_fuente) }}
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Row 2: Detalles Operativos -->
+  <div class="details-card">
+    <h3 class="details-title">Detalles Operativos</h3>
+    <div class="details-grid">
+      <div class="detail-item">
+        <span class="detail-label">Superficie:</span>
+        <span class="detail-value">{{ formatSuperficie(detalles.superficie_m2) }}</span>
+      </div>
+      
+      <div class="detail-item">
+        <span class="detail-label">Densidad Inicial:</span>
+        <span class="detail-value">
+          {{ detalles.densidad_inicial_org_m2 !== null ? detalles.densidad_inicial_org_m2.toFixed(2) + ' org/m²' : 'N/A' }}
+        </span>
+      </div>
+      
+      <div class="detail-item">
+        <span class="detail-label">Días de Cultivo:</span>
+        <span class="detail-value">{{ detalles.dias_cultivo }} días</span>
+      </div>
+      
+      <div class="detail-item">
+        <span class="detail-label">Tasa de Crecimiento:</span>
+        <span class="detail-value">
+          {{ detalles.tasa_crecimiento_g_sem !== null ? detalles.tasa_crecimiento_g_sem.toFixed(2) + ' g/sem' : 'N/A' }}
+        </span>
+      </div>
+    </div>
+  </div>
+</div>

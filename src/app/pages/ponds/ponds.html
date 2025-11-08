@@ -59,7 +59,11 @@
     @if (vigentePonds.length > 0) {
       <div class="grid-container cols-3 fade-in">
         @for (pond of vigentePonds; track pond.estanque_id) {
-          <app-pond-card [pond]="pond" />
+          <app-pond-card 
+            [pond]="pond"
+            [farmId]="farmId!"
+            [cycleId]="activeCycle()?.ciclo_id || null"
+          />
         }
       </div>
     }
@@ -70,7 +74,11 @@
         <h2 class="text-xl font-semibold text-slate-300 mb-4">Estanques No Vigentes</h2>
         <div class="grid-container cols-3 fade-in">
           @for (pond of nonVigentePonds; track pond.estanque_id) {
-            <app-pond-card [pond]="pond" />
+            <app-pond-card 
+              [pond]="pond"
+              [farmId]="farmId!"
+              [cycleId]="null"
+            />
           }
         </div>
       </div>

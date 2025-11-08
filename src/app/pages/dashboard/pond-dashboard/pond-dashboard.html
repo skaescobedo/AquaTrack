@@ -1,0 +1,63 @@
+<div class="pond-dashboard-page">
+  <!-- Header -->
+  <div class="page-header">
+    <button class="btn-back" (click)="goBack()">
+      <lucide-icon [img]="ArrowLeft" [size]="20"></lucide-icon>
+      <span>Volver al Dashboard</span>
+    </button>
+    
+    @if (detail()) {
+      <div class="pond-title-section">
+        <div class="icon-wrapper">
+          <lucide-icon [img]="Waves" [size]="32" class="text-cyan-400"></lucide-icon>
+        </div>
+        <div>
+          <h1 class="title">{{ detail()!.nombre }}</h1>
+          <div class="badges">
+            <span class="badge" [ngClass]="statusClass">{{ statusLabel }}</span>
+            <span class="badge badge-neutral">
+              Día {{ detail()!.detalles.dias_cultivo }} de cultivo
+            </span>
+          </div>
+        </div>
+      </div>
+    }
+  </div>
+
+  <!-- Loading State -->
+  @if (loading()) {
+    <div class="loading-container">
+      <div class="spinner spinner-lg"></div>
+      <p class="loading-text">Cargando datos del estanque...</p>
+    </div>
+  }
+
+  <!-- Error State -->
+  @if (error()) {
+    <div class="alert alert-danger">
+      <strong>Error:</strong> {{ error() }}
+    </div>
+  }
+
+  <!-- Content -->
+  @if (!loading() && !error() && detail()) {
+    <!-- KPIs Section -->
+    <app-pond-kpis
+      [kpis]="detail()!.kpis"
+      [detalles]="detail()!.detalles"
+    />
+
+    <!-- Charts Section -->
+    <div class="charts-section">
+      <app-pond-growth-chart
+        [data]="detail()!.graficas.crecimiento"
+        [pondName]="detail()!.nombre"
+      />
+
+      <app-pond-density-chart
+        [data]="detail()!.graficas.densidad_evolucion"
+        [pondName]="detail()!.nombre"
+      />
+    </div>
+  }
+</div>

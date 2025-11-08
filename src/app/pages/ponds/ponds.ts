@@ -4,12 +4,14 @@ import { ActivatedRoute } from '@angular/router';
 import { LucideAngularModule, Waves, Plus } from 'lucide-angular';
 import { PondService } from '../../services/ponds';
 import { FarmService } from '../../services/farms';
+import { CycleService } from '../../services/cycles';
 import { AuthService } from '../../services/auth';
 import { Pond, PondCreate } from '../../models/pond.model';
 import { Farm } from '../../models/farm.model';
+import { Cycle } from '../../models/cycle.model';
 import { PondCard } from './pond-card/pond-card';
 import { PondModal } from './pond-modal/pond-modal';
-import { forkJoin } from 'rxjs';
+import { forkJoin, catchError, of } from 'rxjs';
 
 @Component({
   selector: 'app-ponds',
@@ -24,6 +26,7 @@ export class Ponds implements OnInit {
 
   farmId: number | null = null;
   currentFarm = signal<Farm | null>(null);
+  activeCycle = signal<Cycle | null>(null);
   ponds = signal<Pond[]>([]);
   loading = signal(true);
   error = signal<string | null>(null);
@@ -32,6 +35,7 @@ export class Ponds implements OnInit {
   constructor(
     private pondService: PondService,
     private farmService: FarmService,
+    private cycleService: CycleService,
     public authService: AuthService,
     private route: ActivatedRoute
   ) {}
@@ -52,10 +56,13 @@ export class Ponds implements OnInit {
     this.loading.set(true);
     this.error.set(null);
 
-    // Cargar granja y estanques en paralelo
+    // Cargar granja, estanques y ciclo activo en paralelo
     forkJoin({
       farms: this.farmService.getFarms(),
-      ponds: this.pondService.getPonds(this.farmId)
+      ponds: this.pondService.getPonds(this.farmId),
+      activeCycle: this.cycleService.getActiveCycle(this.farmId).pipe(
+        catchError(() => of(null)) // Si no hay ciclo activo, retornar null
+      )
     }).subscribe({
       next: (result) => {
         // Buscar la granja actual
@@ -63,6 +70,7 @@ export class Ponds implements OnInit {
         this.currentFarm.set(farm || null);
         
         this.ponds.set(result.ponds);
+        this.activeCycle.set(result.activeCycle);
         this.loading.set(false);
       },
       error: (err) => {

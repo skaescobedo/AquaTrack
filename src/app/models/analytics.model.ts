@@ -86,3 +86,52 @@ export interface EstanqueDetalle {
   org_vivos_est: number;
   biomasa_est_kg: number;
 }
+
+// ============================================
+// POND DETAIL (Dashboard individual del estanque)
+// ============================================
+
+export interface PondDetail {
+  estanque_id: number;
+  nombre: string;
+  status: string;
+  kpis: PondKPIs;
+  graficas: PondGraficas;
+  detalles: PondDetalles;
+}
+
+export interface PondKPIs {
+  biomasa_estimada_kg: number;
+  densidad_actual_org_m2: number;
+  org_vivos: number;
+  pp_g: number;
+  pp_fuente: string;
+  pp_updated_at: string | null;
+  supervivencia_pct: number;
+  sob_fuente: string;
+}
+
+export interface PondGraficas {
+  crecimiento: PuntoCrecimientoPond[];
+  densidad_evolucion: PuntoDensidadPond[];
+}
+
+export interface PuntoCrecimientoPond {
+  semana: number;
+  pp_g: number;
+  fecha: string;
+}
+
+export interface PuntoDensidadPond {
+  semana: number;
+  densidad_org_m2: number;
+  fecha: string;
+}
+
+export interface PondDetalles {
+  superficie_m2: number;
+  densidad_inicial_org_m2: number | null;
+  dias_cultivo: number;
+  tasa_crecimiento_g_sem: number | null;
+  biomasa_m2: number;
+}

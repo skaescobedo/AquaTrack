@@ -35,10 +35,23 @@
   </div>
 
   <!-- Actions -->
-  @if (pond.is_vigente) {
+  @if (canViewDashboard) {
     <div class="pond-actions">
-      <button class="btn btn-primary btn-sm w-full">
+      <button 
+        class="btn btn-primary btn-sm w-full"
+        (click)="viewDashboard()"
+      >
         Ver panel
+      </button>
+    </div>
+  } @else if (pond.is_vigente && cycleId === null) {
+    <div class="pond-actions">
+      <button 
+        class="btn btn-secondary btn-sm w-full"
+        disabled
+        title="No hay ciclo activo"
+      >
+        Sin ciclo activo
       </button>
     </div>
   }
