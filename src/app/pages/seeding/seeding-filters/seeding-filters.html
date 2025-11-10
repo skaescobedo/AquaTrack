@@ -1,0 +1,52 @@
+<div class="seeding-filters">
+  <div class="filters-left">
+    <!-- Search -->
+    <div class="search-box">
+      <lucide-icon [img]="Search" [size]="20" class="search-icon"></lucide-icon>
+      <input
+        type="text"
+        placeholder="Buscar por estanque..."
+        [(ngModel)]="searchTerm"
+        (ngModelChange)="onSearchChange()"
+        class="search-input"
+      />
+    </div>
+
+    <!-- Status Filter -->
+    <div class="filter-dropdown">
+      <lucide-icon [img]="Filter" [size]="20" class="filter-icon"></lucide-icon>
+      <select
+        [(ngModel)]="filterStatus"
+        (ngModelChange)="onStatusChange()"
+        class="filter-select"
+      >
+        <option value="all">Todas</option>
+        <option value="confirmed">Confirmadas</option>
+        <option value="planned">Planificadas</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- View Mode Toggle -->
+  <div class="view-toggle">
+    <button
+      [class.active]="viewMode === 'grid'"
+      (click)="onViewModeToggle('grid')"
+      class="toggle-btn"
+      title="Vista en cuadrícula"
+    >
+      <lucide-icon [img]="Grid3x3" [size]="20"></lucide-icon>
+      <span>Grid</span>
+    </button>
+
+    <button
+      [class.active]="viewMode === 'list'"
+      (click)="onViewModeToggle('list')"
+      class="toggle-btn"
+      title="Vista en lista"
+    >
+      <lucide-icon [img]="List" [size]="20"></lucide-icon>
+      <span>Lista</span>
+    </button>
+  </div>
+</div>

@@ -1,0 +1,140 @@
+<div class="modal-overlay" (click)="onClose()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <!-- Header -->
+    <div class="modal-header">
+      <div class="header-icon">
+        <lucide-icon [img]="Calendar" [size]="24"></lucide-icon>
+      </div>
+      <div class="header-text">
+        <h2 class="modal-title">Crear Plan de Siembras</h2>
+        <p class="modal-subtitle">Define los parámetros base para el plan de siembras del ciclo</p>
+      </div>
+      <button class="close-button" (click)="onClose()">
+        <lucide-icon [img]="X" [size]="20"></lucide-icon>
+      </button>
+    </div>
+
+    <!-- Body -->
+    <form (ngSubmit)="onSubmit()" class="modal-body">
+      <!-- Error Message -->
+      @if (error()) {
+        <div class="error-banner">
+          <span>{{ error() }}</span>
+        </div>
+      }
+
+      <!-- Ventana de Siembra -->
+      <div class="form-section">
+        <h3 class="section-title">Ventana de Siembra</h3>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="ventanaInicio" class="form-label required">Fecha Inicio</label>
+            <input
+              id="ventanaInicio"
+              type="date"
+              [(ngModel)]="ventanaInicio"
+              name="ventanaInicio"
+              class="form-input"
+              required
+            />
+            <span class="hint">Primera fecha posible de siembra</span>
+          </div>
+
+          <div class="form-group">
+            <label for="ventanaFin" class="form-label required">Fecha Fin</label>
+            <input
+              id="ventanaFin"
+              type="date"
+              [(ngModel)]="ventanaFin"
+              name="ventanaFin"
+              class="form-input"
+              required
+            />
+            <span class="hint">Última fecha posible de siembra</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Parámetros Base -->
+      <div class="form-section">
+        <h3 class="section-title">Parámetros Base</h3>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="densidad" class="form-label required">Densidad (org/m²)</label>
+            <input
+              id="densidad"
+              type="number"
+              step="0.01"
+              [(ngModel)]="densidad"
+              name="densidad"
+              class="form-input"
+              required
+              min="0"
+            />
+            <span class="hint">Densidad de siembra base para todos los estanques</span>
+          </div>
+
+          <div class="form-group">
+            <label for="talla" class="form-label required">Talla Inicial (g)</label>
+            <input
+              id="talla"
+              type="number"
+              step="0.001"
+              [(ngModel)]="talla"
+              name="talla"
+              class="form-input"
+              required
+              min="0"
+            />
+            <span class="hint">Talla inicial de la post-larva</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Observaciones -->
+      <div class="form-group">
+        <label for="observaciones" class="form-label">Observaciones</label>
+        <textarea
+          id="observaciones"
+          [(ngModel)]="observaciones"
+          name="observaciones"
+          rows="3"
+          class="form-textarea"
+          placeholder="Notas adicionales sobre el plan de siembras (opcional)"
+        ></textarea>
+      </div>
+
+      <!-- Info Banner -->
+      <div class="info-banner">
+        <strong>Nota:</strong> Se crearán automáticamente las siembras para todos los estanques vigentes,
+        distribuyendo las fechas uniformemente entre la ventana definida.
+      </div>
+
+      <!-- Actions -->
+      <div class="modal-actions">
+        <button
+          type="button"
+          class="btn btn-secondary"
+          (click)="onClose()"
+          [disabled]="loading()"
+        >
+          Cancelar
+        </button>
+
+        <button
+          type="submit"
+          class="btn btn-primary"
+          [disabled]="!isValid() || loading()"
+        >
+          @if (loading()) {
+            <span>Creando...</span>
+          } @else {
+            <span>Crear Plan</span>
+          }
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

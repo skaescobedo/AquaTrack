@@ -1,0 +1,51 @@
+@use '../../users/user-edit-modal/user-edit-modal.scss';
+
+.modal-small {
+  max-width: 500px;
+}
+
+.header-icon.success {
+  @apply bg-green-500 bg-opacity-20 text-green-400;
+}
+
+.warning-box {
+  @apply flex gap-4 p-4 bg-yellow-500 bg-opacity-10 border border-yellow-500 rounded-lg mb-6;
+
+  .warning-icon {
+    @apply text-yellow-400 flex-shrink-0;
+  }
+
+  .warning-content {
+    .warning-title {
+      @apply text-base font-semibold text-yellow-100 mb-2 m-0;
+    }
+
+    .warning-text {
+      @apply text-sm text-yellow-200 mb-2 m-0;
+    }
+
+    .warning-list {
+      @apply space-y-1 text-sm text-yellow-200 ml-4;
+
+      li {
+        @apply list-disc;
+
+        strong {
+          @apply text-yellow-100 font-semibold;
+        }
+      }
+    }
+  }
+}
+
+.btn-success {
+  @apply bg-green-500 text-white;
+
+  &:hover:not(:disabled) {
+    @apply bg-green-600;
+  }
+
+  &:disabled {
+    @apply opacity-50 cursor-not-allowed;
+  }
+}

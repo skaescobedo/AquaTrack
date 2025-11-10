@@ -1,0 +1,153 @@
+<div class="seeding-item" [class]="viewMode === 'list' ? 'list-view' : 'grid-view'">
+  <!-- Header -->
+  <div class="item-header">
+    <div class="header-left">
+      <h3 class="pond-name">{{ seeding.pond_name }}</h3>
+      <span class="badge">1 siembra</span>
+    </div>
+
+    <div class="header-right">
+      <span class="status-badge" [ngClass]="getStatusClass()">
+        @if (isConfirmed) {
+          <lucide-icon [img]="Check" [size]="14"></lucide-icon>
+        }
+        {{ getStatusText() }}
+      </span>
+    </div>
+  </div>
+
+  <div class="item-body">
+    <div class="pond-info">
+      <span class="info-label">Superficie:</span>
+      <span class="info-value">{{ seeding.pond_superficie.toLocaleString() }} m²</span>
+    </div>
+
+    @if (!isEditing()) {
+      <!-- View Mode -->
+      <div class="seeding-details">
+        <!-- Fecha -->
+        <div class="detail-row">
+          <lucide-icon [img]="Calendar" [size]="16" class="detail-icon"></lucide-icon>
+          <span class="detail-value">
+            {{ formatDate(isConfirmed ? seeding.fecha_siembra : seeding.fecha_tentativa) }}
+          </span>
+        </div>
+
+        <!-- Densidad y Talla -->
+        <div class="params-row">
+          <div class="param">
+            <span class="param-label">Densidad:</span>
+            <span class="param-value">{{ seeding.densidad_efectiva }} org/m²</span>
+          </div>
+
+          <div class="param">
+            <span class="param-label">Talla:</span>
+            <span class="param-value">{{ seeding.talla_inicial_efectiva }} g</span>
+          </div>
+        </div>
+
+        @if (seeding.lote) {
+          <div class="lote-info">
+            <span class="lote-label">Lote:</span>
+            <span class="lote-value">{{ seeding.lote }}</span>
+          </div>
+        }
+      </div>
+
+      <!-- Actions -->
+      <div class="item-actions">
+        @if (canEdit) {
+          <button
+            class="btn btn-secondary btn-sm"
+            (click)="startEdit()"
+          >
+            <lucide-icon [img]="Edit2" [size]="16"></lucide-icon>
+            <span>Reprogramar</span>
+          </button>
+        }
+
+        @if (canConfirm) {
+          <button
+            class="btn btn-success btn-sm"
+            (click)="onConfirm()"
+          >
+            <lucide-icon [img]="Check" [size]="16"></lucide-icon>
+            <span>Confirmar</span>
+          </button>
+        }
+      </div>
+    } @else {
+      <!-- Edit Mode -->
+      <div class="edit-form">
+        <div class="form-group">
+          <label class="form-label">Fecha Tentativa</label>
+          <input
+            type="date"
+            [(ngModel)]="editDate"
+            class="form-input"
+          />
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Densidad (org/m²)</label>
+            <input
+              type="number"
+              step="0.01"
+              [(ngModel)]="editDensidad"
+              class="form-input"
+            />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Talla (g)</label>
+            <input
+              type="number"
+              step="0.001"
+              [(ngModel)]="editTalla"
+              class="form-input"
+            />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Lote</label>
+          <input
+            type="text"
+            [(ngModel)]="editLote"
+            placeholder="Opcional"
+            class="form-input"
+          />
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Motivo del cambio</label>
+          <textarea
+            [(ngModel)]="editMotivo"
+            rows="2"
+            placeholder="Describe el motivo de la reprogramación"
+            class="form-textarea"
+          ></textarea>
+        </div>
+
+        <div class="edit-actions">
+          <button
+            class="btn btn-secondary btn-sm"
+            (click)="cancelEdit()"
+          >
+            <lucide-icon [img]="X" [size]="16"></lucide-icon>
+            <span>Cancelar</span>
+          </button>
+
+          <button
+            class="btn btn-primary btn-sm"
+            (click)="saveEdit()"
+          >
+            <lucide-icon [img]="Check" [size]="16"></lucide-icon>
+            <span>Guardar</span>
+          </button>
+        </div>
+      </div>
+    }
+  </div>
+</div>

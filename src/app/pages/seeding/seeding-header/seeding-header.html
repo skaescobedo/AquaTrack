@@ -1,0 +1,92 @@
+<div class="seeding-header">
+  <!-- Plan Status Card -->
+  <div class="plan-card">
+    <div class="plan-status">
+      <span class="status-badge" [ngClass]="getStatusClass()">
+        {{ getStatusText() }}
+      </span>
+    </div>
+
+    <!-- Progress Section -->
+    <div class="progress-section">
+      <div class="progress-header">
+        <h3 class="progress-title">Siembras Confirmadas</h3>
+        <div class="progress-count">
+          <span class="count-confirmed">{{ confirmedCount() }}</span>
+          <span class="count-separator">/</span>
+          <span class="count-total">{{ totalCount() }}</span>
+        </div>
+      </div>
+
+      <!-- Progress Bar -->
+      <div class="progress-bar">
+        <div 
+          class="progress-fill"
+          [style.width.%]="completionPercentage()"
+        ></div>
+      </div>
+
+      <div class="progress-footer">
+        <span class="progress-percentage">{{ completionPercentage() }}% completado</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Window Card -->
+  <div class="window-card">
+    <div class="card-icon">
+      <lucide-icon [img]="Calendar" [size]="24"></lucide-icon>
+    </div>
+
+    <div class="window-info">
+      <div class="window-header">
+        <h3 class="window-title">Ventana de Siembra</h3>
+        <span class="window-status-badge" [ngClass]="getWindowStatusClass()">
+          {{ getWindowStatusText() }}
+        </span>
+      </div>
+
+      <div class="window-dates">
+        <div class="date-range">
+          <span class="date-label">Inicio:</span>
+          <span class="date-value">{{ formatDate(plan.ventana_inicio) }}</span>
+        </div>
+        <div class="date-separator">-</div>
+        <div class="date-range">
+          <span class="date-label">Fin:</span>
+          <span class="date-value">{{ formatDate(plan.ventana_fin) }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Parameters Card -->
+  <div class="params-card">
+    <div class="card-icon">
+      <lucide-icon [img]="TrendingUp" [size]="24"></lucide-icon>
+    </div>
+
+    <div class="params-info">
+      <h3 class="params-title">Parámetros Base</h3>
+      
+      <div class="params-grid">
+        <div class="param-item">
+          <span class="param-label">Densidad:</span>
+          <span class="param-value">{{ plan.densidad_org_m2 }} org/m²</span>
+        </div>
+
+        <div class="param-item">
+          <span class="param-label">Talla Inicial:</span>
+          <span class="param-value">{{ plan.talla_inicial_g }} g</span>
+        </div>
+      </div>
+
+      @if (plan.observaciones) {
+        <div class="observations">
+          <span class="obs-label">Observaciones:</span>
+          <p class="obs-text">{{ plan.observaciones }}</p>
+        </div>
+      }
+    </div>
+  </div>
+</div>

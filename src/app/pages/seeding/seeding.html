@@ -1,1 +1,114 @@
-<p>seeding works!</p>
+<div class="seeding-page">
+  <!-- Header -->
+  <div class="page-header-actions">
+    <div class="left">
+      <h1 class="title">Siembras</h1>
+      <p class="subtitle">Plan de siembras para {{ farmName() }}</p>
+    </div>
+
+    @if (!hasPlan && hasActiveCycle && !loading()) {
+      <div class="right">
+        <button 
+          class="btn btn-primary"
+          (click)="onCreatePlan()"
+        >
+          <lucide-icon [img]="Plus" [size]="20"></lucide-icon>
+          <span>Crear Plan de Siembras</span>
+        </button>
+      </div>
+    }
+  </div>
+
+  <!-- Loading State -->
+  @if (loading()) {
+    <div class="loading-state">
+      <div class="spinner"></div>
+      <p>Cargando datos de siembras...</p>
+    </div>
+  }
+
+  <!-- Error State -->
+  @else if (error()) {
+    <div class="error-state">
+      <div class="error-icon">⚠️</div>
+      <h3>Error al cargar datos</h3>
+      <p>{{ error() }}</p>
+    </div>
+  }
+
+  <!-- No Active Cycle -->
+  @else if (!hasActiveCycle) {
+    <div class="empty-state">
+      <lucide-icon [img]="Calendar" [size]="64" class="empty-icon"></lucide-icon>
+      <h3>No hay ciclo activo</h3>
+      <p>Crea un ciclo activo para gestionar siembras</p>
+    </div>
+  }
+
+  <!-- No Plan - Show Create Button -->
+  @else if (!hasPlan) {
+    <div class="empty-state">
+      <lucide-icon [img]="Calendar" [size]="64" class="empty-icon"></lucide-icon>
+      <h3>No hay plan de siembras</h3>
+      <p>Crea un plan de siembras para comenzar</p>
+      <button 
+        class="btn btn-primary btn-lg"
+        (click)="onCreatePlan()"
+      >
+        <lucide-icon [img]="Plus" [size]="20"></lucide-icon>
+        <span>Crear Plan de Siembras</span>
+      </button>
+    </div>
+  }
+
+  <!-- Plan Exists - Show Content -->
+  @else {
+    <div class="seeding-content">
+      <!-- Plan Header/Summary -->
+      <app-seeding-header [plan]="plan()!" />
+
+      <!-- Filters -->
+      <app-seeding-filters
+        [viewMode]="viewMode()"
+        (filterChange)="onFilterChange($event)"
+        (viewModeChange)="onViewModeChange($event)"
+      />
+
+      <!-- Seedings List/Grid -->
+      @if (filteredSeedings().length === 0) {
+        <div class="empty-results">
+          <p>No se encontraron siembras con los filtros aplicados</p>
+        </div>
+      } @else {
+        <div [class]="viewMode() === 'grid' ? 'seedings-grid' : 'seedings-list'">
+          @for (seeding of filteredSeedings(); track seeding.siembra_estanque_id) {
+            <app-seeding-item
+              [seeding]="seeding"
+              [plan]="plan()!"
+              [viewMode]="viewMode()"
+              (confirm)="onConfirmSeeding($event)"
+              (reprogram)="onReprogramSeeding($event.id, $event.data)"
+            />
+          }
+        </div>
+      }
+    </div>
+  }
+
+  <!-- Modals -->
+  @if (showCreatePlanModal() && activeCycle()) {
+    <app-create-plan-modal
+      [cycleId]="activeCycle()!.ciclo_id"
+      (close)="showCreatePlanModal.set(false)"
+      (created)="onPlanCreated()"
+    />
+  }
+
+  @if (showConfirmModal() && selectedSeedingId()) {
+    <app-confirm-seeding-modal
+      [seedingId]="selectedSeedingId()!"
+      (close)="showConfirmModal.set(false)"
+      (confirmed)="onSeedingConfirmed()"
+    />
+  }
+</div>

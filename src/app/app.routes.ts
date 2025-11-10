@@ -57,7 +57,7 @@ export const routes: Routes = [
       },
       {
         path: 'seedings',
-        loadComponent: () => import('./pages/seeding/seeding').then(m => m.Seeding)
+        loadComponent: () => import('./pages/seeding/seeding').then(m => m.SeedingPage)
       },
       {
         path: 'biometrics',
