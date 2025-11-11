@@ -1,0 +1,71 @@
+@use '../../users/user-edit-modal/user-edit-modal.scss';
+
+.modal-content {
+  @apply max-w-3xl;
+}
+
+// ==========================================
+// STEPS INDICATOR
+// ==========================================
+
+.steps-indicator {
+  @apply flex items-center justify-center px-6 py-6 border-b border-slate-700 gap-4;
+
+  .step {
+    @apply flex items-center justify-center;
+
+    .step-number {
+      @apply w-10 h-10 rounded-full bg-slate-700 flex items-center justify-center text-lg font-semibold text-slate-400 transition-all;
+    }
+
+    &.active {
+      .step-number {
+        @apply bg-blue-500 text-white scale-110;
+      }
+    }
+
+    &.completed {
+      .step-number {
+        @apply bg-green-500 text-white;
+      }
+    }
+  }
+}
+
+// ==========================================
+// MODAL BODY
+// ==========================================
+
+.modal-body {
+  @apply px-6 py-6 min-h-[300px];
+}
+
+// ==========================================
+// ERROR BANNER
+// ==========================================
+
+.error-banner {
+  @apply mx-6 mt-4 p-4 bg-red-500 bg-opacity-10 border border-red-500 rounded-lg text-red-400;
+}
+
+// ==========================================
+// BUTTONS
+// ==========================================
+
+.btn-primary {
+  &.btn-submit {
+    @apply bg-green-500;
+    @apply hover:bg-green-600;
+  }
+}
+
+.spinner {
+  @apply w-4 h-4 border-2 border-white border-t-transparent rounded-full inline-block;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

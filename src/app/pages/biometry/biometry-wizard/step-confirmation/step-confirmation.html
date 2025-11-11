@@ -1,1 +1,95 @@
-<p>step-confirmation works!</p>
+<div class="step-container">
+  <h3 class="step-title">Paso 3 - Preview y Observaciones</h3>
+
+  <!-- Valores Calculados -->
+  <div class="values-section">
+    <h4 class="section-subtitle">Valores calculados</h4>
+
+    <div class="values-grid">
+      <div class="value-card">
+        <span class="value-label">Peso promedio</span>
+        <span class="value-number">{{ formatNumber(pesoPromedio, 2) }} g</span>
+      </div>
+
+      <div class="value-card">
+        <span class="value-label">Densidad viva</span>
+        <span class="value-number">{{ formatNumber(densidadViva, 2) }} org/m²</span>
+      </div>
+
+      <div class="value-card">
+        <span class="value-label">Biomasa estimada</span>
+        <span class="value-number">{{ formatNumber(biomasaEstimada, 1) }} kg</span>
+      </div>
+
+      <div class="value-card">
+        <span class="value-label">Kg/ha</span>
+        <span class="value-number">{{ formatNumber(kgPorHa, 2) }} kg/ha</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Datos Ingresados -->
+  <div class="summary-section">
+    <h4 class="section-subtitle">Datos ingresados</h4>
+
+    <div class="summary-grid">
+      <div class="summary-item">
+        <span class="summary-label">Peso muestra:</span>
+        <span class="summary-value">{{ formData?.peso_muestra_g || 0 }} g</span>
+      </div>
+
+      <div class="summary-item">
+        <span class="summary-label">N° organismos:</span>
+        <span class="summary-value">{{ formData?.n_muestra || 0 }}</span>
+      </div>
+
+      <div class="summary-item">
+        <span class="summary-label">SOB usado:</span>
+        <span class="summary-value">{{ formData?.sob_usada_pct?.toFixed(1) || 0 }}%</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Notas adicionales -->
+  <div class="form-group">
+    <label for="notas" class="form-label">Notas adicionales (opcional)</label>
+    <textarea
+      id="notas"
+      rows="3"
+      class="form-textarea"
+      [value]="localNotes"
+      (input)="onNotesChange($any($event.target).value)"
+      placeholder="Observaciones sobre la biometría..."
+    ></textarea>
+    <span class="hint">Agrega cualquier observación relevante sobre esta medición</span>
+  </div>
+
+  <!-- Contexto adicional -->
+  @if (context) {
+    <div class="context-info">
+      <h4 class="context-title">Información de referencia</h4>
+      <div class="context-grid">
+        @if (context.siembra) {
+          <div class="context-item">
+            <span class="context-label">Días de cultivo:</span>
+            <span class="context-value">{{ context.siembra.dias_ciclo }} días</span>
+          </div>
+          <div class="context-item">
+            <span class="context-label">Densidad base:</span>
+            <span class="context-value">{{ context.siembra.densidad_base_org_m2.toFixed(2) }} org/m²</span>
+          </div>
+        }
+        @if (context.proyeccion_vigente) {
+          <div class="context-item">
+            <span class="context-label">PP proyectado:</span>
+            <span class="context-value">{{ context.proyeccion_vigente.pp_proyectado_g.toFixed(2) }} g</span>
+          </div>
+          <div class="context-item">
+            <span class="context-label">SOB proyectado:</span>
+            <span class="context-value">{{ context.proyeccion_vigente.sob_proyectado_pct.toFixed(1) }}%</span>
+          </div>
+        }
+      </div>
+    </div>
+  }
+</div>

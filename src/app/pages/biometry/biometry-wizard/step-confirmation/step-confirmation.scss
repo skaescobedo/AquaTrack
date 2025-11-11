@@ -1,0 +1,117 @@
+@use '../../../../../theme/variables';
+
+.step-container {
+  @apply flex flex-col gap-6;
+}
+
+.step-title {
+  @apply text-lg font-semibold text-blue-400 m-0;
+}
+
+.section-subtitle {
+  @apply text-sm font-semibold text-slate-300 mb-3 m-0;
+}
+
+// ==========================================
+// VALUES SECTION
+// ==========================================
+
+.values-section {
+  @apply p-4 bg-slate-700 bg-opacity-50 rounded-lg border border-slate-600;
+}
+
+.values-grid {
+  @apply grid grid-cols-2 md:grid-cols-4 gap-4;
+}
+
+.value-card {
+  @apply flex flex-col items-center gap-2 p-4 bg-slate-800 rounded-lg border border-slate-600;
+}
+
+.value-label {
+  @apply text-xs text-slate-400 text-center;
+}
+
+.value-number {
+  @apply text-xl font-bold text-blue-400;
+}
+
+// ==========================================
+// SUMMARY SECTION
+// ==========================================
+
+.summary-section {
+  @apply p-4 bg-slate-800 rounded-lg border border-slate-700;
+}
+
+.summary-grid {
+  @apply grid grid-cols-1 md:grid-cols-3 gap-3;
+}
+
+.summary-item {
+  @apply flex items-center justify-between p-3 bg-slate-700 rounded-lg;
+}
+
+.summary-label {
+  @apply text-sm text-slate-400;
+}
+
+.summary-value {
+  @apply text-sm font-semibold text-slate-200;
+}
+
+// ==========================================
+// FORM
+// ==========================================
+
+.form-group {
+  @apply flex flex-col gap-2;
+}
+
+.form-label {
+  @apply text-sm font-medium text-slate-300;
+}
+
+.form-textarea {
+  @apply w-full px-4 py-3 bg-slate-700 border border-slate-600 rounded-lg text-white transition-colors resize-none;
+
+  &:focus {
+    @apply outline-none border-blue-500 ring-2 ring-blue-500 ring-opacity-30;
+  }
+
+  &::placeholder {
+    @apply text-slate-500;
+  }
+}
+
+.hint {
+  @apply text-xs text-slate-400;
+}
+
+// ==========================================
+// CONTEXT INFO
+// ==========================================
+
+.context-info {
+  @apply p-4 bg-slate-700 bg-opacity-30 rounded-lg border border-slate-600;
+}
+
+.context-title {
+  @apply text-sm font-semibold text-slate-300 mb-3 m-0;
+}
+
+.context-grid {
+  @apply grid grid-cols-1 md:grid-cols-2 gap-3;
+}
+
+.context-item {
+  @apply flex flex-col gap-1;
+}
+
+.context-label {
+  @apply text-xs text-slate-400;
+}
+
+.context-value {
+  @apply text-sm font-medium text-slate-200;
+}

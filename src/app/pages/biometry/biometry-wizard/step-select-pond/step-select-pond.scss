@@ -1,0 +1,51 @@
+@use '../../../../../theme/variables';
+
+.step-container {
+  @apply flex flex-col gap-6;
+}
+
+.step-title {
+  @apply text-lg font-semibold text-blue-400 m-0;
+}
+
+.form-group {
+  @apply flex flex-col gap-2;
+}
+
+.form-label {
+  @apply text-sm font-medium text-slate-300;
+
+  &.required::after {
+    content: ' *';
+    @apply text-red-400;
+  }
+}
+
+.form-select {
+  @apply w-full px-4 py-3 bg-slate-700 border border-slate-600 rounded-lg text-white cursor-pointer transition-colors;
+  @apply hover:border-slate-500;
+
+  &:focus {
+    @apply outline-none border-blue-500 ring-2 ring-blue-500 ring-opacity-30;
+  }
+
+  option {
+    @apply bg-slate-700 text-white;
+  }
+
+  &:disabled {
+    @apply opacity-50 cursor-not-allowed;
+  }
+}
+
+.hint {
+  @apply text-xs text-slate-400;
+}
+
+.dropdown-hint {
+  @apply p-4 bg-slate-700 bg-opacity-50 rounded-lg border border-slate-600;
+
+  p {
+    @apply m-0;
+  }
+}

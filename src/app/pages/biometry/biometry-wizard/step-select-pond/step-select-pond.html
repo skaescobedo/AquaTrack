@@ -1,1 +1,26 @@
-<p>step-select-pond works!</p>
+<div class="step-container">
+  <h3 class="step-title">Paso 1 - Selección de Estanque</h3>
+
+  <div class="form-group">
+    <label for="estanque" class="form-label required">Estanque</label>
+    <select
+      id="estanque"
+      class="form-select"
+      [value]="selectedPondId || ''"
+      (change)="onPondChange($any($event.target).value)"
+    >
+      <option value="" disabled>Seleccionar estanque</option>
+      @for (pond of ponds; track pond.estanque_id) {
+        <option [value]="pond.estanque_id">{{ pond.nombre }}</option>
+      }
+    </select>
+    <span class="hint">Selecciona el estanque donde se realizó la medición</span>
+  </div>
+
+  <!-- Dropdown opened state simulation -->
+  @if (selectedPondId === null) {
+    <div class="dropdown-hint">
+      <p class="text-sm text-slate-400">Los estanques disponibles son aquellos con siembra confirmada en el ciclo activo.</p>
+    </div>
+  }
+</div>

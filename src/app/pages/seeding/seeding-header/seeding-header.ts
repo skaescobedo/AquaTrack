@@ -52,7 +52,7 @@ export class SeedingHeader {
 
   // Helpers
   formatDate(dateStr: string): string {
-    const date = new Date(dateStr);
+    const date = new Date(dateStr + 'T00:00:00'); // Forzar medianoche local sin conversion
     return date.toLocaleDateString('es-MX', {
       day: 'numeric',
       month: 'long',

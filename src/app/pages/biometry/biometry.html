@@ -1,1 +1,74 @@
-<p>biometry works!</p>
+<div class="biometry-page">
+  <!-- Header -->
+  <div class="page-header">
+    <div class="header-content">
+      <h1 class="page-title">Biometrías</h1>
+      <p class="page-subtitle">
+        Registro y seguimiento de biometrías para {{ activeCycle()?.nombre || 'Ciclo' }}
+      </p>
+    </div>
+    <button class="btn-primary" (click)="onOpenWizard()" [disabled]="!activeCycle()">
+      <lucide-icon [img]="Plus" [size]="20"></lucide-icon>
+      <span>Registrar Biometría</span>
+    </button>
+  </div>
+
+  <!-- Filters -->
+  <div class="filters-section">
+    <div class="filter-group">
+      <label for="pondFilter" class="filter-label">Filtrar por estanque:</label>
+      <select 
+        id="pondFilter"
+        class="filter-select"
+        [value]="selectedPondId() || ''"
+        (change)="onFilterChange($any($event.target).value ? toNumber($any($event.target).value) : null)"
+      >
+        <option value="">Todos los estanques</option>
+        @for (pond of ponds(); track pond.estanque_id) {
+          <option [value]="pond.estanque_id">{{ pond.nombre }}</option>
+        }
+      </select>
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  @if (loading()) {
+    <div class="loading-container">
+      <div class="spinner"></div>
+      <p>Cargando biometrías...</p>
+    </div>
+  }
+
+  <!-- Error State -->
+  @if (error() && !loading()) {
+    <div class="error-banner">
+      <span>{{ error() }}</span>
+    </div>
+  }
+
+  <!-- Empty State -->
+  @if (!loading() && !error() && !activeCycle()) {
+    <div class="empty-state">
+      <p>No hay ciclo activo. Crea un ciclo para comenzar a registrar biometrías.</p>
+    </div>
+  }
+
+  <!-- Biometry Table -->
+  @if (!loading() && !error() && activeCycle()) {
+    <app-biometry-table
+      [biometries]="biometries()"
+      [ponds]="ponds()"
+      [loading]="loading()"
+    />
+  }
+
+  <!-- Wizard Modal -->
+  @if (showWizard() && activeCycle()) {
+    <app-biometry-wizard
+      [cycleId]="activeCycle()!.ciclo_id"
+      [ponds]="ponds()"
+      (close)="onCloseWizard()"
+      (created)="onBiometryCreated()"
+    />
+  }
+</div>

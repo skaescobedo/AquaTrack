@@ -1,1 +1,101 @@
-<p>step-biometry-data works!</p>
+<div class="step-container">
+  <h3 class="step-title">Paso 2 - Datos Operativos</h3>
+
+  <div class="form-grid">
+    <!-- Peso promedio -->
+    <div class="form-group">
+      <label for="peso_muestra" class="form-label required">Peso promedio (g)</label>
+      <input
+        id="peso_muestra"
+        type="number"
+        step="0.01"
+        class="form-input"
+        [value]="localData.peso_muestra_g || ''"
+        (input)="onFieldChange('peso_muestra_g', $any($event.target).value)"
+        placeholder="0.00"
+      />
+      <span class="hint">Peso total de la muestra en gramos</span>
+    </div>
+
+    <!-- N° de organismos muestra -->
+    <div class="form-group">
+      <label for="n_muestra" class="form-label required">N° de organismos muestra</label>
+      <input
+        id="n_muestra"
+        type="number"
+        step="1"
+        min="1"
+        class="form-input"
+        [value]="localData.n_muestra || ''"
+        (input)="onFieldChange('n_muestra', $any($event.target).value)"
+        placeholder="0"
+      />
+      <span class="hint">Cantidad de organismos pesados</span>
+    </div>
+
+    <!-- SOB actual del estanque -->
+    <div class="form-group">
+      <label for="sob_usada" class="form-label required">SOB actual del estanque (%)</label>
+      <input
+        id="sob_usada"
+        type="number"
+        step="0.1"
+        min="0"
+        max="100"
+        class="form-input"
+        [value]="localData.sob_usada_pct || ''"
+        (input)="onFieldChange('sob_usada_pct', $any($event.target).value)"
+        placeholder="0.0"
+      />
+      <span class="hint">
+        @if (context?.sob_operativo_actual) {
+          Valor actual: {{ context?.sob_operativo_actual?.valor_pct?.toFixed(1) }}%
+        } @else {
+          Porcentaje de supervivencia operativa
+        }
+      </span>
+    </div>
+  </div>
+
+  <!-- Preview calculado -->
+  @if (calculatedPP !== null) {
+    <div class="preview-card">
+      <div class="preview-header">
+        <h4>Vista previa del cálculo</h4>
+      </div>
+      <div class="preview-content">
+        <div class="preview-item">
+          <span class="preview-label">Peso Promedio (PP):</span>
+          <span class="preview-value">{{ calculatedPP.toFixed(2) }} g</span>
+        </div>
+      </div>
+    </div>
+  }
+
+  <!-- Context Info -->
+  @if (context) {
+    <div class="context-info">
+      <h4 class="context-title">Información del estanque</h4>
+      <div class="context-grid">
+        @if (context.siembra) {
+          <div class="context-item">
+            <span class="context-label">Días de cultivo:</span>
+            <span class="context-value">{{ context.siembra.dias_ciclo }} días</span>
+          </div>
+        }
+        @if (context.poblacion_estimada) {
+          <div class="context-item">
+            <span class="context-label">Organismos estimados:</span>
+            <span class="context-value">{{ context.poblacion_estimada.organismos_totales.toLocaleString() }}</span>
+          </div>
+        }
+        @if (context.ultima_biometria) {
+          <div class="context-item">
+            <span class="context-label">Último PP registrado:</span>
+            <span class="context-value">{{ context.ultima_biometria.pp_g.toFixed(2) }} g (hace {{ context.ultima_biometria.dias_desde }} días)</span>
+          </div>
+        }
+      </div>
+    </div>
+  }
+</div>

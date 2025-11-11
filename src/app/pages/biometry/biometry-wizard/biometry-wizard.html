@@ -1,1 +1,116 @@
-<p>biometry-wizard works!</p>
+<div class="modal-overlay" (click)="onClose()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <!-- Header -->
+    <div class="modal-header">
+      <div>
+        <h2 class="modal-title">Registrar biometría</h2>
+        <p class="modal-subtitle">Llena el siguiente formulario para completar el registro de una biometría</p>
+      </div>
+      <button class="btn btn-ghost btn-icon" (click)="onClose()" [disabled]="loading()">
+        <lucide-icon [img]="X" [size]="20"></lucide-icon>
+      </button>
+    </div>
+
+    <!-- Steps Indicator -->
+    <div class="steps-indicator">
+      <div class="step" [class.active]="activeStep() === 'select-pond'" [class.completed]="isStepCompleted('select-pond')">
+        <div class="step-number">1</div>
+      </div>
+      <div class="step" [class.active]="activeStep() === 'data'" [class.completed]="isStepCompleted('data')">
+        <div class="step-number">2</div>
+      </div>
+      <div class="step" [class.active]="activeStep() === 'confirmation'">
+        <div class="step-number">3</div>
+      </div>
+    </div>
+
+    <!-- Error Message -->
+    @if (error()) {
+      <div class="error-banner">
+        <span>{{ error() }}</span>
+      </div>
+    }
+
+    <!-- Steps Content -->
+    <div class="modal-body">
+      @if (activeStep() === 'select-pond') {
+        <app-step-select-pond
+          [ponds]="ponds"
+          [selectedPondId]="formData().estanque_id"
+          (pondSelected)="updateFormData({ estanque_id: $event })"
+        />
+      }
+
+      @if (activeStep() === 'data') {
+        <app-step-biometry-data
+          [context]="context()"
+          [formData]="formData()"
+          (dataChange)="updateFormData($event)"
+        />
+      }
+
+      @if (activeStep() === 'confirmation') {
+        <app-step-confirmation
+          [context]="context()"
+          [formData]="formData()"
+          (notesChange)="updateFormData({ notas: $event })"
+        />
+      }
+    </div>
+
+    <!-- Footer -->
+    <div class="modal-footer">
+      @if (activeStep() === 'select-pond') {
+        <button type="button" class="btn btn-secondary" (click)="onClose()" [disabled]="loading()">
+          Cancelar
+        </button>
+        <button 
+          type="button" 
+          class="btn btn-primary" 
+          (click)="goNext()"
+          [disabled]="!canGoNext() || loading()"
+        >
+          @if (loading()) {
+            <span class="spinner"></span>
+          }
+          <span>Siguiente</span>
+          <lucide-icon [img]="ArrowRight" [size]="18"></lucide-icon>
+        </button>
+      }
+
+      @if (activeStep() === 'data') {
+        <button type="button" class="btn btn-secondary" (click)="goBack()" [disabled]="loading()">
+          <lucide-icon [img]="ArrowLeft" [size]="18"></lucide-icon>
+          Atrás
+        </button>
+        <button 
+          type="button" 
+          class="btn btn-primary" 
+          (click)="goNext()"
+          [disabled]="!canGoNext() || loading()"
+        >
+          <span>Siguiente</span>
+          <lucide-icon [img]="ArrowRight" [size]="18"></lucide-icon>
+        </button>
+      }
+
+      @if (activeStep() === 'confirmation') {
+        <button type="button" class="btn btn-secondary" (click)="goBack()" [disabled]="loading()">
+          <lucide-icon [img]="ArrowLeft" [size]="18"></lucide-icon>
+          Atrás
+        </button>
+        <button 
+          type="button" 
+          class="btn btn-primary btn-submit" 
+          (click)="onSubmit()"
+          [disabled]="loading()"
+        >
+          @if (loading()) {
+            <span class="spinner"></span>
+          }
+          <span>Finalizar / Guardar biometría</span>
+        </button>
+      }
+    </div>
+  </div>
+</div>

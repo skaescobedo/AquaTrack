@@ -1,1 +1,82 @@
-<p>biometry-table works!</p>
+<div class="biometry-section">
+  <div class="section-header">
+    <h3 class="section-title">Historial de Biometrías ({{ biometries.length }})</h3>
+    <p class="section-subtitle">Últimas mediciones registradas</p>
+  </div>
+
+  @if (biometries.length === 0 && !loading) {
+    <div class="empty-table">
+      <p>No hay biometrías registradas para este filtro.</p>
+    </div>
+  } @else {
+    <div class="table-container">
+      <table class="biometry-table">
+        <thead>
+          <tr>
+            <th>Fecha</th>
+            <th>Estanque</th>
+            <th>PP (g)</th>
+            <th>ΔPP</th>
+            <th>SOB Op. (%)</th>
+            <th>Muestra</th>
+            <th>Notas</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (bio of biometries; track bio.biometria_id) {
+            <tr>
+              <!-- Fecha -->
+              <td class="date-cell">
+                {{ formatDate(bio.fecha) }}
+              </td>
+
+              <!-- Estanque -->
+              <td class="pond-cell">
+                <span class="pond-name">{{ getPondName(bio.estanque_id) }}</span>
+              </td>
+
+              <!-- PP -->
+              <td class="pp-cell">
+                <span class="pp-value">{{ formatNumber(bio.pp_g, 2) }} g</span>
+              </td>
+
+              <!-- Incremento -->
+              <td class="increment-cell">
+                @if (bio.incremento_g_sem !== null) {
+                  <div class="increment-badge" [ngClass]="getIncrementClass(bio.incremento_g_sem)">
+                    @if (getIncrementIcon(bio.incremento_g_sem)) {
+                      <lucide-icon [img]="getIncrementIcon(bio.incremento_g_sem)!" [size]="14"></lucide-icon>
+                    }
+                    <span>{{ bio.incremento_g_sem >= 0 ? '+' : '' }}{{ formatNumber(bio.incremento_g_sem, 1) }}</span>
+                  </div>
+                } @else {
+                  <span class="text-slate-500">-</span>
+                }
+              </td>
+
+              <!-- SOB -->
+              <td class="sob-cell">
+                <div class="sob-container">
+                  <span class="sob-value">{{ formatNumber(bio.sob_usada_pct, 1) }}%</span>
+                  @if (bio.actualiza_sob_operativa) {
+                    <span class="badge badge-updated">Actualizado</span>
+                  }
+                </div>
+              </td>
+
+              <!-- Muestra -->
+              <td class="sample-cell">
+                <span class="text-slate-400">{{ bio.n_muestra }} org / {{ formatNumber(bio.peso_muestra_g, 0) }} g</span>
+              </td>
+
+              <!-- Notas -->
+              <td class="notes-cell">
+                <span class="text-slate-400">{{ bio.notas || '-' }}</span>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</div>

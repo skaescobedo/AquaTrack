@@ -1,0 +1,102 @@
+@use '../../../theme/variables';
+
+.biometry-page {
+  @apply flex flex-col gap-6;
+}
+
+// ==========================================
+// HEADER
+// ==========================================
+
+.page-header {
+  @apply flex items-center justify-between gap-4;
+
+  @media (max-width: 640px) {
+    @apply flex-col items-stretch;
+  }
+}
+
+.header-content {
+  @apply flex flex-col gap-1;
+}
+
+.page-title {
+  @apply text-2xl font-bold text-white m-0;
+}
+
+.page-subtitle {
+  @apply text-sm text-slate-400 m-0;
+}
+
+.btn-primary {
+  @apply flex items-center gap-2 px-4 py-2.5 bg-blue-500 text-white rounded-lg font-medium transition-colors;
+  @apply hover:bg-blue-600;
+
+  &:disabled {
+    @apply opacity-50 cursor-not-allowed;
+  }
+}
+
+// ==========================================
+// FILTERS
+// ==========================================
+
+.filters-section {
+  @apply flex items-center gap-4 p-4 bg-slate-800 rounded-lg border border-slate-700;
+}
+
+.filter-group {
+  @apply flex items-center gap-3;
+}
+
+.filter-label {
+  @apply text-sm font-medium text-slate-300 whitespace-nowrap;
+}
+
+.filter-select {
+  @apply px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-slate-300 cursor-pointer transition-colors;
+  @apply hover:border-slate-500;
+
+  &:focus {
+    @apply outline-none border-blue-500 ring-2 ring-blue-500 ring-opacity-30;
+  }
+
+  option {
+    @apply bg-slate-700 text-slate-300;
+  }
+}
+
+// ==========================================
+// STATES
+// ==========================================
+
+.loading-container {
+  @apply flex flex-col items-center justify-center py-16 gap-4;
+
+  .spinner {
+    @apply w-8 h-8 border-4 border-slate-600 border-t-blue-500 rounded-full;
+    animation: spin 1s linear infinite;
+  }
+
+  p {
+    @apply text-slate-400 m-0;
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.error-banner {
+  @apply p-4 bg-red-500 bg-opacity-10 border border-red-500 rounded-lg text-red-400;
+}
+
+.empty-state {
+  @apply flex items-center justify-center py-16 px-4 bg-slate-800 rounded-lg border border-slate-700;
+
+  p {
+    @apply text-slate-400 text-center m-0;
+  }
+}
