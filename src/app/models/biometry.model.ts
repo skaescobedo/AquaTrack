@@ -47,8 +47,8 @@ export interface BiometryList {
   incremento_g_sem: number | null;
   actualiza_sob_operativa: boolean;
   notas: string | null;
-  n_muestra: number;
-  peso_muestra_g: number;
+  n_muestra?: number;
+  peso_muestra_g?: number;
   created_at: string;
 }
 

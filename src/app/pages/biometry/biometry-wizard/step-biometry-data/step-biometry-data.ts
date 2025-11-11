@@ -19,7 +19,7 @@ interface FormData {
 export class StepBiometryData {
   @Input() context: BiometryContext | null = null;
   @Input() formData: any = null;
-  @Output() dataChange = new EventEmitter<Partial<FormData>>();
+  @Output() dataChange = new EventEmitter<any>();
 
   localData: FormData = {
     peso_muestra_g: null,
@@ -39,8 +39,17 @@ export class StepBiometryData {
 
   onFieldChange(field: keyof FormData, value: string): void {
     const numValue = value ? parseFloat(value) : null;
+    console.log(`📝 Campo cambiado: ${field} = ${numValue} (input: "${value}")`);
     this.localData[field] = numValue;
     this.dataChange.emit({ [field]: numValue });
+  }
+
+  onCheckboxChange(checked: boolean): void {
+    console.log(`☑️ Checkbox actualiza_sob_operativa: ${checked}`);
+    this.dataChange.emit({ 
+      actualiza_sob_operativa: checked,
+      sob_fuente: checked ? 'operativa_actual' : null
+    });
   }
 
   get calculatedPP(): number | null {

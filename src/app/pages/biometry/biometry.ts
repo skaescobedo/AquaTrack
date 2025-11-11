@@ -45,6 +45,7 @@ export class Biometry implements OnInit {
   // UI State
   selectedPondId = signal<number | null>(null);
   showWizard = signal(false);
+  wizardKey = signal(0); // Key para forzar recreación del wizard
 
   // Computed: Biometrías filtradas
   filteredBiometries = computed(() => {
@@ -146,6 +147,7 @@ export class Biometry implements OnInit {
   }
 
   onOpenWizard(): void {
+    this.wizardKey.set(this.wizardKey() + 1); // Incrementar para forzar recreación
     this.showWizard.set(true);
   }
 

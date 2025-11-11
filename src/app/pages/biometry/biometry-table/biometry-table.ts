@@ -37,7 +37,8 @@ export class BiometryTable {
     });
   }
 
-  formatNumber(value: number, decimals: number = 2): string {
+  formatNumber(value: number | null | undefined, decimals: number = 2): string {
+    if (value === null || value === undefined) return '-';
     return value.toFixed(decimals);
   }
 

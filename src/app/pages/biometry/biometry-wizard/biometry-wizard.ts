@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, signal } from '@angular/core';
+import { Component, Input, Output, EventEmitter, signal, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { LucideAngularModule, X, ArrowLeft, ArrowRight } from 'lucide-angular';
 import { BiometryService } from '../../../services/biometry';
@@ -35,7 +35,7 @@ interface BiometryFormData {
   templateUrl: './biometry-wizard.html',
   styleUrl: './biometry-wizard.scss'
 })
-export class BiometryWizard {
+export class BiometryWizard implements OnInit {
   readonly X = X;
   readonly ArrowLeft = ArrowLeft;
   readonly ArrowRight = ArrowRight;
@@ -65,6 +65,28 @@ export class BiometryWizard {
   });
 
   constructor(private biometryService: BiometryService) {}
+
+  ngOnInit(): void {
+    // Resetear estado al inicializar
+    console.log('BiometryWizard initialized');
+    this.activeStep.set('select-pond');
+    this.loading.set(false);
+    this.error.set(null);
+    this.context.set(null);
+    this.formData.set({
+      estanque_id: null,
+      n_muestra: null,
+      peso_muestra_g: null,
+      sob_usada_pct: null,
+      notas: '',
+      actualiza_sob_operativa: false,
+      sob_fuente: null,
+      motivo_cambio_sob: ''
+    });
+    
+    console.log('Active step:', this.activeStep());
+    console.log('Ponds available:', this.ponds.length);
+  }
 
   // ==========================================
   // NAVIGATION

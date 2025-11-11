@@ -17,7 +17,7 @@ export class StepSelectPond {
 
   onPondChange(pondId: string): void {
     if (pondId) {
-      this.pondSelected.emit(parseInt(pondId));
+      this.pondSelected.emit(Number(pondId));
     }
   }
 }

@@ -57,6 +57,21 @@
     </div>
   </div>
 
+  <!-- Checkbox para actualizar SOB operativo -->
+  <div class="form-group-checkbox">
+    <label class="checkbox-label">
+      <input
+        type="checkbox"
+        [checked]="formData?.actualiza_sob_operativa || false"
+        (change)="onCheckboxChange($any($event.target).checked)"
+      />
+      <span>Esta biometría actualiza el SOB operativo del estanque</span>
+    </label>
+    <span class="hint">
+      Marca esta opción si los valores medidos reflejan un cambio real en la supervivencia del estanque
+    </span>
+  </div>
+
   <!-- Preview calculado -->
   @if (calculatedPP !== null) {
     <div class="preview-card">
