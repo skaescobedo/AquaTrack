@@ -1,12 +1,12 @@
 @use '../../../../../../theme/variables';
 
 .charts-section {
+  // 📱 Mobile: 1 columna
+  // 💻 Desktop: 2x2 grid (todas del mismo tamaño)
   @apply grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6;
-
-  // Tercer gráfico ocupa 2 columnas en pantallas grandes
-  .chart-card:last-child {
-    @apply lg:col-span-2;
-  }
+  
+  // ❌ NO aplicar col-span a ninguna gráfica
+  // Todas ocupan 1 columna en desktop para mantener 2x2
 }
 
 .chart-card {

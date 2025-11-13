@@ -16,44 +16,43 @@ export class UpcomingHarvests {
   readonly Package = Package;
   readonly Calendar = Calendar;
 
-  /**
-   * Parsea fecha tipo DATE (YYYY-MM-DD) como fecha local
-   * sin conversión de zona horaria
-   */
-  private parseLocalDate(dateString: string): Date {
-    const [year, month, day] = dateString.split('-').map(Number);
-    // Crear fecha en zona local sin conversión UTC
-    return new Date(year, month - 1, day);
-  }
-
-  formatDateRange(inicio: string, fin: string): string {
-    const dateInicio = this.parseLocalDate(inicio);
-    const dateFin = this.parseLocalDate(fin);
-    
-    const formatDate = (date: Date) => {
-      return date.toLocaleDateString('es-MX', {
-        day: 'numeric',
-        month: 'short'
-      });
-    };
-
-    return `${formatDate(dateInicio)} - ${formatDate(dateFin)}`;
+  // ✅ CORREGIDO: TrackBy function para evitar NG0955
+  trackByCosechaId(index: number, cosecha: ProximaCosecha): number {
+    return cosecha.cosecha_ola_id;
   }
 
   getTipoBadgeClass(tipo: string): string {
-    return tipo === 'Final' ? 'badge-warning' : 'badge-info';
+    return tipo === 'p' ? 'badge-warning' : 'badge-danger';
   }
 
   getEstadoBadgeClass(estado: string): string {
     switch (estado) {
-      case 'completada':
-        return 'badge-success';
-      case 'en_progreso':
-        return 'badge-warning';
+      case 'urgente':
+        return 'badge-danger';
       case 'pendiente':
+        return 'badge-warning';
+      case 'futura':
         return 'badge-neutral';
       default:
         return 'badge-neutral';
     }
+  }
+
+  formatDateRange(inicio: string, fin: string): string {
+    const dateInicio = new Date(inicio);
+    const dateFin = new Date(fin);
+
+    const opcionesInicio: Intl.DateTimeFormatOptions = {
+      day: 'numeric',
+      month: 'short'
+    };
+
+    const opcionesFin: Intl.DateTimeFormatOptions = {
+      day: 'numeric',
+      month: 'short',
+      year: 'numeric'
+    };
+
+    return `${dateInicio.toLocaleDateString('es-MX', opcionesInicio)} - ${dateFin.toLocaleDateString('es-MX', opcionesFin)}`;
   }
 }

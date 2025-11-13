@@ -8,15 +8,17 @@
   </div>
 
   <div class="harvests-timeline">
-    @for (cosecha of cosechas; track cosecha.ola_id) {
+    <!-- ✅ CORREGIDO: Usar trackByCosechaId y cosecha_ola_id -->
+    @for (cosecha of cosechas; track trackByCosechaId($index, cosecha)) {
       <div class="harvest-card">
         <div class="card-header">
           <div class="flex items-center gap-2">
-            <span class="ola-number">{{ cosecha.ola_id }}</span>
+            <!-- ✅ CORREGIDO: Usar cosecha_ola_id en lugar de ola_id -->
+            <span class="ola-number">{{ cosecha.cosecha_ola_id }}</span>
             <div>
-              <h4 class="ola-nombre">{{ cosecha.nombre }}</h4>
+              <h4 class="ola-nombre">Cosecha {{ cosecha.tipo === 'p' ? 'Parcial' : 'Final' }}</h4>
               <span class="badge badge-sm" [ngClass]="getTipoBadgeClass(cosecha.tipo)">
-                {{ cosecha.tipo }}
+                {{ cosecha.tipo === 'p' ? 'Parcial' : 'Final' }}
               </span>
             </div>
           </div>
@@ -29,7 +31,8 @@
           </div>
 
           <div class="info-row">
-            <span class="dias-label">En {{ cosecha.dias_hasta_inicio }} días</span>
+            <!-- ✅ CORREGIDO: Usar dias_diferencia en lugar de dias_hasta_inicio -->
+            <span class="dias-label">En {{ cosecha.dias_diferencia }} días</span>
             <span class="estanques-count">{{ cosecha.estanques_pendientes }} estanques</span>
           </div>
         </div>

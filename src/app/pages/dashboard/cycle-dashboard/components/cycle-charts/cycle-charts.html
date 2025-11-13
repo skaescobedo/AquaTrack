@@ -1,5 +1,5 @@
 <div class="charts-section">
-  <!-- Gráfico de Crecimiento -->
+  <!-- ✅ Gráfico 1: Crecimiento (PP) -->
   <div class="chart-card">
     <h3 class="chart-title">Gráfico de Crecimiento del Ciclo</h3>
     <p class="chart-subtitle">Peso promedio proyectado a través de las semanas</p>
@@ -15,11 +15,12 @@
         [grid]="crecimientoOptions()!.grid!"
         [tooltip]="crecimientoOptions()!.tooltip!"
         [colors]="crecimientoOptions()!.colors!"
+        [legend]="crecimientoOptions()!.legend!"
       ></apx-chart>
     }
   </div>
 
-  <!-- Gráfico de Biomasa -->
+  <!-- ✅ Gráfico 2: Biomasa -->
   <div class="chart-card">
     <h3 class="chart-title">Evolución de Biomasa</h3>
     <p class="chart-subtitle">Biomasa total proyectada del ciclo en kg</p>
@@ -35,11 +36,12 @@
         [grid]="biomasaOptions()!.grid!"
         [tooltip]="biomasaOptions()!.tooltip!"
         [colors]="biomasaOptions()!.colors!"
+        [legend]="biomasaOptions()!.legend!"
       ></apx-chart>
     }
   </div>
 
-  <!-- Gráfico de Densidad -->
+  <!-- ✅ Gráfico 3: Densidad -->
   <div class="chart-card">
     <h3 class="chart-title">Evolución de Densidad</h3>
     <p class="chart-subtitle">Densidad de organismos por mortalidad y cosechas</p>
@@ -55,6 +57,28 @@
         [grid]="densidadOptions()!.grid!"
         [tooltip]="densidadOptions()!.tooltip!"
         [colors]="densidadOptions()!.colors!"
+        [legend]="densidadOptions()!.legend!"
+      ></apx-chart>
+    }
+  </div>
+
+  <!-- 🆕 Gráfico 4: SOB (Supervivencia) -->
+  <div class="chart-card">
+    <h3 class="chart-title">Evolución de Supervivencia (SOB)</h3>
+    <p class="chart-subtitle">Porcentaje de supervivencia operativa del ciclo</p>
+    @if (sobOptions()) {
+      <apx-chart
+        [series]="sobOptions()!.series!"
+        [chart]="sobOptions()!.chart!"
+        [xaxis]="sobOptions()!.xaxis!"
+        [yaxis]="sobOptions()!.yaxis!"
+        [stroke]="sobOptions()!.stroke!"
+        [markers]="sobOptions()!.markers!"
+        [dataLabels]="sobOptions()!.dataLabels!"
+        [grid]="sobOptions()!.grid!"
+        [tooltip]="sobOptions()!.tooltip!"
+        [colors]="sobOptions()!.colors!"
+        [legend]="sobOptions()!.legend!"
       ></apx-chart>
     }
   </div>

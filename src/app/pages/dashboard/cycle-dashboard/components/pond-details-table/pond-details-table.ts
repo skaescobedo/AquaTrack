@@ -38,6 +38,16 @@ export class PondDetailsTable {
     { key: 'org_vivos_est', label: 'Org. Vivos', visible: false, formatter: (v) => this.formatNumber(v) },
   ]);
 
+  // ✅ CORREGIDO: TrackBy function para evitar NG0955
+  trackByEstanqueId(index: number, estanque: EstanqueDetalle): number {
+    return estanque.estanque_id;
+  }
+
+  // ✅ TrackBy para columnas
+  trackByColumnKey(index: number, column: ColumnConfig): string {
+    return column.key;
+  }
+
   formatSuperficie(m2: number): string {
     const hectareas = m2 / 10000;
     return hectareas.toFixed(2) + ' ha';

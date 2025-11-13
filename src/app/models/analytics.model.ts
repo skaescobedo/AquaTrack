@@ -32,24 +32,47 @@ export interface CycleGraficas {
   crecimiento: PuntoCrecimiento[];
   biomasa_evolucion: PuntoBiomasa[];
   densidad_evolucion: PuntoDensidad[];
+  sob_evolucion: PuntoSOB[];  // 🆕 Nueva gráfica
 }
 
+// ============================================
+// GRÁFICAS DEL CICLO (V3 - Doble línea)
+// ============================================
+
+// ✅ Gráfica de Crecimiento (PP)
 export interface PuntoCrecimiento {
   semana: number;
-  pp_proyectado_g: number;
+  pp_proyectado_original_g?: number;  // ✅ Opcional (puede no existir si solo hay draft)
+  pp_ajustado_g?: number;              // ✅ Opcional (puede no existir si solo hay published)
   fecha: string;
+  tiene_datos_reales: boolean;
 }
 
+// ✅ Gráfica de Biomasa (ACTUALIZADA V3)
 export interface PuntoBiomasa {
   semana: number;
-  biomasa_kg: number;
+  biomasa_proyectada_original_kg?: number;  // 🆕 Plan publicado
+  biomasa_ajustada_kg?: number;             // 🆕 Borrador ajustado
   fecha: string;
+  tiene_datos_reales: boolean;              // 🆕 Indica si hay anclaje
 }
 
+// ✅ Gráfica de Densidad (ACTUALIZADA V3)
 export interface PuntoDensidad {
   semana: number;
-  densidad_org_m2: number;
+  densidad_proyectada_original_org_m2?: number;  // 🆕 Plan publicado
+  densidad_ajustada_org_m2?: number;             // 🆕 Borrador ajustado
   fecha: string;
+  tiene_datos_reales: boolean;                   // 🆕 Indica si hay anclaje
+}
+
+// 🆕 Gráfica de SOB (NUEVA V3)
+export interface PuntoSOB {
+  semana: number;
+  sob_proyectado_original_pct?: number;  // Plan publicado
+  sob_ajustado_pct?: number;             // Borrador ajustado
+  fecha: string;
+  tiene_datos_reales: boolean;           // Indica si hay anclaje
 }
 
 export interface ProximaSiembra {
@@ -61,14 +84,13 @@ export interface ProximaSiembra {
 }
 
 export interface ProximaCosecha {
-  ola_id: number;
-  nombre: string;
+  cosecha_ola_id: number;
   tipo: string;
   ventana_inicio: string;
   ventana_fin: string;
-  dias_hasta_inicio: number;
-  estado: string;
   estanques_pendientes: number;
+  dias_diferencia: number;
+  estado: string;
 }
 
 export interface EstanqueDetalle {
@@ -116,15 +138,21 @@ export interface PondGraficas {
   densidad_evolucion: PuntoDensidadPond[];
 }
 
+// ============================================
+// 🔄 GRÁFICAS DEL POND (Versión Simple - Sin doble línea)
+// ============================================
+
+// ✅ Gráfica de Crecimiento del Pond (VERSIÓN SIMPLE)
 export interface PuntoCrecimientoPond {
   semana: number;
-  pp_g: number;
+  pp_g: number;      // ✅ Propiedad simple (no opcional)
   fecha: string;
 }
 
+// ✅ Gráfica de Densidad del Pond (VERSIÓN SIMPLE)
 export interface PuntoDensidadPond {
   semana: number;
-  densidad_org_m2: number;
+  densidad_org_m2: number;  // ✅ Propiedad simple (no opcional)
   fecha: string;
 }
 
