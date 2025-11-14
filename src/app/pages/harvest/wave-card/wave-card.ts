@@ -30,7 +30,7 @@ export class WaveCard {
   @Input({ required: true }) wave!: HarvestWave;
   @Input() viewMode: ViewMode = 'grid';
 
-  @Output() click = new EventEmitter<number>();
+  @Output() cardClick = new EventEmitter<number>();
   @Output() cancel = new EventEmitter<number>();
 
   // Getters para helpers
@@ -84,7 +84,7 @@ export class WaveCard {
 
   // Handlers
   onCardClick(): void {
-    this.click.emit(this.wave.cosecha_ola_id);
+    this.cardClick.emit(this.wave.cosecha_ola_id);
   }
 
   onCancelClick(event: Event): void {
