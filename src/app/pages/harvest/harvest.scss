@@ -1,0 +1,109 @@
+@use '../../../theme/variables';
+
+.harvest-page {
+  @apply min-h-full;
+}
+
+.page-header-actions {
+  @apply flex items-center justify-between flex-wrap gap-4 mb-8;
+
+  .left {
+    @apply flex-1;
+  }
+
+  .title {
+    @apply text-3xl font-bold text-white m-0 mb-2;
+  }
+
+  .subtitle {
+    @apply text-slate-400 m-0;
+  }
+
+  .right {
+    @apply flex items-center gap-3;
+  }
+}
+
+.harvest-content {
+  @apply space-y-6;
+}
+
+// View Controls
+.view-controls {
+  @apply flex items-center justify-end mb-6;
+}
+
+.view-toggle {
+  @apply flex gap-1 bg-slate-800 rounded-lg p-1 border border-slate-700;
+
+  .toggle-btn {
+    @apply flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium text-slate-400 transition-colors;
+
+    &:hover {
+      @apply text-slate-300 bg-slate-700;
+    }
+
+    &.active {
+      @apply text-white bg-blue-500;
+    }
+
+    lucide-icon {
+      @apply flex-shrink-0;
+    }
+  }
+}
+
+// Grid vs List Layout
+.waves-grid {
+  @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6;
+}
+
+.waves-list {
+  @apply space-y-4;
+}
+
+// Empty/Loading/Error States
+.loading-state,
+.empty-state,
+.error-state {
+  @apply flex flex-col items-center justify-center py-20 text-center;
+
+  .spinner {
+    @apply w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mb-4;
+  }
+
+  .empty-icon {
+    @apply text-slate-600 mb-6;
+  }
+
+  .error-icon {
+    @apply text-5xl mb-4;
+  }
+
+  h3 {
+    @apply text-2xl font-bold text-white mb-2 m-0;
+  }
+
+  p {
+    @apply text-slate-400 mb-8 m-0 max-w-md;
+  }
+}
+
+// Responsive
+@media (max-width: 768px) {
+  .page-header-actions {
+    @apply flex-col items-start;
+
+    .right {
+      @apply w-full;
+
+      button {
+        @apply w-full;
+      }
+    }
+  }
+
+  .waves-grid {
+    @apply grid-cols-1;
+  }
+}

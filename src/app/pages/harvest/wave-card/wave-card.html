@@ -1,0 +1,72 @@
+<div 
+  class="wave-card" 
+  [class]="viewMode === 'list' ? 'list-view' : 'grid-view'"
+  (click)="onCardClick()"
+>
+  <!-- Header -->
+  <div class="card-header">
+    <div class="header-left">
+      <h3 class="wave-name">{{ wave.nombre }}</h3>
+      
+      <div class="badges">
+        <span class="badge" [ngClass]="typeBadgeClass">
+          {{ typeLabel }}
+        </span>
+        <span class="badge" [ngClass]="statusBadgeClass">
+          {{ statusLabel }}
+        </span>
+      </div>
+    </div>
+
+    <div class="header-right">
+      <span class="temporal-badge" [ngClass]="temporalStatusClass">
+        {{ temporalStatusLabel }}
+      </span>
+    </div>
+  </div>
+
+  <!-- Body -->
+  <div class="card-body">
+    <!-- Ventana de fechas -->
+    <div class="info-row">
+      <lucide-icon [img]="Calendar" [size]="16" class="info-icon"></lucide-icon>
+      <span class="info-text">{{ dateRange }}</span>
+    </div>
+
+    <!-- Objetivo de retiro -->
+    @if (wave.objetivo_retiro_org_m2) {
+      <div class="info-row">
+        <lucide-icon [img]="AlertCircle" [size]="16" class="info-icon"></lucide-icon>
+        <span class="info-text">
+          Objetivo: {{ wave.objetivo_retiro_org_m2 }} org/m²
+        </span>
+      </div>
+    }
+
+    <!-- Notas -->
+    @if (wave.notas) {
+      <div class="notes">
+        <p class="notes-text">{{ wave.notas }}</p>
+      </div>
+    }
+  </div>
+
+  <!-- Footer -->
+  <div class="card-footer">
+    <button class="btn-view" (click)="onCardClick()">
+      <span>Ver detalle</span>
+      <lucide-icon [img]="ArrowRight" [size]="16"></lucide-icon>
+    </button>
+
+    @if (canCancel) {
+      <button 
+        class="btn-cancel" 
+        (click)="onCancelClick($event)"
+        title="Cancelar ola"
+      >
+        <lucide-icon [img]="XCircle" [size]="16"></lucide-icon>
+        <span>Cancelar</span>
+      </button>
+    }
+  </div>
+</div>

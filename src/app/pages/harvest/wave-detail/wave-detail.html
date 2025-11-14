@@ -1,0 +1,87 @@
+<div class="wave-detail-page">
+  <!-- Breadcrumb / Back Button -->
+  <div class="page-breadcrumb">
+    <button class="btn-back" (click)="goBack()">
+      <lucide-icon [img]="ArrowLeft" [size]="20"></lucide-icon>
+      <span>Volver a Cosechas</span>
+    </button>
+  </div>
+
+  <!-- Loading State -->
+  @if (loading()) {
+    <div class="loading-state">
+      <div class="spinner"></div>
+      <p>Cargando detalle de la ola...</p>
+    </div>
+  }
+
+  <!-- Error State -->
+  @else if (error()) {
+    <div class="error-state">
+      <div class="error-icon">⚠️</div>
+      <h3>Error al cargar datos</h3>
+      <p>{{ error() }}</p>
+      <button class="btn btn-primary" (click)="goBack()">
+        Volver a Cosechas
+      </button>
+    </div>
+  }
+
+  <!-- Wave Detail Content -->
+  @else if (hasWave) {
+    <div class="wave-detail-content">
+      <!-- Wave Header -->
+      <app-wave-detail-header 
+        [wave]="wave()!"
+        [stats]="stats()!"
+        (cancelWave)="onCancelWave()"
+      />
+
+      <!-- Filters -->
+      <app-harvest-filters
+        [viewMode]="viewMode()"
+        (filterChange)="onFilterChange($event)"
+        (viewModeChange)="onViewModeChange($event)"
+      />
+
+      <!-- Harvests List/Grid -->
+      @if (filteredHarvests().length === 0) {
+        <div class="empty-results">
+          <lucide-icon [img]="Package" [size]="48" class="empty-icon"></lucide-icon>
+          <p>No se encontraron cosechas con los filtros aplicados</p>
+        </div>
+      } @else {
+        <div [class]="viewMode() === 'grid' ? 'harvests-grid' : 'harvests-list'">
+          @for (harvest of filteredHarvests(); track harvest.cosecha_estanque_id) {
+            <app-harvest-item
+              [harvest]="harvest"
+              [wave]="wave()!"
+              [viewMode]="viewMode()"
+              (confirm)="onConfirmHarvest($event)"
+              (reprogram)="onReprogramHarvest($event.id, $event.data)"
+            />
+          }
+        </div>
+      }
+    </div>
+  }
+
+  <!-- Modals -->
+  @if (showConfirmModal() && selectedHarvestId() && selectedHarvest) {
+    <app-confirm-harvest-modal
+      [harvestId]="selectedHarvestId()!"
+      [harvest]="selectedHarvest!"
+      (close)="showConfirmModal.set(false)"
+      (confirmed)="onHarvestConfirmed()"
+    />
+  }
+
+  @if (showCancelWaveModal() && wave()) {
+    <app-cancel-wave-modal
+      [wave]="wave()!"
+      [pendingCount]="stats()?.pending || 0"
+      (close)="showCancelWaveModal.set(false)"
+      (cancelled)="onWaveCancelled()"
+    />
+  }
+</div>

@@ -48,7 +48,6 @@ export const routes: Routes = [
         path: 'ponds',
         loadComponent: () => import('./pages/ponds/ponds').then(m => m.Ponds)
       },
-      // 🆕 RUTA AGREGADA: Pond Dashboard
       {
         path: 'ponds/:pondId/dashboard',
         loadComponent: () => import('./pages/dashboard/pond-dashboard/pond-dashboard').then(m => m.PondDashboard),
@@ -63,9 +62,21 @@ export const routes: Routes = [
         path: 'biometrics',
         loadComponent: () => import('./pages/biometry/biometry').then(m => m.Biometry)
       },
+      // ✅ RUTAS DIRECTAS DE HARVEST (sin children wrapper)
       {
         path: 'harvests',
-        loadComponent: () => import('./pages/harvest/harvest').then(m => m.Harvest)
+        redirectTo: 'harvest',
+        pathMatch: 'full'
+      },
+      {
+        path: 'harvest',
+        loadComponent: () => import('./pages/harvest/harvest').then(m => m.HarvestPage),
+        data: { title: 'Cosechas' }
+      },
+      {
+        path: 'harvest/wave/:waveId',
+        loadComponent: () => import('./pages/harvest/wave-detail/wave-detail').then(m => m.WaveDetailPage),
+        data: { title: 'Detalle de Ola' }
       },
       {
         path: 'projections',

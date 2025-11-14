@@ -1,0 +1,89 @@
+<div class="modal-overlay" (click)="onClose()">
+  <div class="modal-content modal-small" (click)="$event.stopPropagation()">
+    <!-- Header -->
+    <div class="modal-header">
+      <div class="header-icon danger">
+        <lucide-icon [img]="XCircle" [size]="24"></lucide-icon>
+      </div>
+      <div class="header-text">
+        <h2 class="modal-title">Cancelar Ola de Cosecha</h2>
+        <p class="modal-subtitle">{{ wave.nombre }}</p>
+      </div>
+      <button class="close-button" (click)="onClose()">
+        <lucide-icon [img]="X" [size]="20"></lucide-icon>
+      </button>
+    </div>
+
+    <!-- Body -->
+    <div class="modal-body">
+      <!-- Error Message -->
+      @if (error()) {
+        <div class="error-banner">
+          <lucide-icon [img]="AlertTriangle" [size]="20"></lucide-icon>
+          <span>{{ error() }}</span>
+        </div>
+      }
+
+      <!-- Warning Box -->
+      <div class="warning-box danger">
+        <div class="warning-icon">
+          <lucide-icon [img]="AlertTriangle" [size]="24"></lucide-icon>
+        </div>
+        <div class="warning-content">
+          <h3 class="warning-title">¿Estás seguro?</h3>
+          <p class="warning-text">
+            Al cancelar esta ola de cosecha:
+          </p>
+          <ul class="warning-list">
+            <li>La ola será marcada como <strong>cancelada</strong></li>
+            <li>Se cancelarán <strong>{{ pendingCount }} líneas pendientes</strong></li>
+            <li>Las líneas ya confirmadas <strong>NO se afectarán</strong></li>
+            <li>Esta acción <strong>NO se puede deshacer</strong></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Wave Info -->
+      <div class="info-box">
+        <div class="info-row">
+          <span class="info-label">Ola:</span>
+          <span class="info-value">{{ wave.nombre }}</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">Tipo:</span>
+          <span class="info-value">{{ wave.tipo === 'p' ? 'Parcial' : 'Final' }}</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">Líneas pendientes:</span>
+          <span class="info-value highlight">{{ pendingCount }}</span>
+        </div>
+      </div>
+
+      <!-- Actions -->
+      <div class="modal-actions">
+        <button
+          type="button"
+          class="btn btn-secondary"
+          (click)="onClose()"
+          [disabled]="loading()"
+        >
+          No, Mantener Ola
+        </button>
+
+        <button
+          type="button"
+          class="btn btn-danger"
+          (click)="onConfirm()"
+          [disabled]="loading()"
+        >
+          @if (loading()) {
+            <span>Cancelando...</span>
+          } @else {
+            <lucide-icon [img]="XCircle" [size]="16"></lucide-icon>
+            <span>Sí, Cancelar Ola</span>
+          }
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

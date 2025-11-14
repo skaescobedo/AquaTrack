@@ -1,0 +1,86 @@
+<div class="harvest-header">
+  <!-- Card 1: Información del Ciclo -->
+  <div class="cycle-card">
+    <div class="cycle-status">
+      <span class="status-badge" [ngClass]="cycleStatusClass">
+        {{ cycleStatus }}
+      </span>
+    </div>
+
+    <div class="cycle-info">
+      <h2 class="cycle-name">{{ cycle.nombre }}</h2>
+      
+      <div class="cycle-details">
+        <div class="detail-row">
+          <lucide-icon [img]="Calendar" [size]="16" class="detail-icon"></lucide-icon>
+          <span class="detail-text">
+            Inicio: {{ formatDate(cycle.fecha_inicio) }}
+          </span>
+        </div>
+
+        <div class="detail-row">
+          <lucide-icon [img]="Clock" [size]="16" class="detail-icon"></lucide-icon>
+          <span class="detail-text">
+            {{ cycle.dias_transcurridos }} días transcurridos
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Card 2: Estadísticas de Olas -->
+  <div class="stats-card">
+    <div class="card-icon">
+      <lucide-icon [img]="Package" [size]="24"></lucide-icon>
+    </div>
+
+    <div class="stats-content">
+      <h3 class="stats-title">Olas de Cosecha</h3>
+      
+      <div class="stats-grid">
+        <div class="stat-item">
+          <div class="stat-value">{{ totalWaves() }}</div>
+          <div class="stat-label">Total</div>
+        </div>
+
+        <div class="stat-item">
+          <div class="stat-value text-green-400">{{ activeWaves() }}</div>
+          <div class="stat-label">Activas</div>
+        </div>
+
+        <div class="stat-item">
+          <div class="stat-value text-red-400">{{ cancelledWaves() }}</div>
+          <div class="stat-label">Canceladas</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Card 3: Biomasa del Ciclo -->
+  <div class="biomass-card">
+    <div class="card-icon biomass-icon">
+      <lucide-icon [img]="CheckCircle" [size]="24"></lucide-icon>
+    </div>
+
+    <div class="biomass-content">
+      <h3 class="biomass-title">Biomasa Total</h3>
+      
+      <div class="biomass-value">
+        {{ (cycle.biomasa_total_kg || 0).toLocaleString('es-MX', { maximumFractionDigits: 1 }) }}
+        <span class="biomass-unit">kg</span>
+      </div>
+
+      <div class="biomass-stats">
+        <div class="stat-row">
+          <span class="stat-label">Densidad promedio:</span>
+          <span class="stat-value">{{ (cycle.densidad_promedio || 0).toFixed(2) }} org/m²</span>
+        </div>
+
+        <div class="stat-row">
+          <span class="stat-label">Estanques activos:</span>
+          <span class="stat-value">{{ cycle.estanques_activos || 0 }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

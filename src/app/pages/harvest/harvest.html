@@ -1,1 +1,117 @@
-<p>harvest works!</p>
+<div class="harvest-page">
+  <!-- Header -->
+  <div class="page-header-actions">
+    <div class="left">
+      <h1 class="title">Cosechas</h1>
+      <p class="subtitle">Gestión de cosechas para {{ farmName() }}</p>
+    </div>
+
+    @if (hasActiveCycle && !loading()) {
+      <div class="right">
+        <button 
+          class="btn btn-primary"
+          (click)="onCreateWave()"
+        >
+          <lucide-icon [img]="Plus" [size]="20"></lucide-icon>
+          <span>Crear Ola de Cosecha</span>
+        </button>
+      </div>
+    }
+  </div>
+
+  <!-- Loading State -->
+  @if (loading()) {
+    <div class="loading-state">
+      <div class="spinner"></div>
+      <p>Cargando olas de cosecha...</p>
+    </div>
+  }
+
+  <!-- Error State -->
+  @else if (error()) {
+    <div class="error-state">
+      <div class="error-icon">⚠️</div>
+      <h3>Error al cargar datos</h3>
+      <p>{{ error() }}</p>
+    </div>
+  }
+
+  <!-- No Active Cycle -->
+  @else if (!hasActiveCycle) {
+    <div class="empty-state">
+      <lucide-icon [img]="Calendar" [size]="64" class="empty-icon"></lucide-icon>
+      <h3>No hay ciclo activo</h3>
+      <p>Crea un ciclo activo para gestionar cosechas</p>
+    </div>
+  }
+
+  <!-- No Waves - Show Empty State -->
+  @else if (!hasWaves) {
+    <div class="empty-state">
+      <lucide-icon [img]="Package" [size]="64" class="empty-icon"></lucide-icon>
+      <h3>No hay olas de cosecha</h3>
+      <p>Crea tu primera ola de cosecha para comenzar</p>
+      <button 
+        class="btn btn-primary btn-lg"
+        (click)="onCreateWave()"
+      >
+        <lucide-icon [img]="Plus" [size]="20"></lucide-icon>
+        <span>Crear Ola de Cosecha</span>
+      </button>
+    </div>
+  }
+
+  <!-- Waves Exist - Show Content -->
+  @else {
+    <div class="harvest-content">
+      <!-- Header with Stats -->
+      <app-harvest-header 
+        [cycle]="activeCycle()!" 
+        [waves]="waves()"
+      />
+
+      <!-- View Toggle -->
+      <div class="view-controls">
+        <div class="view-toggle">
+          <button
+            class="toggle-btn"
+            [class.active]="viewMode() === 'grid'"
+            (click)="onViewModeChange('grid')"
+          >
+            <lucide-icon [img]="Grid3x3" [size]="18"></lucide-icon>
+            <span>Cuadrícula</span>
+          </button>
+          <button
+            class="toggle-btn"
+            [class.active]="viewMode() === 'list'"
+            (click)="onViewModeChange('list')"
+          >
+            <lucide-icon [img]="List" [size]="18"></lucide-icon>
+            <span>Lista</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Waves Grid/List -->
+      <div [class]="viewMode() === 'grid' ? 'waves-grid' : 'waves-list'">
+        @for (wave of waves(); track wave.cosecha_ola_id) {
+          <app-wave-card
+            [wave]="wave"
+            [viewMode]="viewMode()"
+            (click)="onWaveClick($event)"
+            (cancel)="onCancelWave($event)"
+          />
+        }
+      </div>
+    </div>
+  }
+
+  <!-- Modal -->
+  @if (showCreateWaveModal() && activeCycle()) {
+    <app-create-wave-modal
+      [cycleId]="activeCycle()!.ciclo_id"
+      (close)="showCreateWaveModal.set(false)"
+      (created)="onWaveCreated()"
+    />
+  }
+</div>

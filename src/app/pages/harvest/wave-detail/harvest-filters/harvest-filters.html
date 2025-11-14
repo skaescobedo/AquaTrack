@@ -1,0 +1,50 @@
+<div class="harvest-filters">
+  <div class="filters-left">
+    <!-- Search Box -->
+    <div class="search-box">
+      <lucide-icon [img]="Search" [size]="18" class="search-icon"></lucide-icon>
+      <input
+        type="text"
+        [(ngModel)]="searchTerm"
+        (ngModelChange)="onSearchChange()"
+        placeholder="Buscar por estanque..."
+        class="search-input"
+      />
+    </div>
+
+    <!-- Status Filter -->
+    <div class="filter-dropdown">
+      <lucide-icon [img]="Filter" [size]="18" class="filter-icon"></lucide-icon>
+      <select
+        [(ngModel)]="filterStatus"
+        (ngModelChange)="onStatusChange()"
+        class="filter-select"
+      >
+        <option value="all">Todas las cosechas</option>
+        <option value="pending">Pendientes</option>
+        <option value="confirmed">Confirmadas</option>
+        <option value="cancelled">Canceladas</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- View Toggle -->
+  <div class="view-toggle">
+    <button
+      class="toggle-btn"
+      [class.active]="viewMode === 'grid'"
+      (click)="onViewModeToggle('grid')"
+    >
+      <lucide-icon [img]="Grid3x3" [size]="18"></lucide-icon>
+      <span>Cuadrícula</span>
+    </button>
+    <button
+      class="toggle-btn"
+      [class.active]="viewMode === 'list'"
+      (click)="onViewModeToggle('list')"
+    >
+      <lucide-icon [img]="List" [size]="18"></lucide-icon>
+      <span>Lista</span>
+    </button>
+  </div>
+</div>

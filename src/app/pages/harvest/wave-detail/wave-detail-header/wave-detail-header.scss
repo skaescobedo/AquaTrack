@@ -1,0 +1,200 @@
+@use '../../../../../theme/variables';
+
+.wave-detail-header {
+  @apply grid grid-cols-1 md:grid-cols-3 gap-6 mb-8;
+}
+
+// Cards base
+.wave-info-card,
+.progress-card,
+.stats-card {
+  @apply bg-slate-800 rounded-xl p-6 border border-slate-700;
+}
+
+// Card 1: Wave Info
+.wave-info-card {
+  @apply md:col-span-2;
+
+  .card-header {
+    @apply flex items-start justify-between mb-4 pb-4 border-b border-slate-700;
+
+    .header-left {
+      .wave-name {
+        @apply text-2xl font-bold text-white mb-3 m-0;
+      }
+
+      .badges {
+        @apply flex flex-wrap gap-2;
+
+        .badge {
+          @apply px-3 py-1.5 text-xs font-semibold rounded-full;
+
+          &.badge-warning {
+            @apply bg-yellow-500 bg-opacity-20 text-yellow-400 border border-yellow-500;
+          }
+
+          &.badge-success {
+            @apply bg-green-500 bg-opacity-20 text-green-400 border border-green-500;
+          }
+
+          &.badge-info {
+            @apply bg-blue-500 bg-opacity-20 text-blue-400 border border-blue-500;
+          }
+
+          &.badge-error {
+            @apply bg-red-500 bg-opacity-20 text-red-400 border border-red-500;
+          }
+        }
+      }
+    }
+
+    .header-right {
+      .btn-cancel-wave {
+        @apply flex items-center gap-2 px-4 py-2 bg-red-500 bg-opacity-20 text-red-400 rounded-lg font-medium text-sm transition-colors border border-red-500;
+
+        &:hover {
+          @apply bg-red-500 bg-opacity-30;
+        }
+      }
+    }
+  }
+
+  .card-body {
+    @apply space-y-3;
+
+    .info-row {
+      @apply flex items-start gap-3;
+
+      .info-icon {
+        @apply text-slate-400 mt-0.5 flex-shrink-0;
+      }
+
+      .info-content {
+        @apply flex flex-col;
+
+        .info-label {
+          @apply text-xs text-slate-400 mb-0.5;
+        }
+
+        .info-value {
+          @apply text-sm font-medium text-white;
+        }
+      }
+    }
+
+    .notes-section {
+      @apply pt-3 border-t border-slate-700;
+
+      .notes-label {
+        @apply text-xs text-slate-400 mb-2 m-0;
+      }
+
+      .notes-text {
+        @apply text-sm text-slate-300 m-0;
+      }
+    }
+  }
+}
+
+// Card 2: Progress
+.progress-card {
+  @apply flex gap-4;
+
+  .card-icon {
+    @apply w-12 h-12 bg-green-500 bg-opacity-20 rounded-lg flex items-center justify-center text-green-400 flex-shrink-0;
+  }
+
+  .progress-content {
+    @apply flex-1;
+
+    .progress-title {
+      @apply text-lg font-semibold text-white mb-4 m-0;
+    }
+
+    .progress-stats {
+      @apply mb-4;
+
+      .stat-main {
+        @apply flex items-baseline gap-1 mb-1;
+
+        .stat-value {
+          @apply text-3xl font-bold text-green-400;
+        }
+
+        .stat-separator {
+          @apply text-xl text-slate-600;
+        }
+
+        .stat-total {
+          @apply text-2xl font-semibold text-slate-400;
+        }
+      }
+
+      .stat-label {
+        @apply text-xs text-slate-400 uppercase tracking-wide;
+      }
+    }
+
+    .progress-bar-container {
+      .progress-bar {
+        @apply w-full h-3 bg-slate-700 rounded-full overflow-hidden mb-2;
+
+        .progress-fill {
+          @apply h-full bg-gradient-to-r from-green-500 to-emerald-400 transition-all duration-500;
+        }
+      }
+
+      .progress-percentage {
+        @apply text-sm text-slate-400;
+      }
+    }
+  }
+}
+
+// Card 3: Stats
+.stats-card {
+  @apply flex gap-4;
+
+  .card-icon {
+    @apply w-12 h-12 bg-blue-500 bg-opacity-20 rounded-lg flex items-center justify-center text-blue-400 flex-shrink-0;
+  }
+
+  .stats-content {
+    @apply flex-1;
+
+    .stats-title {
+      @apply text-lg font-semibold text-white mb-4 m-0;
+    }
+
+    .stats-grid {
+      @apply grid grid-cols-3 gap-3;
+
+      .stat-item {
+        @apply text-center;
+
+        .stat-value {
+          @apply text-2xl font-bold mb-1;
+        }
+
+        .stat-label {
+          @apply text-xs text-slate-400 uppercase tracking-wide;
+        }
+      }
+    }
+  }
+}
+
+// Responsive
+@media (max-width: 1024px) {
+  .wave-detail-header {
+    @apply grid-cols-1;
+  }
+
+  .wave-info-card {
+    @apply md:col-span-1;
+
+    .card-header {
+      @apply flex-col items-start gap-4;
+    }
+  }
+}

@@ -1,0 +1,168 @@
+<div class="modal-overlay" (click)="onClose()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <!-- Header -->
+    <div class="modal-header">
+      <div class="header-icon">
+        <lucide-icon [img]="Package" [size]="24"></lucide-icon>
+      </div>
+      <div class="header-text">
+        <h2 class="modal-title">Crear Ola de Cosecha</h2>
+        <p class="modal-subtitle">Define los parámetros para la nueva ola de cosecha</p>
+      </div>
+      <button class="close-button" (click)="onClose()">
+        <lucide-icon [img]="X" [size]="20"></lucide-icon>
+      </button>
+    </div>
+
+    <!-- Body -->
+    <form (ngSubmit)="onSubmit()" class="modal-body">
+      <!-- Error Message -->
+      @if (error()) {
+        <div class="error-banner">
+          <lucide-icon [img]="AlertCircle" [size]="20"></lucide-icon>
+          <span>{{ error() }}</span>
+        </div>
+      }
+
+      <!-- Información Básica -->
+      <div class="form-section">
+        <h3 class="section-title">Información Básica</h3>
+
+        <div class="form-group">
+          <label for="nombre" class="form-label required">Nombre de la Ola</label>
+          <input
+            id="nombre"
+            type="text"
+            [(ngModel)]="nombre"
+            name="nombre"
+            class="form-input"
+            placeholder="Ej: Cosecha Diciembre 2025"
+            required
+            maxlength="120"
+          />
+          <span class="hint">Identifica esta ola de cosecha</span>
+        </div>
+
+        <div class="form-group">
+          <label for="tipo" class="form-label required">Tipo de Cosecha</label>
+          <select
+            id="tipo"
+            [(ngModel)]="tipo"
+            name="tipo"
+            class="form-input"
+            required
+          >
+            <option value="p">Parcial - Retiro parcial de organismos</option>
+            <option value="f">Final - Cosecha completa del estanque</option>
+          </select>
+          <span class="hint">
+            @if (tipo === 'p') {
+              <strong>Parcial:</strong> Se retiran algunos organismos, el estanque continúa operando
+            } @else {
+              <strong>Final:</strong> Se retiran todos los organismos, el estanque queda vacío
+            }
+          </span>
+        </div>
+      </div>
+
+      <!-- Ventana de Cosecha -->
+      <div class="form-section">
+        <h3 class="section-title">Ventana de Cosecha</h3>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="ventanaInicio" class="form-label required">Fecha Inicio</label>
+            <input
+              id="ventanaInicio"
+              type="date"
+              [(ngModel)]="ventanaInicio"
+              name="ventanaInicio"
+              class="form-input"
+              required
+            />
+            <span class="hint">Primera fecha posible de cosecha</span>
+          </div>
+
+          <div class="form-group">
+            <label for="ventanaFin" class="form-label required">Fecha Fin</label>
+            <input
+              id="ventanaFin"
+              type="date"
+              [(ngModel)]="ventanaFin"
+              name="ventanaFin"
+              class="form-input"
+              required
+            />
+            <span class="hint">Última fecha posible de cosecha</span>
+          </div>
+        </div>
+
+        <div class="info-box">
+          <lucide-icon [img]="AlertCircle" [size]="16"></lucide-icon>
+          <span>
+            Las fechas se distribuirán uniformemente entre los estanques del plan de siembras
+          </span>
+        </div>
+      </div>
+
+      <!-- Parámetros Opcionales -->
+      <div class="form-section">
+        <h3 class="section-title">Parámetros Opcionales</h3>
+
+        <div class="form-group">
+          <label for="objetivoRetiro" class="form-label">Objetivo de Retiro (org/m²)</label>
+          <input
+            id="objetivoRetiro"
+            type="number"
+            step="0.01"
+            [(ngModel)]="objetivoRetiro"
+            name="objetivoRetiro"
+            class="form-input"
+            placeholder="Ej: 30.5"
+            min="0"
+          />
+          <span class="hint">Densidad objetivo a retirar por m²</span>
+        </div>
+
+        <div class="form-group">
+          <label for="notas" class="form-label">Notas</label>
+          <textarea
+            id="notas"
+            [(ngModel)]="notas"
+            name="notas"
+            class="form-textarea"
+            placeholder="Observaciones adicionales..."
+            rows="3"
+            maxlength="255"
+          ></textarea>
+          <span class="hint">Opcional - Máximo 255 caracteres</span>
+        </div>
+      </div>
+
+      <!-- Actions -->
+      <div class="modal-actions">
+        <button
+          type="button"
+          class="btn btn-secondary"
+          (click)="onClose()"
+          [disabled]="loading()"
+        >
+          Cancelar
+        </button>
+
+        <button
+          type="submit"
+          class="btn btn-primary"
+          [disabled]="!isValid() || loading()"
+        >
+          @if (loading()) {
+            <span>Creando...</span>
+          } @else {
+            <lucide-icon [img]="Package" [size]="16"></lucide-icon>
+            <span>Crear Ola</span>
+          }
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

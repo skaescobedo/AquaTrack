@@ -1,0 +1,64 @@
+@use '../../../../theme/variables';
+
+.wave-detail-page {
+  @apply min-h-full;
+}
+
+.page-breadcrumb {
+  @apply mb-6;
+
+  .btn-back {
+    @apply flex items-center gap-2 text-slate-400 hover:text-white transition-colors;
+
+    lucide-icon {
+      @apply flex-shrink-0;
+    }
+  }
+}
+
+.wave-detail-content {
+  @apply space-y-6;
+}
+
+// Grid vs List Layout
+.harvests-grid {
+  @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6;
+}
+
+.harvests-list {
+  @apply space-y-4;
+}
+
+// Empty/Loading/Error States
+.loading-state,
+.empty-results,
+.error-state {
+  @apply flex flex-col items-center justify-center py-20 text-center;
+
+  .spinner {
+    @apply w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mb-4;
+  }
+
+  .empty-icon {
+    @apply text-slate-600 mb-4;
+  }
+
+  .error-icon {
+    @apply text-5xl mb-4;
+  }
+
+  h3 {
+    @apply text-2xl font-bold text-white mb-2 m-0;
+  }
+
+  p {
+    @apply text-slate-400 mb-6 m-0 max-w-md;
+  }
+}
+
+// Responsive
+@media (max-width: 768px) {
+  .harvests-grid {
+    @apply grid-cols-1;
+  }
+}

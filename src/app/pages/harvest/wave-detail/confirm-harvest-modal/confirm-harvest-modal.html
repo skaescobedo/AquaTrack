@@ -1,0 +1,175 @@
+<div class="modal-overlay" (click)="onClose()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <!-- Header -->
+    <div class="modal-header">
+      <div class="header-icon success">
+        <lucide-icon [img]="CheckCircle" [size]="24"></lucide-icon>
+      </div>
+      <div class="header-text">
+        <h2 class="modal-title">Confirmar Cosecha</h2>
+        <p class="modal-subtitle">{{ harvest.pond_name }}</p>
+      </div>
+      <button class="close-button" (click)="onClose()">
+        <lucide-icon [img]="X" [size]="20"></lucide-icon>
+      </button>
+    </div>
+
+    <!-- Body -->
+    <form (ngSubmit)="onSubmit()" class="modal-body">
+      <!-- Error Message -->
+      @if (error()) {
+        <div class="error-banner">
+          <lucide-icon [img]="AlertCircle" [size]="20"></lucide-icon>
+          <span>{{ error() }}</span>
+        </div>
+      }
+
+      <!-- Warning Info -->
+      <div class="warning-box">
+        <div class="warning-icon">
+          <lucide-icon [img]="AlertCircle" [size]="24"></lucide-icon>
+        </div>
+        <div class="warning-content">
+          <h3 class="warning-title">¿Estás seguro?</h3>
+          <p class="warning-text">
+            Al confirmar esta cosecha:
+          </p>
+          <ul class="warning-list">
+            <li>Se registrará como cosechada el <strong>{{ currentDate }}</strong></li>
+            <li>Se calculará automáticamente el valor faltante (biomasa o densidad)</li>
+            <li>Se actualizará el <strong>SOB operativo</strong> del estanque</li>
+            <li>Se disparará el <strong>reforecast automático</strong></li>
+            <li>Esta acción <strong>no se puede deshacer</strong></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Pond Info -->
+      <div class="info-section">
+        <h3 class="section-title">Información del Estanque</h3>
+        <div class="info-grid">
+          <div class="info-item">
+            <span class="info-label">Área:</span>
+            <span class="info-value">{{ harvest.pond_superficie.toLocaleString() }} m²</span>
+          </div>
+          <div class="info-item">
+            <span class="info-label">Fecha programada:</span>
+            <span class="info-value">{{ harvest.fecha_cosecha }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Input Mode Selection -->
+      <div class="form-section">
+        <h3 class="section-title">Datos de Cosecha</h3>
+        
+        <div class="input-mode-selector">
+          <label class="radio-option">
+            <input
+              type="radio"
+              name="inputMode"
+              value="biomasa"
+              [(ngModel)]="inputMode"
+              (ngModelChange)="onInputModeChange()"
+            />
+            <span class="radio-label">Ingresar Biomasa (kg)</span>
+          </label>
+
+          <label class="radio-option">
+            <input
+              type="radio"
+              name="inputMode"
+              value="densidad"
+              [(ngModel)]="inputMode"
+              (ngModelChange)="onInputModeChange()"
+            />
+            <span class="radio-label">Ingresar Densidad (org/m²)</span>
+          </label>
+        </div>
+
+        <!-- Biomasa Input -->
+        @if (inputMode === 'biomasa') {
+          <div class="form-group">
+            <label for="biomasa" class="form-label required">Biomasa Cosechada (kg)</label>
+            <input
+              id="biomasa"
+              type="number"
+              step="0.01"
+              [(ngModel)]="biomasa"
+              name="biomasa"
+              class="form-input"
+              placeholder="Ej: 500.5"
+              min="0"
+              required
+            />
+            <span class="hint">
+              <lucide-icon [img]="Package" [size]="14"></lucide-icon>
+              Se calculará automáticamente la densidad retirada
+            </span>
+          </div>
+        }
+
+        <!-- Densidad Input -->
+        @if (inputMode === 'densidad') {
+          <div class="form-group">
+            <label for="densidad" class="form-label required">Densidad Retirada (org/m²)</label>
+            <input
+              id="densidad"
+              type="number"
+              step="0.01"
+              [(ngModel)]="densidad"
+              name="densidad"
+              class="form-input"
+              placeholder="Ej: 30.5"
+              min="0"
+              required
+            />
+            <span class="hint">
+              <lucide-icon [img]="Package" [size]="14"></lucide-icon>
+              Se calculará automáticamente la biomasa
+            </span>
+          </div>
+        }
+
+        <!-- Notas -->
+        <div class="form-group">
+          <label for="notas" class="form-label">Notas (opcional)</label>
+          <textarea
+            id="notas"
+            [(ngModel)]="notas"
+            name="notas"
+            class="form-textarea"
+            placeholder="Observaciones sobre la cosecha..."
+            rows="3"
+            maxlength="255"
+          ></textarea>
+        </div>
+      </div>
+
+      <!-- Actions -->
+      <div class="modal-actions">
+        <button
+          type="button"
+          class="btn btn-secondary"
+          (click)="onClose()"
+          [disabled]="loading()"
+        >
+          Cancelar
+        </button>
+
+        <button
+          type="submit"
+          class="btn btn-success"
+          [disabled]="!isValid || loading()"
+        >
+          @if (loading()) {
+            <span>Confirmando...</span>
+          } @else {
+            <lucide-icon [img]="CheckCircle" [size]="16"></lucide-icon>
+            <span>Sí, Confirmar Cosecha</span>
+          }
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

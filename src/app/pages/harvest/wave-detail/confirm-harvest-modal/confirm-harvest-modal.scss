@@ -1,0 +1,98 @@
+@use '../../../../../theme/variables';
+
+// Usar estilos base de modales
+@use '../../../users/user-edit-modal/user-edit-modal.scss';
+
+.header-icon.success {
+  @apply bg-green-500 bg-opacity-20 text-green-400;
+}
+
+.warning-box {
+  @apply flex gap-4 p-4 bg-yellow-500 bg-opacity-10 border border-yellow-500 rounded-lg mb-6;
+
+  .warning-icon {
+    @apply text-yellow-400 flex-shrink-0;
+  }
+
+  .warning-content {
+    .warning-title {
+      @apply text-base font-semibold text-yellow-100 mb-2 m-0;
+    }
+
+    .warning-text {
+      @apply text-sm text-yellow-200 mb-2 m-0;
+    }
+
+    .warning-list {
+      @apply space-y-1 text-sm text-yellow-200 ml-4;
+
+      li {
+        @apply list-disc;
+
+        strong {
+          @apply text-yellow-100 font-semibold;
+        }
+      }
+    }
+  }
+}
+
+.info-section {
+  @apply mb-6;
+
+  .section-title {
+    @apply text-base font-semibold text-white mb-3 m-0;
+  }
+
+  .info-grid {
+    @apply grid grid-cols-2 gap-4;
+
+    .info-item {
+      @apply flex flex-col gap-1;
+
+      .info-label {
+        @apply text-xs text-slate-400;
+      }
+
+      .info-value {
+        @apply text-sm font-medium text-white;
+      }
+    }
+  }
+}
+
+.input-mode-selector {
+  @apply flex gap-4 mb-4 p-4 bg-slate-700 rounded-lg;
+
+  .radio-option {
+    @apply flex items-center gap-2 cursor-pointer;
+
+    input[type="radio"] {
+      @apply w-4 h-4 text-blue-500 focus:ring-2 focus:ring-blue-500;
+    }
+
+    .radio-label {
+      @apply text-sm font-medium text-white;
+    }
+  }
+}
+
+.hint {
+  @apply flex items-center gap-2 mt-1 text-xs text-slate-400;
+
+  lucide-icon {
+    @apply flex-shrink-0;
+  }
+}
+
+.btn-success {
+  @apply bg-green-500 text-white;
+
+  &:hover:not(:disabled) {
+    @apply bg-green-600;
+  }
+
+  &:disabled {
+    @apply opacity-50 cursor-not-allowed;
+  }
+}

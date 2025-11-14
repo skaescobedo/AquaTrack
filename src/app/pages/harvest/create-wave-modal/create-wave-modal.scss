@@ -1,0 +1,24 @@
+@use '../../../../theme/variables';
+
+// Usar los estilos base de modales
+@use '../../users/user-edit-modal/user-edit-modal.scss';
+
+.info-box {
+  @apply flex items-start gap-3 p-4 bg-blue-500 bg-opacity-10 border border-blue-500 rounded-lg text-sm text-blue-300;
+
+  lucide-icon {
+    @apply flex-shrink-0 text-blue-400 mt-0.5;
+  }
+}
+
+.form-row {
+  @apply grid grid-cols-1 md:grid-cols-2 gap-4;
+}
+
+.hint {
+  @apply block mt-1 text-xs text-slate-400;
+
+  strong {
+    @apply text-slate-300;
+  }
+}
