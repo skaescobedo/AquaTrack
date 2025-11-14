@@ -42,58 +42,13 @@
 
 .chart-card {
   @apply bg-slate-800 rounded-xl p-6 border border-slate-700;
-}
 
-.chart-header {
-  @apply flex items-center gap-2 mb-4;
-}
-
-.chart-title {
-  @apply text-lg font-semibold text-white m-0;
-}
-
-.chart-content {
-  @apply h-64;
-}
-
-.simple-chart {
-  @apply flex items-end justify-around h-full gap-1 pb-6;
-}
-
-.chart-bar {
-  @apply flex flex-col items-center flex-1 max-w-[40px];
-
-  .bar {
-    @apply w-full rounded-t transition-all cursor-pointer;
-    min-height: 4px;
-
-    &:hover {
-      @apply opacity-80;
-    }
-
-    &.sob-bar {
-      @apply bg-blue-500;
-    }
-
-    &.pp-bar {
-      @apply bg-green-500;
-    }
-
-    &.biomasa-bar {
-      @apply bg-purple-500;
-    }
-
-    &.densidad-bar {
-      @apply bg-cyan-500;
-
-      &.has-harvest {
-        @apply bg-red-500;
-      }
-    }
+  .chart-title {
+    @apply text-lg font-semibold text-white m-0 mb-1;
   }
 
-  .bar-label {
-    @apply text-xs text-slate-400 mt-2;
+  .chart-subtitle {
+    @apply text-sm text-slate-400 mb-4 m-0;
   }
 }
 

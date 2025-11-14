@@ -42,142 +42,135 @@
       </div>
     </div>
 
-    @if (chartData()) {
-      <!-- Gráficos -->
-      <div class="charts-grid">
-        <!-- SOB Chart -->
-        <div class="chart-card">
-          <div class="chart-header">
-            <lucide-icon [img]="Activity" [size]="20" class="text-blue-400"></lucide-icon>
-            <h3 class="chart-title">Sobrevivencia (SOB %)</h3>
-          </div>
-          <div class="chart-content">
-            <div class="simple-chart">
-              @for (point of chartData()!.sob; track point.week) {
-                <div class="chart-bar">
-                  <div 
-                    class="bar sob-bar" 
-                    [style.height.%]="point.sob"
-                    [title]="'Semana ' + point.week + ': ' + point.sob + '%'"
-                  ></div>
-                  <span class="bar-label">S{{ point.week }}</span>
-                </div>
-              }
-            </div>
-          </div>
-        </div>
-
-        <!-- PP Chart -->
-        <div class="chart-card">
-          <div class="chart-header">
-            <lucide-icon [img]="TrendingUp" [size]="20" class="text-green-400"></lucide-icon>
-            <h3 class="chart-title">Peso Promedio (g)</h3>
-          </div>
-          <div class="chart-content">
-            <div class="simple-chart">
-              @for (point of chartData()!.pp; track point.week) {
-                <div class="chart-bar">
-                  <div 
-                    class="bar pp-bar" 
-                    [style.height.%]="(point.pp / (chartData()!.pp[chartData()!.pp.length - 1]?.pp || 1)) * 100"
-                    [title]="'Semana ' + point.week + ': ' + point.pp + 'g'"
-                  ></div>
-                  <span class="bar-label">S{{ point.week }}</span>
-                </div>
-              }
-            </div>
-          </div>
-        </div>
-
-        <!-- Biomasa Chart -->
-        <div class="chart-card">
-          <div class="chart-header">
-            <lucide-icon [img]="TrendingUp" [size]="20" class="text-purple-400"></lucide-icon>
-            <h3 class="chart-title">Biomasa (estimada)</h3>
-          </div>
-          <div class="chart-content">
-            <div class="simple-chart">
-              @for (point of chartData()!.biomasa; track point.week) {
-                <div class="chart-bar">
-                  <div 
-                    class="bar biomasa-bar" 
-                    [style.height.%]="(point.biomasa / (chartData()!.biomasa[chartData()!.biomasa.length - 1]?.biomasa || 1)) * 100"
-                    [title]="'Semana ' + point.week + ': ' + point.biomasa.toFixed(2)"
-                  ></div>
-                  <span class="bar-label">S{{ point.week }}</span>
-                </div>
-              }
-            </div>
-          </div>
-        </div>
-
-        <!-- Densidad Chart -->
-        <div class="chart-card">
-          <div class="chart-header">
-            <lucide-icon [img]="Droplets" [size]="20" class="text-cyan-400"></lucide-icon>
-            <h3 class="chart-title">Densidad (org/m²)</h3>
-          </div>
-          <div class="chart-content">
-            <div class="simple-chart">
-              @for (point of chartData()!.densidad; track point.week) {
-                <div class="chart-bar">
-                  <div 
-                    class="bar densidad-bar"
-                    [class.has-harvest]="point.retiro !== null"
-                    [style.height.%]="point.densidad"
-                    [title]="'Semana ' + point.week + ': ' + point.densidad.toFixed(1) + (point.retiro ? ' (Retiro: ' + point.retiro + ')' : '')"
-                  ></div>
-                  <span class="bar-label">S{{ point.week }}</span>
-                </div>
-              }
-            </div>
-          </div>
-        </div>
+    <!-- Gráficos -->
+    <div class="charts-grid">
+      <!-- Gráfico 1: SOB -->
+      <div class="chart-card">
+        <h3 class="chart-title">Evolución de Supervivencia (SOB)</h3>
+        <p class="chart-subtitle">Porcentaje de supervivencia a lo largo del ciclo</p>
+        @if (sobOptions()) {
+          <apx-chart
+            [series]="sobOptions()!.series!"
+            [chart]="sobOptions()!.chart!"
+            [xaxis]="sobOptions()!.xaxis!"
+            [yaxis]="sobOptions()!.yaxis!"
+            [stroke]="sobOptions()!.stroke!"
+            [markers]="sobOptions()!.markers!"
+            [dataLabels]="sobOptions()!.dataLabels!"
+            [grid]="sobOptions()!.grid!"
+            [tooltip]="sobOptions()!.tooltip!"
+            [colors]="sobOptions()!.colors!"
+            [legend]="sobOptions()!.legend!"
+          ></apx-chart>
+        }
       </div>
 
-      <!-- Tabla de líneas -->
-      <div class="lines-section">
-        <h2 class="section-title">Líneas de Proyección Semanal</h2>
-        <div class="table-container">
-          <table class="lines-table">
-            <thead>
-              <tr>
-                <th>Semana</th>
-                <th>Fecha</th>
-                <th>Edad (días)</th>
-                <th>PP (g)</th>
-                <th>Incremento (g)</th>
-                <th>SOB (%)</th>
-                <th>Cosecha</th>
-                <th>Retiro (org/m²)</th>
+      <!-- Gráfico 2: Peso Promedio -->
+      <div class="chart-card">
+        <h3 class="chart-title">Crecimiento - Peso Promedio</h3>
+        <p class="chart-subtitle">Evolución del peso promedio en gramos</p>
+        @if (ppOptions()) {
+          <apx-chart
+            [series]="ppOptions()!.series!"
+            [chart]="ppOptions()!.chart!"
+            [xaxis]="ppOptions()!.xaxis!"
+            [yaxis]="ppOptions()!.yaxis!"
+            [stroke]="ppOptions()!.stroke!"
+            [markers]="ppOptions()!.markers!"
+            [dataLabels]="ppOptions()!.dataLabels!"
+            [grid]="ppOptions()!.grid!"
+            [tooltip]="ppOptions()!.tooltip!"
+            [colors]="ppOptions()!.colors!"
+            [legend]="ppOptions()!.legend!"
+          ></apx-chart>
+        }
+      </div>
+
+      <!-- Gráfico 3: Biomasa -->
+      <div class="chart-card">
+        <h3 class="chart-title">Biomasa Relativa</h3>
+        <p class="chart-subtitle">Biomasa estimada (PP × SOB)</p>
+        @if (biomasaOptions()) {
+          <apx-chart
+            [series]="biomasaOptions()!.series!"
+            [chart]="biomasaOptions()!.chart!"
+            [xaxis]="biomasaOptions()!.xaxis!"
+            [yaxis]="biomasaOptions()!.yaxis!"
+            [stroke]="biomasaOptions()!.stroke!"
+            [markers]="biomasaOptions()!.markers!"
+            [dataLabels]="biomasaOptions()!.dataLabels!"
+            [grid]="biomasaOptions()!.grid!"
+            [tooltip]="biomasaOptions()!.tooltip!"
+            [colors]="biomasaOptions()!.colors!"
+            [legend]="biomasaOptions()!.legend!"
+          ></apx-chart>
+        }
+      </div>
+
+      <!-- Gráfico 4: Densidad -->
+      <div class="chart-card">
+        <h3 class="chart-title">Evolución de Densidad</h3>
+        <p class="chart-subtitle">Densidad con retiros por cosecha</p>
+        @if (densidadOptions()) {
+          <apx-chart
+            [series]="densidadOptions()!.series!"
+            [chart]="densidadOptions()!.chart!"
+            [xaxis]="densidadOptions()!.xaxis!"
+            [yaxis]="densidadOptions()!.yaxis!"
+            [stroke]="densidadOptions()!.stroke!"
+            [markers]="densidadOptions()!.markers!"
+            [dataLabels]="densidadOptions()!.dataLabels!"
+            [grid]="densidadOptions()!.grid!"
+            [tooltip]="densidadOptions()!.tooltip!"
+            [colors]="densidadOptions()!.colors!"
+            [legend]="densidadOptions()!.legend!"
+          ></apx-chart>
+        }
+      </div>
+    </div>
+
+    <!-- Tabla de líneas -->
+    <div class="lines-section">
+      <h2 class="section-title">Líneas de Proyección Semanal</h2>
+      <div class="table-container">
+        <table class="lines-table">
+          <thead>
+            <tr>
+              <th>Semana</th>
+              <th>Fecha</th>
+              <th>Edad (días)</th>
+              <th>PP (g)</th>
+              <th>Incremento (g)</th>
+              <th>SOB (%)</th>
+              <th>Cosecha</th>
+              <th>Retiro (org/m²)</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (line of projection()!.lineas; track line.proyeccion_linea_id) {
+              <tr [class.harvest-row]="line.cosecha_flag">
+                <td class="font-semibold">{{ line.semana_idx }}</td>
+                <td>{{ line.fecha_plan | date: 'dd/MM/yyyy' }}</td>
+                <td>{{ line.edad_dias }}</td>
+                <td class="text-green-400 font-medium">{{ line.pp_g }}</td>
+                <td class="text-slate-400">{{ line.incremento_g_sem || '-' }}</td>
+                <td class="text-blue-400 font-medium">{{ line.sob_pct_linea }}%</td>
+                <td>
+                  @if (line.cosecha_flag) {
+                    <span class="badge badge-warning">Cosecha</span>
+                  } @else {
+                    <span class="text-slate-500">-</span>
+                  }
+                </td>
+                <td class="text-red-400 font-medium">
+                  {{ line.retiro_org_m2 || '-' }}
+                </td>
               </tr>
-            </thead>
-            <tbody>
-              @for (line of projection()!.lineas; track line.proyeccion_linea_id) {
-                <tr [class.harvest-row]="line.cosecha_flag">
-                  <td class="font-semibold">{{ line.semana_idx }}</td>
-                  <td>{{ line.fecha_plan | date: 'dd/MM/yyyy' }}</td>
-                  <td>{{ line.edad_dias }}</td>
-                  <td class="text-green-400 font-medium">{{ line.pp_g }}</td>
-                  <td class="text-slate-400">{{ line.incremento_g_sem || '-' }}</td>
-                  <td class="text-blue-400 font-medium">{{ line.sob_pct_linea }}%</td>
-                  <td>
-                    @if (line.cosecha_flag) {
-                      <span class="badge badge-warning">Cosecha</span>
-                    } @else {
-                      <span class="text-slate-500">-</span>
-                    }
-                  </td>
-                  <td class="text-red-400 font-medium">
-                    {{ line.retiro_org_m2 || '-' }}
-                  </td>
-                </tr>
-              }
-            </tbody>
-          </table>
-        </div>
+            }
+          </tbody>
+        </table>
       </div>
-    }
+    </div>
   } @else if (error()) {
     <div class="error-state">
       <p class="text-red-400">{{ error() }}</p>
