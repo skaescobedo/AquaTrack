@@ -1,23 +1,17 @@
-<div class="projection-card">
+<div class="projection-card draft">
   <!-- Header -->
   <div class="card-header">
     <div class="flex items-center gap-3">
-      <lucide-icon [img]="FileText" [size]="24" class="text-blue-400"></lucide-icon>
+      <lucide-icon [img]="FileText" [size]="24" class="text-slate-400"></lucide-icon>
       <div>
         <h3 class="version-label">{{ projection.version }}</h3>
-        <span class="badge badge-success">Activa</span>
+        <span class="badge badge-neutral">Borrador</span>
       </div>
     </div>
   </div>
 
   <!-- Metadata -->
   <div class="metadata">
-    <div class="metadata-item">
-      <lucide-icon [img]="Calendar" [size]="16" class="text-slate-400"></lucide-icon>
-      <span class="text-sm text-slate-400">
-        Publicada: {{ projection.published_at | date: 'dd/MM/yyyy' }}
-      </span>
-    </div>
     <div class="metadata-item">
       <lucide-icon [img]="Calendar" [size]="16" class="text-slate-400"></lucide-icon>
       <span class="text-sm text-slate-400">
@@ -51,11 +45,11 @@
       Ver Detalles
     </button>
     <button 
-      class="btn btn-ghost btn-sm btn-icon"
-      (click)="onArchive()"
-      title="Archivar"
+      class="btn btn-primary btn-sm"
+      (click)="onPublish()"
     >
-      <lucide-icon [img]="Archive" [size]="20"></lucide-icon>
+      <lucide-icon [img]="Send" [size]="16"></lucide-icon>
+      <span>Publicar</span>
     </button>
   </div>
 </div>

@@ -69,7 +69,16 @@ export const routes: Routes = [
       },
       {
         path: 'projections',
-        loadComponent: () => import('./pages/projections/projections').then(m => m.Projections)
+        children: [
+          {
+            path: '',
+            loadComponent: () => import('./pages/projections/projections').then(m => m.Projections)
+          },
+          {
+            path: ':projectionId',
+            loadComponent: () => import('./pages/projections/projection-detail/projection-detail').then(m => m.ProjectionDetailComponent)
+          }
+        ]
       },
       {
         path: 'reports',

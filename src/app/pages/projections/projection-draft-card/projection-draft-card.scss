@@ -6,6 +6,10 @@
   &:hover {
     @apply border-slate-600;
   }
+
+  &.draft {
+    @apply border-slate-600;
+  }
 }
 
 .card-header {

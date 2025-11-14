@@ -1,1 +1,76 @@
-<p>projections works!</p>
+<div class="projections-page">
+  @if (loading()) {
+    <div class="loading-state">
+      <span class="spinner spinner-lg"></span>
+      <p class="text-slate-400 mt-4">Cargando proyecciones...</p>
+    </div>
+  } @else if (!activeCycle()) {
+    <div class="empty-state">
+      <div class="icon-wrapper">
+        <lucide-icon [img]="TrendingUp" [size]="48"></lucide-icon>
+      </div>
+      <h2 class="title">No hay ciclo activo</h2>
+      <p class="message">Crea un ciclo activo para gestionar proyecciones</p>
+    </div>
+  } @else {
+    <!-- Header -->
+    <div class="page-header">
+      <div>
+        <h1 class="title">Proyecciones</h1>
+        <p class="subtitle">Proyecciones de rendimiento para {{ activeCycle()?.nombre || 'Ciclo' }}</p>
+      </div>
+    </div>
+
+    @if (error()) {
+      <div class="alert alert-danger mb-6">
+        {{ error() }}
+      </div>
+    }
+
+    <!-- Proyección Activa -->
+    @if (currentProjection()) {
+      <section class="section">
+        <h2 class="section-title">Proyección Activa</h2>
+        <app-projection-current-card
+          [projection]="currentProjection()!"
+          (archive)="onCancel($event)"
+        ></app-projection-current-card>
+      </section>
+    }
+
+    <!-- Borrador -->
+    @if (draftProjection()) {
+      <section class="section">
+        <h2 class="section-title">Borrador</h2>
+        <app-projection-draft-card
+          [projection]="draftProjection()!"
+          (publish)="onPublish($event)"
+        ></app-projection-draft-card>
+      </section>
+    }
+
+    <!-- Comparativo de Versiones -->
+    @if (allProjections().length > 1) {
+      <section class="section">
+        <app-projection-versions-table
+          [projections]="allProjections()"
+        ></app-projection-versions-table>
+      </section>
+    }
+
+    <!-- Empty state si no hay proyecciones -->
+    @if (!currentProjection() && !draftProjection() && allProjections().length === 0) {
+      <div class="empty-state">
+        <div class="icon-wrapper">
+          <lucide-icon [img]="TrendingUp" [size]="48"></lucide-icon>
+        </div>
+        <h2 class="title">No hay proyecciones</h2>
+        <p class="message">Crea tu primera proyección subiendo un archivo Excel o CSV</p>
+        <button class="btn btn-primary mt-4">
+          <lucide-icon [img]="Plus" [size]="20"></lucide-icon>
+          <span>Crear Proyección</span>
+        </button>
+      </div>
+    }
+  }
+</div>

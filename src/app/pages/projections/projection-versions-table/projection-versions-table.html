@@ -1,1 +1,42 @@
-<p>projection-versions-table works!</p>
+<div class="versions-section">
+  <div class="section-header">
+    <lucide-icon [img]="TrendingUp" [size]="24" class="text-blue-400"></lucide-icon>
+    <h2 class="section-title">Comparativo de Versiones</h2>
+  </div>
+  <p class="section-subtitle">Evolución de las métricas a lo largo de las versiones</p>
+
+  <div class="table-container">
+    <table class="versions-table">
+      <thead>
+        <tr>
+          <th>Versión</th>
+          <th>Estado</th>
+          <th>SOB Final</th>
+          <th>Kg/ha</th>
+          <th>PP Prom.</th>
+          <th>Fecha</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (proj of projections; track proj.proyeccion_id) {
+          <tr [class.current]="proj.is_current">
+            <td class="font-semibold">{{ proj.version }}</td>
+            <td>
+              <span [class]="getStatusClass(proj.status)">
+                {{ statusLabels[proj.status] }}
+              </span>
+            </td>
+            <td class="text-blue-400 font-medium">
+              {{ proj.sob_final_objetivo_pct }}%
+            </td>
+            <td class="text-slate-400">-</td>
+            <td class="text-slate-400">-</td>
+            <td class="text-sm text-slate-400">
+              {{ (proj.published_at || proj.updated_at) | date: 'dd/MM/yyyy' }}
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</div>
