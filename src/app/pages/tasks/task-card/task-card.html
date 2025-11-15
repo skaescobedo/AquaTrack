@@ -99,6 +99,65 @@
           </div>
         }
 
+        <!-- NUEVO: Control de progreso interactivo -->
+        @if (!isCompleted && !isCancelled) {
+          <div class="detail-section">
+            <div class="progress-control">
+              <div class="progress-header">
+                <h4 class="detail-section-title">Actualizar progreso:</h4>
+                <span class="progress-value">{{ currentProgress() }}%</span>
+              </div>
+              
+              <input
+                type="range"
+                class="progress-slider"
+                min="0"
+                max="100"
+                step="5"
+                [value]="currentProgress()"
+                (input)="onProgressChange($any($event.target).value)"
+                (change)="onProgressChangeComplete()"
+                [disabled]="savingProgress()"
+              />
+
+              <div class="progress-actions">
+                <button 
+                  class="btn-progress-quick" 
+                  (click)="setProgress(25)"
+                  [disabled]="savingProgress()"
+                >
+                  25%
+                </button>
+                <button 
+                  class="btn-progress-quick" 
+                  (click)="setProgress(50)"
+                  [disabled]="savingProgress()"
+                >
+                  50%
+                </button>
+                <button 
+                  class="btn-progress-quick" 
+                  (click)="setProgress(75)"
+                  [disabled]="savingProgress()"
+                >
+                  75%
+                </button>
+                <button 
+                  class="btn-progress-quick" 
+                  (click)="setProgress(100)"
+                  [disabled]="savingProgress()"
+                >
+                  100%
+                </button>
+              </div>
+
+              @if (savingProgress()) {
+                <p class="progress-saving">Guardando...</p>
+              }
+            </div>
+          </div>
+        }
+
         <!-- Información adicional en grid -->
         <div class="details-grid">
           @if (hasEstimatedTime) {

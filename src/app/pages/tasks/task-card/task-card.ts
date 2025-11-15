@@ -5,7 +5,8 @@ import { FormsModule } from '@angular/forms';
 import { LucideAngularModule, Calendar, User, Clock, CheckCircle, ChevronDown, ChevronUp, Edit2, Trash2, Check } from 'lucide-angular';
 import { 
   Task,
-  TaskListItem, 
+  TaskListItem,
+  TaskUpdateStatus,
   getTaskStatusLabel, 
   getTaskPriorityLabel,
   getTaskStatusBadgeClass,
@@ -36,12 +37,18 @@ export class TaskCard {
   @Output() complete = new EventEmitter<number>();
   @Output() edit = new EventEmitter<number>();
   @Output() delete = new EventEmitter<number>();
+  @Output() progressUpdated = new EventEmitter<void>();
 
   private taskService = inject(TaskService);
 
   isExpanded = signal(false);
   taskDetail = signal<Task | null>(null);
   loadingDetail = signal(false);
+  
+  // Control de progreso
+  currentProgress = signal<number>(0);
+  savingProgress = signal(false);
+  private progressTimeout: any;
 
   // Getters básicos (del TaskListItem)
   get statusLabel(): string {
@@ -137,11 +144,72 @@ export class TaskCard {
            `${detail.creador.nombre} ${detail.creador.apellido1}`;
   }
 
+  // Métodos para control de progreso
+  onProgressChange(value: string): void {
+    this.currentProgress.set(Number(value));
+  }
+
+  onProgressChangeComplete(): void {
+    // Guardar después de un pequeño delay para evitar muchas requests
+    if (this.progressTimeout) {
+      clearTimeout(this.progressTimeout);
+    }
+    
+    this.progressTimeout = setTimeout(() => {
+      this.saveProgress();
+    }, 500);
+  }
+
+  setProgress(value: number): void {
+    this.currentProgress.set(value);
+    this.saveProgress();
+  }
+
+  private saveProgress(): void {
+    const newProgress = this.currentProgress();
+    
+    // Si llegó a 100%, cambiar status a completada
+    const newStatus = newProgress >= 100 ? 'c' : 
+                     newProgress > 0 ? 'e' : 
+                     this.task.status;
+
+    const data: TaskUpdateStatus = {
+      status: newStatus as any,
+      progreso_pct: newProgress
+    };
+
+    this.savingProgress.set(true);
+    
+    this.taskService.updateTaskStatus(this.task.tarea_id, data).subscribe({
+      next: () => {
+        console.log('✅ Progress updated');
+        this.savingProgress.set(false);
+        
+        // Actualizar el task local
+        this.task.progreso_pct = newProgress;
+        this.task.status = newStatus as any;
+        
+        // Emitir evento para que el padre recargue
+        this.progressUpdated.emit();
+      },
+      error: (err) => {
+        console.error('❌ Error updating progress:', err);
+        this.savingProgress.set(false);
+        alert('Error al actualizar el progreso');
+        
+        // Revertir el progreso en la UI
+        this.currentProgress.set(this.task.progreso_pct);
+      }
+    });
+  }
+
   // Handlers
   toggleExpanded(): void {
     if (!this.isExpanded()) {
       // Al expandir, cargar el detalle si no está cargado
       this.loadTaskDetail();
+      // Inicializar el progreso actual
+      this.currentProgress.set(this.task.progreso_pct);
     }
     this.isExpanded.update(val => !val);
   }

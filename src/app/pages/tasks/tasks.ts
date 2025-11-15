@@ -8,7 +8,7 @@ import { catchError } from 'rxjs/operators';
 
 import { TaskService } from '../../services/tasks';
 import { CycleService } from '../../services/cycles';
-import { Task, TaskListItem, TaskCreate, TaskUpdateStatus } from '../../models/task.model';
+import { Task, TaskListItem, TaskUpdateStatus } from '../../models/task.model';
 
 import { TaskHeader, TaskFilterEvent } from './task-header/task-header';
 import { TaskCard } from './task-card/task-card';
@@ -210,6 +210,11 @@ export class Tasks implements OnInit {
         alert('Error al eliminar la tarea');
       }
     });
+  }
+
+  onProgressUpdated(): void {
+    // Recargar la lista para reflejar los cambios
+    this.loadData();
   }
 
   // Getters
