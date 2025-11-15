@@ -1,0 +1,60 @@
+<div class="task-header">
+  <!-- Título y botón crear -->
+  <div class="header-top">
+    <div class="header-info">
+      <h1 class="title">{{ title }}</h1>
+      <p class="subtitle">{{ subtitle }}</p>
+    </div>
+    
+    <button class="btn btn-primary" (click)="onCreateTask()">
+      <lucide-icon [img]="Plus" [size]="20"></lucide-icon>
+      <span>Nueva Tarea</span>
+    </button>
+  </div>
+
+  <!-- Filtros -->
+  <div class="header-filters">
+    <!-- Filtro por estado -->
+    <div class="filter-group">
+      <lucide-icon [img]="Filter" [size]="18" class="filter-icon"></lucide-icon>
+      <label class="filter-label">Filtrar por estado:</label>
+      <select 
+        class="filter-select" 
+        [value]="selectedStatus()"
+        (change)="onStatusChange($any($event.target).value)"
+      >
+        @for (option of statusOptions; track option.value) {
+          <option [value]="option.value">{{ option.label }}</option>
+        }
+      </select>
+    </div>
+
+    <!-- Filtro por días hacia atrás -->
+    <div class="filter-group">
+      <label class="filter-label">Mostrar tareas de:</label>
+      <select 
+        class="filter-select" 
+        [value]="daysBack()"
+        (change)="onDaysBackChange(+$any($event.target).value)"
+      >
+        @for (option of daysBackOptions; track option.value) {
+          <option [value]="option.value">
+            {{ option.value === 0 ? 'Todas' : 'Últimos ' + option.label }}
+          </option>
+        }
+      </select>
+    </div>
+
+    <!-- Búsqueda -->
+    <div class="search-box">
+      <lucide-icon [img]="Search" [size]="18" class="search-icon"></lucide-icon>
+      <input
+        type="text"
+        class="search-input"
+        placeholder="Buscar tareas..."
+        [value]="searchTerm()"
+        (input)="onSearchChange($any($event.target).value)"
+      />
+    </div>
+  </div>
+</div>

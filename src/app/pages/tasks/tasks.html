@@ -1,1 +1,82 @@
-<p>tasks works!</p>
+<div class="tasks-page">
+  <!-- Header con filtros -->
+  <app-task-header
+    (filterChange)="onFilterChange($event)"
+    (createTask)="onCreateTask()"
+  />
+
+  <!-- Loading State -->
+  @if (loading()) {
+    <div class="loading-state">
+      <div class="spinner"></div>
+      <p>Cargando tareas...</p>
+    </div>
+  }
+
+  <!-- Error State -->
+  @else if (error()) {
+    <div class="error-state">
+      <div class="error-icon">⚠️</div>
+      <h3>Error al cargar tareas</h3>
+      <p>{{ error() }}</p>
+      <button class="btn btn-primary" (click)="loadData()">
+        Reintentar
+      </button>
+    </div>
+  }
+
+  <!-- Content -->
+  @else {
+    <!-- Stats -->
+    <div class="tasks-stats">
+      <div class="stat-card">
+        <span class="stat-label">Total</span>
+        <span class="stat-value">{{ stats().total }}</span>
+      </div>
+      <div class="stat-card stat-pending">
+        <span class="stat-label">Pendientes</span>
+        <span class="stat-value">{{ stats().pendientes }}</span>
+      </div>
+      <div class="stat-card stat-progress">
+        <span class="stat-label">En Progreso</span>
+        <span class="stat-value">{{ stats().en_progreso }}</span>
+      </div>
+      <div class="stat-card stat-completed">
+        <span class="stat-label">Completadas</span>
+        <span class="stat-value">{{ stats().completadas }}</span>
+      </div>
+    </div>
+
+    <!-- Tasks List -->
+    @if (filteredTasks().length === 0) {
+      <div class="empty-results">
+        <lucide-icon [img]="Package" [size]="48" class="empty-icon"></lucide-icon>
+        <p>No se encontraron tareas con los filtros aplicados</p>
+      </div>
+    } @else {
+      <div class="tasks-list">
+        @for (task of filteredTasks(); track task.tarea_id) {
+          <app-task-card
+            [task]="task"
+            (complete)="onCompleteTask($event)"
+            (edit)="onEditTask($event)"
+            (delete)="onDeleteTask($event)"
+          />
+        }
+      </div>
+    }
+  }
+
+  <!-- Modal -->
+  @if (showTaskModal()) {
+    <app-task-modal
+      [mode]="modalMode()"
+      [task]="selectedTask()"
+      [farmId]="farmId!"
+      [cycleId]="activeCycleId()"
+      (close)="showTaskModal.set(false)"
+      (created)="onTaskCreated($event)"
+      (updated)="onTaskUpdated($event)"
+    />
+  }
+</div>

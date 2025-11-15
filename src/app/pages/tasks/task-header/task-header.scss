@@ -1,0 +1,111 @@
+@use '../../../../theme/variables';
+
+.task-header {
+  @apply mb-6;
+}
+
+// Top Section
+.header-top {
+  @apply flex items-center justify-between gap-4 mb-6;
+
+  .header-info {
+    @apply flex-1;
+
+    .title {
+      @apply text-3xl font-bold text-white m-0 mb-2;
+    }
+
+    .subtitle {
+      @apply text-slate-400 m-0;
+    }
+  }
+}
+
+// Filters Section
+.header-filters {
+  @apply flex items-center gap-4 bg-slate-800 rounded-xl p-4 border border-slate-700;
+}
+
+// Filter Group
+.filter-group {
+  @apply flex items-center gap-2;
+
+  .filter-icon {
+    @apply text-slate-400 flex-shrink-0;
+  }
+
+  .filter-label {
+    @apply text-sm text-slate-300 whitespace-nowrap;
+  }
+
+  .filter-select {
+    @apply px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white text-sm cursor-pointer transition-colors appearance-none;
+    min-width: 180px;
+
+    &:hover {
+      @apply border-slate-500;
+    }
+
+    &:focus {
+      @apply outline-none border-blue-500 ring-2 ring-blue-500 ring-opacity-30;
+    }
+  }
+}
+
+// Search Box
+.search-box {
+  @apply relative flex-1 max-w-md ml-auto;
+
+  .search-icon {
+    @apply absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none;
+  }
+
+  .search-input {
+    @apply w-full pl-10 pr-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white text-sm placeholder-slate-400 transition-colors;
+
+    &:focus {
+      @apply outline-none border-blue-500 ring-2 ring-blue-500 ring-opacity-30;
+    }
+  }
+}
+
+// Responsive
+@media (max-width: 1024px) {
+  .header-filters {
+    @apply flex-wrap;
+  }
+
+  .filter-group {
+    @apply flex-1 min-w-[200px];
+
+    .filter-select {
+      @apply w-full;
+    }
+  }
+
+  .search-box {
+    @apply w-full max-w-full;
+  }
+}
+
+@media (max-width: 768px) {
+  .header-top {
+    @apply flex-col items-stretch gap-3;
+
+    button {
+      @apply w-full;
+    }
+  }
+
+  .header-filters {
+    @apply flex-col items-stretch;
+  }
+
+  .filter-group {
+    @apply flex-col items-stretch;
+
+    .filter-label {
+      @apply text-xs;
+    }
+  }
+}

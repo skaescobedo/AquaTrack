@@ -1,1 +1,169 @@
-<p>task-modal works!</p>
+<div class="modal-overlay" (click)="onClose()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <!-- Header -->
+    <div class="modal-header">
+      <h2 class="modal-title">{{ modalTitle }}</h2>
+      <button class="btn-close" (click)="onClose()" [disabled]="loading()">
+        <lucide-icon [img]="X" [size]="20"></lucide-icon>
+      </button>
+    </div>
+
+    <!-- Body -->
+    <div class="modal-body">
+      <form (ngSubmit)="onSubmit()">
+        <!-- Título (requerido) -->
+        <div class="form-group">
+          <label class="form-label">
+            Título <span class="required">*</span>
+          </label>
+          <input
+            type="text"
+            class="form-input"
+            placeholder="Ej: Biometría semanal"
+            [(ngModel)]="titulo"
+            name="titulo"
+            required
+            maxlength="160"
+          />
+        </div>
+
+        <!-- Descripción -->
+        <div class="form-group">
+          <label class="form-label">Descripción</label>
+          <textarea
+            class="form-textarea"
+            placeholder="Detalles adicionales sobre la tarea..."
+            [(ngModel)]="descripcion"
+            name="descripcion"
+            rows="3"
+            maxlength="500"
+          ></textarea>
+        </div>
+
+        <!-- Tipo y Prioridad -->
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Categoría</label>
+            <select class="form-select" [(ngModel)]="tipo" name="tipo">
+              <option value="">Sin categoría</option>
+              @for (tipoComun of tiposComunes; track tipoComun) {
+                <option [value]="tipoComun">{{ tipoComun }}</option>
+              }
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Prioridad</label>
+            <select class="form-select" [(ngModel)]="prioridad" name="prioridad">
+              <option value="b">Baja</option>
+              <option value="m">Media</option>
+              <option value="a">Alta</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Fecha límite y Tiempo estimado -->
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Fecha límite</label>
+            <input
+              type="date"
+              class="form-input"
+              [(ngModel)]="fecha_limite"
+              name="fecha_limite"
+            />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Tiempo estimado (horas)</label>
+            <input
+              type="number"
+              class="form-input"
+              placeholder="0"
+              [(ngModel)]="tiempo_estimado_horas"
+              name="tiempo_estimado_horas"
+              min="0"
+              step="0.5"
+            />
+          </div>
+        </div>
+
+        <!-- Estanque (opcional) -->
+        <div class="form-group">
+          <label class="form-label">Estanque</label>
+          <select class="form-select" [(ngModel)]="estanque_id" name="estanque_id">
+            <option [value]="null">Todos los estanques</option>
+            @for (estanque of estanques(); track estanque.estanque_id) {
+              <option [value]="estanque.estanque_id">{{ estanque.nombre }}</option>
+            }
+          </select>
+        </div>
+
+        <!-- Asignados -->
+        <div class="form-group">
+          <label class="form-label">Asignados</label>
+          <div class="asignados-grid">
+            @for (usuario of usuarios(); track usuario.usuario_id) {
+              <button
+                type="button"
+                class="asignado-btn"
+                [class.selected]="isUserSelected(usuario.usuario_id)"
+                (click)="toggleAsignado(usuario.usuario_id)"
+              >
+                <span class="user-initials">
+                  {{ usuario.nombre[0] }}{{ usuario.apellido1[0] }}
+                </span>
+                <span class="user-name">{{ usuario.nombre }} {{ usuario.apellido1 }}</span>
+              </button>
+            }
+          </div>
+          @if (asignados_ids.length === 0) {
+            <p class="form-hint">Sin asignar: tú serás el responsable por defecto</p>
+          }
+        </div>
+
+        <!-- Recurrente -->
+        <div class="form-group">
+          <label class="checkbox-label">
+            <input
+              type="checkbox"
+              class="form-checkbox"
+              [(ngModel)]="es_recurrente"
+              name="es_recurrente"
+            />
+            <span>Marcar como tarea recurrente (permitir duplicar fácilmente)</span>
+          </label>
+        </div>
+
+        <!-- Error -->
+        @if (error()) {
+          <div class="error-message">
+            {{ error() }}
+          </div>
+        }
+
+        <!-- Actions -->
+        <div class="modal-actions">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            (click)="onClose()"
+            [disabled]="loading()"
+          >
+            Cancelar
+          </button>
+          <button
+            type="submit"
+            class="btn btn-primary"
+            [disabled]="loading() || !isValid()"
+          >
+            @if (loading()) {
+              <span class="spinner-small"></span>
+            }
+            {{ submitButtonText }}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

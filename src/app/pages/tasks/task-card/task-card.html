@@ -1,1 +1,150 @@
-<p>task-card works!</p>
+<div class="task-card">
+  <!-- Header -->
+  <div class="card-header">
+    <div class="header-left">
+      <h3 class="task-title">{{ task.titulo }}</h3>
+      
+      <div class="badges">
+        <span class="badge" [ngClass]="priorityBadgeClass">
+          {{ priorityLabel }}
+        </span>
+        <span class="badge" [ngClass]="statusBadgeClass">
+          @if (isCompleted) {
+            <lucide-icon [img]="Check" [size]="12"></lucide-icon>
+          }
+          {{ statusLabel }}
+        </span>
+        @if (task.tipo) {
+          <span class="badge badge-type">{{ task.tipo }}</span>
+        }
+      </div>
+    </div>
+
+    <div class="header-right">
+      @if (daysRemaining !== null) {
+        <span class="days-badge" [ngClass]="getDaysBadgeClass()">
+          <lucide-icon [img]="Calendar" [size]="14"></lucide-icon>
+          {{ daysLabel }}
+        </span>
+      }
+    </div>
+  </div>
+
+  <!-- Summary -->
+  <div class="card-summary">
+    <!-- Asignados -->
+    <div class="summary-item">
+      <lucide-icon [img]="User" [size]="14" class="summary-icon"></lucide-icon>
+      <span class="summary-text">
+        @if (task.responsables_nombres && task.responsables_nombres.length > 0) {
+          {{ task.responsables_nombres.join(', ') }}
+        } @else {
+          Sin asignar
+        }
+      </span>
+    </div>
+
+    <!-- Fecha límite -->
+    @if (task.fecha_limite) {
+      <div class="summary-item">
+        <lucide-icon [img]="Calendar" [size]="14" class="summary-icon"></lucide-icon>
+        <span class="summary-text">Fecha límite: {{ formatDate(task.fecha_limite) }}</span>
+      </div>
+    }
+
+    <!-- Progreso -->
+    <div class="summary-item">
+      <div class="progress-inline">
+        <lucide-icon [img]="Clock" [size]="14" class="summary-icon"></lucide-icon>
+        <div class="progress-bar-inline">
+          <div class="progress-fill-inline" [style.width.%]="task.progreso_pct"></div>
+        </div>
+        <span class="progress-text-inline">{{ task.progreso_pct }}%</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Actions -->
+  <div class="card-actions">
+    @if (canComplete) {
+      <button class="btn btn-success btn-sm" (click)="onComplete()">
+        <lucide-icon [img]="CheckCircle" [size]="16"></lucide-icon>
+        <span>Completar</span>
+      </button>
+    }
+
+    <button 
+      class="btn btn-ghost btn-sm expand-btn" 
+      (click)="toggleExpanded()"
+    >
+      <lucide-icon [img]="isExpanded() ? ChevronUp : ChevronDown" [size]="16"></lucide-icon>
+      <span>{{ isExpanded() ? 'Ocultar' : 'Ver más' }}</span>
+    </button>
+  </div>
+
+  <!-- Detalles Expandibles - SOLO INFO ADICIONAL -->
+  @if (isExpanded()) {
+    <div class="card-details">
+      @if (loadingDetail()) {
+        <div class="loading-detail">
+          <div class="spinner"></div>
+          <p>Cargando detalles...</p>
+        </div>
+      } @else {
+        <!-- Descripción (si existe) -->
+        @if (hasDescription) {
+          <div class="detail-section">
+            <h4 class="detail-section-title">Descripción:</h4>
+            <p class="detail-description">{{ getDescription() }}</p>
+          </div>
+        }
+
+        <!-- Información adicional en grid -->
+        <div class="details-grid">
+          @if (hasEstimatedTime) {
+            <div class="detail-item">
+              <span class="detail-label">Tiempo estimado:</span>
+              <span class="detail-value">{{ getEstimatedTime() }}</span>
+            </div>
+          }
+
+          <div class="detail-item">
+            <span class="detail-label">Creado por:</span>
+            <span class="detail-value">{{ getCreatorName() }}</span>
+          </div>
+
+          <div class="detail-item">
+            <span class="detail-label">Fecha de creación:</span>
+            <span class="detail-value">{{ formatDate(task.created_at) }}</span>
+          </div>
+
+          @if (isRecurrent) {
+            <div class="detail-item">
+              <span class="detail-label">Tipo:</span>
+              <span class="detail-value">
+                <span class="recurrent-badge">Tarea recurrente</span>
+              </span>
+            </div>
+          }
+        </div>
+
+        <!-- Botones de acción -->
+        <div class="details-actions">
+          @if (canEdit) {
+            <button class="btn btn-secondary btn-sm" (click)="onEdit()">
+              <lucide-icon [img]="Edit2" [size]="16"></lucide-icon>
+              <span>Editar</span>
+            </button>
+          }
+
+          @if (!isCompleted && !isCancelled) {
+            <button class="btn btn-danger btn-sm" (click)="onDelete()">
+              <lucide-icon [img]="Trash2" [size]="16"></lucide-icon>
+              <span>Eliminar</span>
+            </button>
+          }
+        </div>
+      }
+    </div>
+  }
+</div>
