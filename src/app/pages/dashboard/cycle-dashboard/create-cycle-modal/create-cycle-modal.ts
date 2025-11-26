@@ -17,6 +17,7 @@ export class CreateCycleModal {
   @Input() show = false;
   @Output() showChange = new EventEmitter<boolean>();
   @Output() cycleCreated = new EventEmitter<void>();
+  @Output() projectionStarted = new EventEmitter<string>();
 
   readonly X = X;
   readonly Upload = Upload;
@@ -106,7 +107,12 @@ export class CreateCycleModal {
         }
       }
 
-      await this.cycleService.createCycleWithFile(this.farmId, formData).toPromise();
+      const response = await this.cycleService.createCycleWithFile(this.farmId, formData).toPromise();
+      
+      // Si hay job_id, emitir evento de proyección iniciada
+      if (response?.job_id) {
+        this.projectionStarted.emit(response.job_id);
+      }
       
       this.cycleCreated.emit();
       this.close();

@@ -1,0 +1,39 @@
+<!-- profile.html - USAR MISMA ESTRUCTURA QUE FARMS/USERS -->
+<div class="profile-page">
+  <!-- Header -->
+  <div class="page-header-actions">
+    <div class="left">
+      <h1 class="title">Mi Perfil</h1>
+      <p class="subtitle">Gestiona tu información personal y configuración de cuenta</p>
+    </div>
+  </div>
+
+  @if (loading()) {
+    <div class="flex justify-center items-center py-20">
+      <div class="spinner spinner-lg"></div>
+    </div>
+  } @else if (error()) {
+    <div class="alert alert-danger">
+      {{ error() }}
+    </div>
+  } @else if (currentUser) {
+    <div class="profile-grid">
+      <!-- Card 1: Información Personal -->
+      <app-profile-info
+        [user]="currentUser"
+        (updated)="onUserUpdated()"
+      />
+
+      <!-- Card 2: Seguridad -->
+      <app-profile-security
+        [user]="currentUser"
+      />
+
+      <!-- Card 3: Mis Granjas -->
+      <app-profile-farms
+        [user]="currentUser"
+        [userFarms]="userFarms()"
+      />
+    </div>
+  }
+</div>

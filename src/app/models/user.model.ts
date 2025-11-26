@@ -1,6 +1,6 @@
 // Interfaces existentes de auth
 export interface User {
-  id: number;
+  usuario_id: number;  // ← Cambiar de 'id' a 'usuario_id'
   username: string;
   email: string;
   nombre: string;

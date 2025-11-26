@@ -1,0 +1,158 @@
+@use '../../../../../theme/variables';
+
+.modal-overlay {
+  @apply fixed inset-0 z-50 flex items-center justify-center;
+  background: rgba(15, 23, 42, 0.75);
+  backdrop-filter: blur(4px);
+}
+
+.modal-content {
+  @apply relative w-full max-w-md mx-4 rounded-2xl shadow-2xl overflow-hidden;
+  background: linear-gradient(145deg, #1e293b 0%, #0f172a 100%);
+  border: 1px solid rgba(148, 163, 184, 0.1);
+}
+
+// Header
+.modal-header {
+  @apply p-8 text-center;
+}
+
+.status-icon {
+  @apply mb-4 flex justify-center;
+
+  .icon-pending,
+  .icon-processing {
+    @apply text-blue-400 animate-spin;
+  }
+
+  .icon-success {
+    @apply text-green-400;
+    animation: scaleIn 0.3s ease-out;
+  }
+
+  .icon-error {
+    @apply text-red-400;
+    animation: scaleIn 0.3s ease-out;
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.status-title {
+  @apply text-xl font-semibold text-white mb-2;
+}
+
+.status-description {
+  @apply text-sm text-slate-400;
+}
+
+// Body
+.modal-body {
+  @apply px-8 pb-6;
+}
+
+// Progress
+.progress-container {
+  @apply space-y-3;
+}
+
+.progress-bar {
+  @apply w-full h-2 bg-slate-700 rounded-full overflow-hidden;
+}
+
+.progress-fill {
+  @apply h-full bg-gradient-to-r from-blue-500 to-blue-400 rounded-full;
+  width: 0%;
+  animation: progress 2s ease-in-out infinite;
+
+  &.animating {
+    animation: progress 2s ease-in-out infinite;
+  }
+}
+
+@keyframes progress {
+  0% {
+    width: 0%;
+  }
+  50% {
+    width: 70%;
+  }
+  100% {
+    width: 100%;
+  }
+}
+
+.progress-text {
+  @apply text-xs text-slate-400 text-center;
+}
+
+// Warnings
+.warnings-container {
+  @apply p-4 rounded-lg;
+  background: rgba(251, 191, 36, 0.1);
+  border: 1px solid rgba(251, 191, 36, 0.3);
+}
+
+.warning-header {
+  @apply flex items-center gap-2 text-yellow-400 font-medium mb-2;
+}
+
+.warning-list {
+  @apply list-disc list-inside text-sm text-yellow-200 space-y-1;
+}
+
+// Error
+.error-container {
+  @apply p-4 rounded-lg;
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+.error-detail {
+  @apply text-sm text-red-300;
+}
+
+// Footer
+.modal-footer {
+  @apply flex justify-center p-6 border-t border-slate-700;
+}
+
+.btn {
+  @apply px-6 py-2.5 rounded-lg font-medium transition-all;
+}
+
+.btn-primary {
+  @apply bg-blue-500 text-white;
+
+  &:hover {
+    @apply bg-blue-600;
+  }
+
+  &:active {
+    transform: scale(0.98);
+  }
+}
+
+// Responsive
+@media (max-width: 640px) {
+  .modal-content {
+    @apply max-w-[90vw];
+  }
+
+  .modal-header {
+    @apply p-6;
+  }
+
+  .modal-body {
+    @apply px-6 pb-4;
+  }
+}

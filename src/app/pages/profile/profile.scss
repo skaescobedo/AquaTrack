@@ -1,0 +1,52 @@
+// profile.scss - CORREGIDO CON ESTILOS CONSISTENTES
+.profile-page {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.page-header-actions {
+  @apply flex items-center justify-between mb-8;
+
+  .left {
+    .title {
+      @apply text-3xl font-bold text-white mb-2;
+    }
+
+    .subtitle {
+      @apply text-slate-400;
+    }
+  }
+
+  .right {
+    @apply flex gap-2;
+  }
+}
+
+// profile.scss
+.profile-grid {
+  @apply grid grid-cols-1 lg:grid-cols-2 gap-6;
+
+  @media (min-width: 1024px) {
+    grid-auto-rows: 1fr; // Solo en desktop
+  }
+
+  > * {
+    &:last-child {
+      @apply lg:col-span-2;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .page-header-actions {
+    @apply flex-col items-start gap-4;
+
+    .right {
+      @apply w-full;
+
+      button {
+        @apply w-full;
+      }
+    }
+  }
+}

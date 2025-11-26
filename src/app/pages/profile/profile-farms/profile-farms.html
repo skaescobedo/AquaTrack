@@ -1,0 +1,57 @@
+<!-- profile-farms/profile-farms.html -->
+<div class="profile-card">
+  <div class="card-header">
+    <div class="header-left">
+      <div class="icon-wrapper">
+        <lucide-icon [img]="Building2" [size]="20"></lucide-icon>
+      </div>
+      <div>
+        <h3 class="card-title">Mis Granjas</h3>
+        <p class="card-subtitle">Granjas a las que tienes acceso y tus permisos</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="card-body">
+    @if (user.is_admin_global) {
+      <!-- Admin Global Badge -->
+      <div class="admin-badge">
+        <lucide-icon [img]="Shield" [size]="24" class="text-purple-400"></lucide-icon>
+        <div>
+          <p class="font-semibold text-purple-400">Administrador Global</p>
+          <p class="text-sm text-slate-400">Tienes acceso completo a todas las granjas del sistema</p>
+        </div>
+      </div>
+    } @else {
+      <!-- Lista de granjas -->
+      @if (userFarms.length === 0) {
+        <div class="empty-state">
+          <lucide-icon [img]="Building2" [size]="48" class="text-slate-600"></lucide-icon>
+          <p class="text-slate-400">No tienes granjas asignadas</p>
+        </div>
+      } @else {
+        <div class="farms-grid">
+          @for (farm of userFarms; track farm.usuario_granja_id) {
+            <div class="farm-card">
+              <div class="farm-header">
+                <h4 class="farm-name">{{ farm.granja_nombre }}</h4>
+                <span class="role-badge">{{ farm.rol_nombre }}</span>
+              </div>
+              
+              @if (farm.scopes.length > 0) {
+                <div class="scopes-list">
+                  @for (scope of farm.scopes.slice(0, 3); track scope) {
+                    <span class="scope-badge">{{ scope }}</span>
+                  }
+                  @if (farm.scopes.length > 3) {
+                    <span class="text-xs text-slate-400">+{{ farm.scopes.length - 3 }} más</span>
+                  }
+                </div>
+              }
+            </div>
+          }
+        </div>
+      }
+    }
+  </div>
+</div>

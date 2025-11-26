@@ -1,0 +1,133 @@
+<!-- profile-security/profile-security.html -->
+<div class="profile-card">
+  <div class="card-header">
+    <div class="header-left">
+      <div class="icon-wrapper">
+        <lucide-icon [img]="Lock" [size]="20"></lucide-icon>
+      </div>
+      <div>
+        <h3 class="card-title">Seguridad</h3>
+        <p class="card-subtitle">Gestiona tu contraseña</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="card-body">
+    @if (!isChangingPassword()) {
+      <!-- Estado inicial -->
+      <p class="description">
+        Cambia tu contraseña para mantener tu cuenta segura
+      </p>
+      <button class="btn btn-primary btn-full" (click)="startChangingPassword()">
+        <lucide-icon [img]="Lock" [size]="16"></lucide-icon>
+        <span>Cambiar Contraseña</span>
+      </button>
+    } @else {
+      <!-- Formulario de cambio de contraseña -->
+      @if (error()) {
+        <div class="alert alert-danger mb-4">
+          {{ error() }}
+        </div>
+      }
+
+      @if (success()) {
+        <div class="alert alert-success mb-4">
+          Contraseña actualizada correctamente
+        </div>
+      }
+
+      <form (ngSubmit)="savePassword()">
+        <!-- Contraseña Actual -->
+        <div class="form-group">
+          <label for="currentPassword">Contraseña Actual</label>
+          <div class="input-with-icon">
+            <input
+              id="currentPassword"
+              [type]="showCurrentPassword ? 'text' : 'password'"
+              [(ngModel)]="currentPassword"
+              name="currentPassword"
+              placeholder="Ingresa tu contraseña actual"
+              required
+            />
+            <button
+              type="button"
+              class="input-icon-btn"
+              (click)="showCurrentPassword = !showCurrentPassword"
+            >
+              <lucide-icon [img]="showCurrentPassword ? EyeOff : Eye" [size]="18"></lucide-icon>
+            </button>
+          </div>
+        </div>
+
+        <!-- Nueva Contraseña -->
+        <div class="form-group">
+          <label for="newPassword">Nueva Contraseña</label>
+          <div class="input-with-icon">
+            <input
+              id="newPassword"
+              [type]="showNewPassword ? 'text' : 'password'"
+              [(ngModel)]="newPassword"
+              name="newPassword"
+              placeholder="Mínimo 8 caracteres"
+              required
+            />
+            <button
+              type="button"
+              class="input-icon-btn"
+              (click)="showNewPassword = !showNewPassword"
+            >
+              <lucide-icon [img]="showNewPassword ? EyeOff : Eye" [size]="18"></lucide-icon>
+            </button>
+          </div>
+        </div>
+
+        <!-- Confirmar Nueva Contraseña -->
+        <div class="form-group">
+          <label for="confirmPassword">Confirmar Nueva Contraseña</label>
+          <div class="input-with-icon">
+            <input
+              id="confirmPassword"
+              [type]="showConfirmPassword ? 'text' : 'password'"
+              [(ngModel)]="confirmPassword"
+              name="confirmPassword"
+              placeholder="Repite la nueva contraseña"
+              required
+            />
+            <button
+              type="button"
+              class="input-icon-btn"
+              (click)="showConfirmPassword = !showConfirmPassword"
+            >
+              <lucide-icon [img]="showConfirmPassword ? EyeOff : Eye" [size]="18"></lucide-icon>
+            </button>
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            (click)="cancelChange()"
+            [disabled]="isLoading()"
+          >
+            <lucide-icon [img]="X" [size]="16"></lucide-icon>
+            <span>Cancelar</span>
+          </button>
+          <button
+            type="submit"
+            class="btn btn-primary"
+            [disabled]="isLoading()"
+          >
+            @if (isLoading()) {
+              <span class="spinner"></span>
+              <span>Actualizando...</span>
+            } @else {
+              <lucide-icon [img]="Check" [size]="16"></lucide-icon>
+              <span>Actualizar</span>
+            }
+          </button>
+        </div>
+      </form>
+    }
+  </div>
+</div>

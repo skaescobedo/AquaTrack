@@ -78,6 +78,16 @@
     [farmId]="farmId!"
     [farmName]="farmName()"
     [(show)]="showCreateModal"
-    (cycleCreated)="onCycleCreated()">
+    (cycleCreated)="onCycleCreated()"
+    (projectionStarted)="onProjectionStarted($event)">
   </app-create-cycle-modal>
+
+  <!-- Modal de Procesamiento de Proyección -->
+  @if (currentJobId()) {
+    <app-projection-processing-modal
+      [jobId]="currentJobId()!"
+      [(show)]="showProcessingModal"
+      (processingComplete)="onProcessingComplete()">
+    </app-projection-processing-modal>
+  }
 </div>

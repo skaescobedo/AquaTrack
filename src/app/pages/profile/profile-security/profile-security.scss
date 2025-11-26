@@ -1,0 +1,67 @@
+// profile-security/profile-security.scss
+.profile-card {
+  @apply bg-slate-800 rounded-xl border border-slate-700 overflow-hidden;
+  height: 100%; // Que ocupe todo el espacio del grid
+}
+
+// ... resto igual
+
+.card-header {
+  @apply flex items-center justify-between p-6 border-b border-slate-700;
+
+  .header-left {
+    @apply flex items-center gap-4;
+  }
+
+  .icon-wrapper {
+    @apply w-12 h-12 bg-blue-500 bg-opacity-20 rounded-lg flex items-center justify-center text-blue-400;
+  }
+
+  .card-title {
+    @apply text-lg font-semibold text-white m-0;
+  }
+
+  .card-subtitle {
+    @apply text-sm text-slate-400 m-0 mt-1;
+  }
+}
+
+.card-body {
+  @apply p-6;
+}
+
+.description {
+  @apply text-sm text-slate-400 mb-4;
+}
+
+.btn-full {
+  @apply w-full;
+}
+
+.form-group {
+  @apply mb-4;
+
+  label {
+    @apply block text-sm font-medium text-slate-300 mb-2;
+  }
+}
+
+.input-with-icon {
+  @apply relative;
+
+  input {
+    @apply w-full px-4 py-2 pr-12 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-slate-400 transition-colors;
+
+    &:focus {
+      @apply outline-none border-blue-500 ring-2 ring-blue-500 ring-opacity-30;
+    }
+  }
+
+  .input-icon-btn {
+    @apply absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-300 transition-colors bg-transparent border-0;
+  }
+}
+
+.form-actions {
+  @apply flex gap-3 justify-end mt-6;
+}

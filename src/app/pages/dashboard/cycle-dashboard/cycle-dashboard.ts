@@ -15,6 +15,7 @@ import { UpcomingSeedings } from './components/upcoming-seedings/upcoming-seedin
 import { UpcomingHarvests } from './components/upcoming-harvests/upcoming-harvests';
 import { PondDetailsTable } from './components/pond-details-table/pond-details-table';
 import { CreateCycleModal } from './create-cycle-modal/create-cycle-modal';
+import { ProjectionProcessingModal } from './projection-processing/projection-processing';
 
 @Component({
   selector: 'app-cycle-dashboard',
@@ -27,7 +28,8 @@ import { CreateCycleModal } from './create-cycle-modal/create-cycle-modal';
     UpcomingSeedings,
     UpcomingHarvests,
     PondDetailsTable,
-    CreateCycleModal
+    CreateCycleModal,
+    ProjectionProcessingModal
   ],
   templateUrl: './cycle-dashboard.html',
   styleUrls: ['./cycle-dashboard.scss']
@@ -42,7 +44,11 @@ export class CycleDashboard implements OnInit {
   overview = signal<CycleOverview | null>(null);
   loading = signal(true);
   error = signal<string | null>(null);
+  
+  // Modales
   showCreateModal = signal(false);
+  showProcessingModal = signal(false);
+  currentJobId = signal<string | null>(null);
 
   constructor(
     private cycleService: CycleService,
@@ -112,6 +118,25 @@ export class CycleDashboard implements OnInit {
 
   closeCreateCycleModal(): void {
     this.showCreateModal.set(false);
+  }
+
+  /**
+   * Cuando se inicia una proyección, abrir el modal de procesamiento
+   */
+  onProjectionStarted(jobId: string): void {
+    console.log('🚀 Proyección iniciada con job_id:', jobId);
+    this.currentJobId.set(jobId);
+    this.showProcessingModal.set(true);
+  }
+
+  /**
+   * Cuando termina el procesamiento de proyección, recargar el ciclo
+   */
+  onProcessingComplete(): void {
+    console.log('✅ Procesamiento completado');
+    this.showProcessingModal.set(false);
+    this.currentJobId.set(null);
+    this.loadActiveCycle();
   }
 
   onCycleCreated(): void {

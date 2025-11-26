@@ -1,1 +1,69 @@
-<p>projection-processing works!</p>
+<div class="modal-overlay" *ngIf="show">
+  <div class="modal-content">
+    <!-- Header -->
+    <div class="modal-header">
+      <div class="status-icon">
+        @switch (currentStatus()) {
+          @case ('pending') {
+            <lucide-icon [img]="Loader2" [size]="32" class="icon-pending"></lucide-icon>
+          }
+          @case ('processing') {
+            <lucide-icon [img]="Loader2" [size]="32" class="icon-processing"></lucide-icon>
+          }
+          @case ('completed') {
+            <lucide-icon [img]="CheckCircle2" [size]="32" class="icon-success"></lucide-icon>
+          }
+          @case ('failed') {
+            <lucide-icon [img]="XCircle" [size]="32" class="icon-error"></lucide-icon>
+          }
+        }
+      </div>
+      <h2 class="status-title">{{ getStatusLabel() }}</h2>
+      <p class="status-description">{{ getStatusDescription() }}</p>
+    </div>
+
+    <!-- Body -->
+    <div class="modal-body">
+      <!-- Progress bar para pending/processing -->
+      @if (currentStatus() === 'pending' || currentStatus() === 'processing') {
+        <div class="progress-container">
+          <div class="progress-bar">
+            <div class="progress-fill" [class.animating]="true"></div>
+          </div>
+          <p class="progress-text">No cierres esta ventana</p>
+        </div>
+      }
+
+      <!-- Warnings si existen -->
+      @if (currentStatus() === 'completed' && warnings() && warnings()!.length > 0) {
+        <div class="warnings-container">
+          <div class="warning-header">
+            <lucide-icon [img]="AlertCircle" [size]="20"></lucide-icon>
+            <span>Advertencias</span>
+          </div>
+          <ul class="warning-list">
+            @for (warning of warnings(); track $index) {
+              <li>{{ warning }}</li>
+            }
+          </ul>
+        </div>
+      }
+
+      <!-- Error detail si falló -->
+      @if (currentStatus() === 'failed' && error()) {
+        <div class="error-container">
+          <p class="error-detail">{{ error() }}</p>
+        </div>
+      }
+    </div>
+
+    <!-- Footer -->
+    <div class="modal-footer">
+      @if (currentStatus() === 'failed') {
+        <button type="button" class="btn btn-primary" (click)="close()">
+          Cerrar
+        </button>
+      }
+    </div>
+  </div>
+</div>
