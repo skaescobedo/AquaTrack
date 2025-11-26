@@ -1,3 +1,4 @@
+<!-- deactivate-user-modal.html -->
 <div class="modal-overlay" (click)="onClose()">
   <div class="modal-content modal-small" (click)="$event.stopPropagation()">
     <!-- Header -->
@@ -27,7 +28,7 @@
       <div class="warning-box">
         <lucide-icon [img]="AlertTriangle" [size]="24" class="text-yellow-400"></lucide-icon>
         <div>
-          <p class="font-semibold text-white">¿Estás seguro de desactivar este usuario?</p>
+          <p class="font-semibold text-white">Desactivar usuario</p>
           <p class="text-sm text-slate-400 mt-2">
             <strong>{{ user.nombre }} {{ user.apellido1 }}</strong> ({{ user.email }})
           </p>
@@ -41,17 +42,25 @@
 
     <!-- Footer -->
     <div class="modal-footer">
-      <button class="btn btn-ghost" (click)="onClose()" [disabled]="isLoading">
+      <button class="btn btn-ghost" (click)="onClose()">
         Cancelar
       </button>
-      <button class="btn btn-danger" (click)="onConfirm()" [disabled]="isLoading">
-        @if (isLoading) {
-          <span class="spinner"></span>
-          <span>Desactivando...</span>
-        } @else {
-          <span>Sí, desactivar</span>
-        }
+      <button class="btn btn-danger" (click)="openConfirmDialog()">
+        Desactivar
       </button>
     </div>
   </div>
+
+  <!-- Confirm Dialog -->
+  @if (showConfirmDialog && confirmDialogData) {
+    <app-confirm-dialog
+      [title]="confirmDialogData.title"
+      [message]="confirmDialogData.message"
+      [confirmText]="'Aceptar'"
+      [cancelText]="'Cancelar'"
+      [isLoading]="isConfirmLoading"
+      (confirm)="onConfirmDialogConfirm()"
+      (cancel)="onConfirmDialogCancel()"
+    />
+  }
 </div>

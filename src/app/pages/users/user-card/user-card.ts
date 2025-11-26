@@ -1,7 +1,7 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, HostListener, ElementRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { LucideAngularModule, User as UserIcon, Mail, MoreVertical, Shield } from 'lucide-angular';
-import { UserOut } from '../../../models/user.model';
+import { UserListItem, UserOut } from '../../../models/user.model';
 
 @Component({
   selector: 'app-user-card',
@@ -16,13 +16,23 @@ export class UserCard {
   readonly MoreVertical = MoreVertical;
   readonly Shield = Shield;
 
-  @Input({ required: true }) user!: UserOut;
+  @Input({ required: true }) user!: UserListItem;
   @Output() edit = new EventEmitter<number>();
   @Output() changePermissions = new EventEmitter<number>();
   @Output() resetPassword = new EventEmitter<number>();
   @Output() deactivate = new EventEmitter<number>();
 
   showMenu = false;
+  constructor(private elementRef: ElementRef) {}
+  // Cerrar menú al hacer clic fuera de ESTA card específica
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: MouseEvent): void {
+    const clickedInside = this.elementRef.nativeElement.contains(event.target);
+    
+    if (!clickedInside && this.showMenu) {
+      this.showMenu = false;
+    }
+  }
 
   get initials(): string {
     return `${this.user.nombre[0]}${this.user.apellido1[0]}`.toUpperCase();

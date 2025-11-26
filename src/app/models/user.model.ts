@@ -54,6 +54,11 @@ export interface UserOut {
   status: string;
 }
 
+// Nuevo schema para el listado (agregar)
+export interface UserListItem extends UserOut {
+  farms_count: number;
+}
+
 export interface UserCreate {
   username: string;
   nombre: string;

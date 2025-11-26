@@ -1,3 +1,4 @@
+<!-- users.html -->
 <div class="users-page">
   <!-- Header -->
   <div class="page-header-actions">
@@ -32,11 +33,17 @@
     </div>
   }
 
-  <!-- Users Grid -->
+  <!-- Content -->
   @if (!loading() && !error()) {
-    @if (users().length > 0) {
+    <!-- Filters -->
+    <app-user-filters
+      (filterChange)="onFilterChange($event)"
+    />
+
+    <!-- Users Grid -->
+    @if (filteredUsers().length > 0) {
       <div class="grid-container cols-3 fade-in">
-        @for (user of users(); track user.usuario_id) {
+        @for (user of filteredUsers(); track user.usuario_id) {
           <app-user-card 
             [user]="user"
             (edit)="onEditUser($event)"
@@ -51,8 +58,8 @@
         <div class="icon">
           <lucide-icon [img]="UserPlus" [size]="64" class="text-slate-600"></lucide-icon>
         </div>
-        <h3 class="title">No hay usuarios</h3>
-        <p class="message">Crea el primer usuario para comenzar</p>
+        <h3 class="title">No se encontraron usuarios</h3>
+        <p class="message">No hay usuarios que coincidan con los filtros aplicados</p>
       </div>
     }
   }

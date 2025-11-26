@@ -1,8 +1,9 @@
-import { Component, OnInit, signal } from '@angular/core';
+// users.ts
+import { Component, OnInit, signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { LucideAngularModule, UserPlus } from 'lucide-angular';
 import { UserService } from '../../services/users';
-import { UserOut, UserCreate } from '../../models/user.model';
+import { UserOut, UserCreate, UserListItem } from '../../models/user.model';
 import { AuthService } from '../../services/auth';
 
 // Importar todos los componentes
@@ -12,6 +13,9 @@ import { UserEditModal } from './user-edit-modal/user-edit-modal';
 import { ResetPasswordModal } from './reset-password-modal/reset-password-modal';
 import { ChangePermissionsModal } from './change-permissions-modal/change-permissions-modal';
 import { DeactivateUserModal } from './deactivate-user-modal/deactivate-user-modal';
+import { UserFilters } from './user-filters/user-filters';
+
+type FilterStatus = 'active' | 'inactive' | 'all';
 
 @Component({
   selector: 'app-users',
@@ -24,7 +28,8 @@ import { DeactivateUserModal } from './deactivate-user-modal/deactivate-user-mod
     UserEditModal,
     ResetPasswordModal,
     ChangePermissionsModal,
-    DeactivateUserModal
+    DeactivateUserModal,
+    UserFilters
   ],
   templateUrl: './users.html',
   styleUrls: ['./users.scss']
@@ -32,9 +37,13 @@ import { DeactivateUserModal } from './deactivate-user-modal/deactivate-user-mod
 export class Users implements OnInit {
   readonly UserPlus = UserPlus;
 
-  users = signal<UserOut[]>([]);
+  users = signal<UserListItem[]>([]);
   loading = signal(true);
   error = signal<string | null>(null);
+
+  // Filtros
+  searchTerm = signal('');
+  filterStatus = signal<FilterStatus>('active');
 
   // Estados de modales
   showCreateModal = signal(false);
@@ -45,6 +54,36 @@ export class Users implements OnInit {
 
   // Usuario seleccionado para operaciones
   selectedUser: UserOut | null = null;
+
+  // Computed: Usuarios filtrados
+  filteredUsers = computed(() => {
+    let result = this.users();
+    const search = this.searchTerm().toLowerCase().trim();
+    const status = this.filterStatus();
+
+    // Filtrar por estado
+    if (status === 'active') {
+      result = result.filter(u => u.status === 'a');
+    } else if (status === 'inactive') {
+      result = result.filter(u => u.status === 'i');
+    }
+    // 'all' no filtra
+
+    // Filtrar por búsqueda
+    if (search) {
+      result = result.filter(u => {
+        const fullName = `${u.nombre} ${u.apellido1} ${u.apellido2 || ''}`.toLowerCase();
+        const email = u.email.toLowerCase();
+        const username = u.username.toLowerCase();
+        
+        return fullName.includes(search) || 
+               email.includes(search) || 
+               username.includes(search);
+      });
+    }
+
+    return result;
+  });
 
   constructor(
     private userService: UserService,
@@ -75,7 +114,12 @@ export class Users implements OnInit {
     });
   }
 
-  // ==================== CREATE ====================
+  onFilterChange(event: { search: string; status: FilterStatus }): void {
+    this.searchTerm.set(event.search);
+    this.filterStatus.set(event.status);
+  }
+
+  // Modales - Crear Usuario
   openCreateModal(): void {
     this.showCreateModal.set(true);
   }
@@ -84,12 +128,19 @@ export class Users implements OnInit {
     this.showCreateModal.set(false);
   }
 
-  onSaveUser(user: UserCreate): void {
-    this.closeCreateModal();
-    this.loadUsers(); // Recargar la lista
+  onSaveUser(userData: UserCreate): void {
+    this.userService.createUser(userData).subscribe({
+      next: () => {
+        this.closeCreateModal();
+        this.loadUsers();
+      },
+      error: (err) => {
+        this.error.set(err.error?.detail || 'Error al crear usuario');
+      }
+    });
   }
 
-  // ==================== EDIT ====================
+  // Modales - Editar Usuario
   onEditUser(userId: number): void {
     const user = this.users().find(u => u.usuario_id === userId);
     if (user) {
@@ -103,15 +154,12 @@ export class Users implements OnInit {
     this.selectedUser = null;
   }
 
-  onUserUpdated(updated: UserOut): void {
-    // Actualizar en la lista
-    this.users.update(users => 
-      users.map(u => u.usuario_id === updated.usuario_id ? updated : u)
-    );
+  onUserUpdated(updatedUser: UserOut): void {
     this.closeEditModal();
+    this.loadUsers();
   }
 
-  // ==================== RESET PASSWORD ====================
+  // Modales - Restablecer Contraseña
   onResetPassword(userId: number): void {
     const user = this.users().find(u => u.usuario_id === userId);
     if (user) {
@@ -125,7 +173,7 @@ export class Users implements OnInit {
     this.selectedUser = null;
   }
 
-  // ==================== PERMISSIONS ====================
+  // Modales - Cambiar Permisos
   onChangePermissions(userId: number): void {
     const user = this.users().find(u => u.usuario_id === userId);
     if (user) {
@@ -140,10 +188,10 @@ export class Users implements OnInit {
   }
 
   onPermissionsUpdated(): void {
-    this.loadUsers(); // Recargar para ver cambios
+    this.loadUsers();
   }
 
-  // ==================== DEACTIVATE ====================
+  // Modales - Desactivar Usuario
   onDeactivateUser(userId: number): void {
     const user = this.users().find(u => u.usuario_id === userId);
     if (user) {
@@ -159,6 +207,6 @@ export class Users implements OnInit {
 
   onUserDeactivated(): void {
     this.closeDeactivateModal();
-    this.loadUsers(); // Recargar la lista
+    this.loadUsers();
   }
 }

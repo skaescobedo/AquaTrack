@@ -1,7 +1,13 @@
+<!-- user-card.html -->
 <div class="user-card">
-  <!-- Header Section: Avatar & Menu -->
+  <!-- Header Section: Avatar, Status Badge & Menu -->
   <div class="card-header-section flex items-start justify-between mb-4">
-    <div class="avatar">{{ initials }}</div>
+    <div class="flex items-center gap-3">
+      <div class="avatar">{{ initials }}</div>
+      <div class="user-status" [ngClass]="user.status === 'a' ? 'active' : 'inactive'">
+        {{ user.status === 'a' ? 'Activo' : 'Inactivo' }}
+      </div>
+    </div>
     
     <div class="relative">
       <button 
@@ -47,7 +53,11 @@
   <div class="card-footer-section">
     <div class="text-sm text-slate-400 flex items-center gap-2">
       <lucide-icon [img]="UserIcon" [size]="14"></lucide-icon>
-      <span>Granjas (2)</span>
+      @if (user.is_admin_global) {
+        <span>Granjas (todas)</span>
+      } @else {
+        <span>Granjas ({{ user.farms_count }})</span>
+      }
     </div>
   </div>
 </div>
