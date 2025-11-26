@@ -21,6 +21,7 @@ export class UserCard {
   @Output() changePermissions = new EventEmitter<number>();
   @Output() resetPassword = new EventEmitter<number>();
   @Output() deactivate = new EventEmitter<number>();
+  @Output() activate = new EventEmitter<number>();
 
   showMenu = false;
   constructor(private elementRef: ElementRef) {}
@@ -64,5 +65,10 @@ export class UserCard {
   onDeactivate(): void {
     this.showMenu = false;
     this.deactivate.emit(this.user.usuario_id);
+  }
+
+  onActivate(): void {
+    this.showMenu = false;
+    this.activate.emit(this.user.usuario_id);
   }
 }

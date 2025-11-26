@@ -55,4 +55,14 @@ export class UserService {
   updateUserFarmRole(userId: number, farmId: number, data: { rol_id: number }): Observable<any> {
     return this.http.patch(`${this.API_URL}/${userId}/farms/${farmId}`, data);
   }
+
+  activateUser(id: number): Observable<UserOut> {
+    return this.http.patch<UserOut>(`${this.API_URL}/${id}/activate`, {});
+  }
+
+  adminResetPassword(id: number, newPassword: string): Observable<UserOut> {
+    return this.http.patch<UserOut>(`${this.API_URL}/${id}/admin-reset-password`, {
+      new_password: newPassword
+    });
+  }
 }

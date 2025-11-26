@@ -22,7 +22,12 @@
           <button class="dropdown-item" (click)="onEdit()">Editar información</button>
           <button class="dropdown-item" (click)="onChangePermissions()">Cambiar permisos</button>
           <button class="dropdown-item" (click)="onResetPassword()">Restablecer contraseña</button>
-          <button class="dropdown-item text-red-400" (click)="onDeactivate()">Desactivar usuario</button>
+          
+          @if (user.status === 'a') {
+            <button class="dropdown-item text-red-400" (click)="onDeactivate()">Desactivar usuario</button>
+          } @else {
+            <button class="dropdown-item text-green-400" (click)="onActivate()">Activar usuario</button>
+          }
         </div>
       }
     </div>

@@ -1,10 +1,10 @@
-// users.ts
 import { Component, OnInit, signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { LucideAngularModule, UserPlus } from 'lucide-angular';
 import { UserService } from '../../services/users';
 import { UserOut, UserCreate, UserListItem } from '../../models/user.model';
 import { AuthService } from '../../services/auth';
+import { ConfirmDialog } from '../../shared/confirm-dialog/confirm-dialog';
 
 // Importar todos los componentes
 import { UserCard } from './user-card/user-card';
@@ -12,7 +12,6 @@ import { UserWizard } from './user-wizard/user-wizard';
 import { UserEditModal } from './user-edit-modal/user-edit-modal';
 import { ResetPasswordModal } from './reset-password-modal/reset-password-modal';
 import { ChangePermissionsModal } from './change-permissions-modal/change-permissions-modal';
-import { DeactivateUserModal } from './deactivate-user-modal/deactivate-user-modal';
 import { UserFilters } from './user-filters/user-filters';
 
 type FilterStatus = 'active' | 'inactive' | 'all';
@@ -28,8 +27,8 @@ type FilterStatus = 'active' | 'inactive' | 'all';
     UserEditModal,
     ResetPasswordModal,
     ChangePermissionsModal,
-    DeactivateUserModal,
-    UserFilters
+    UserFilters,
+    ConfirmDialog
   ],
   templateUrl: './users.html',
   styleUrls: ['./users.scss']
@@ -50,7 +49,15 @@ export class Users implements OnInit {
   showEditModal = signal(false);
   showResetPasswordModal = signal(false);
   showPermissionsModal = signal(false);
-  showDeactivateModal = signal(false);
+
+  // Confirm dialog
+  showConfirmDialog = false;
+  confirmDialogData: {
+    title: string;
+    message: string;
+    action: () => void;
+  } | null = null;
+  isConfirmLoading = false;
 
   // Usuario seleccionado para operaciones
   selectedUser: UserOut | null = null;
@@ -61,15 +68,12 @@ export class Users implements OnInit {
     const search = this.searchTerm().toLowerCase().trim();
     const status = this.filterStatus();
 
-    // Filtrar por estado
     if (status === 'active') {
       result = result.filter(u => u.status === 'a');
     } else if (status === 'inactive') {
       result = result.filter(u => u.status === 'i');
     }
-    // 'all' no filtra
 
-    // Filtrar por búsqueda
     if (search) {
       result = result.filter(u => {
         const fullName = `${u.nombre} ${u.apellido1} ${u.apellido2 || ''}`.toLowerCase();
@@ -191,22 +195,79 @@ export class Users implements OnInit {
     this.loadUsers();
   }
 
-  // Modales - Desactivar Usuario
+  // Desactivar Usuario con confirm-dialog
   onDeactivateUser(userId: number): void {
     const user = this.users().find(u => u.usuario_id === userId);
     if (user) {
-      this.selectedUser = user;
-      this.showDeactivateModal.set(true);
+      this.confirmDialogData = {
+        title: 'localhost:4200 dice',
+        message: `¿Desactivar a ${user.nombre} ${user.apellido1}? No podrá iniciar sesión hasta que lo reactives.`,
+        action: () => this.confirmDeactivate(userId)
+      };
+      this.showConfirmDialog = true;
     }
   }
 
-  closeDeactivateModal(): void {
-    this.showDeactivateModal.set(false);
-    this.selectedUser = null;
+  confirmDeactivate(userId: number): void {
+    this.isConfirmLoading = true;
+
+    this.userService.deactivateUser(userId).subscribe({
+      next: () => {
+        this.isConfirmLoading = false;
+        this.showConfirmDialog = false;
+        this.confirmDialogData = null;
+        this.loadUsers();
+      },
+      error: (err) => {
+        this.isConfirmLoading = false;
+        this.error.set(err.error?.detail || 'Error al desactivar usuario');
+        this.showConfirmDialog = false;
+        this.confirmDialogData = null;
+      }
+    });
   }
 
-  onUserDeactivated(): void {
-    this.closeDeactivateModal();
-    this.loadUsers();
+  // Activar Usuario con confirm-dialog
+  onActivateUser(userId: number): void {
+    const user = this.users().find(u => u.usuario_id === userId);
+    if (user) {
+      this.confirmDialogData = {
+        title: 'localhost:4200 dice',
+        message: `¿Reactivar a ${user.nombre} ${user.apellido1}? Podrá iniciar sesión nuevamente.`,
+        action: () => this.confirmActivate(userId)
+      };
+      this.showConfirmDialog = true;
+    }
+  }
+
+  confirmActivate(userId: number): void {
+    this.isConfirmLoading = true;
+
+    this.userService.activateUser(userId).subscribe({
+      next: () => {
+        this.isConfirmLoading = false;
+        this.showConfirmDialog = false;
+        this.confirmDialogData = null;
+        this.loadUsers();
+      },
+      error: (err) => {
+        this.isConfirmLoading = false;
+        this.error.set(err.error?.detail || 'Error al activar usuario');
+        this.showConfirmDialog = false;
+        this.confirmDialogData = null;
+      }
+    });
+  }
+
+  onConfirmDialogCancel(): void {
+    this.showConfirmDialog = false;
+    this.confirmDialogData = null;
+    this.isConfirmLoading = false;
+  }
+
+  onConfirmDialogConfirm(): void {
+    if (this.confirmDialogData?.action) {
+      this.confirmDialogData.action();
+    }
   }
 }

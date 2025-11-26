@@ -4,11 +4,12 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { LucideAngularModule, X, KeyRound, AlertCircle, CheckCircle } from 'lucide-angular';
 import { UserOut } from '../../../models/user.model';
 import { UserService } from '../../../services/users';
+import { ConfirmDialog } from '../../../shared/confirm-dialog/confirm-dialog';
 
 @Component({
   selector: 'app-reset-password-modal',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, LucideAngularModule],
+  imports: [CommonModule, ReactiveFormsModule, LucideAngularModule, ConfirmDialog],
   templateUrl: './reset-password-modal.html',
   styleUrls: ['./reset-password-modal.scss']
 })
@@ -22,10 +23,19 @@ export class ResetPasswordModal {
   @Output() close = new EventEmitter<void>();
 
   form: FormGroup;
-  isLoading = false;
+  isLoading = false;  // ← Mantener esta propiedad para el estado del botón
   error: string | null = null;
   success = false;
   generatedPassword = '';
+
+  // Estados para el confirm dialog
+  showConfirmDialog = false;
+  confirmDialogData: {
+    title: string;
+    message: string;
+    action: () => void;
+  } | null = null;
+  isConfirmLoading = false;
 
   constructor(
     private fb: FormBuilder,
@@ -67,34 +77,54 @@ export class ResetPasswordModal {
       return;
     }
 
-    this.isLoading = true;
+    // Mostrar confirm dialog antes de ejecutar
+    this.confirmDialogData = {
+      title: 'localhost:4200 dice',
+      message: `¿Restablecer la contraseña de ${this.user.nombre} ${this.user.apellido1}? Esta acción no se puede deshacer.`,
+      action: () => this.confirmResetPassword()
+    };
+    this.showConfirmDialog = true;
+  }
+
+  confirmResetPassword(): void {
+    this.isConfirmLoading = true;
+    this.isLoading = true;  // ← También activar este
     this.error = null;
 
-    // Nota: Este endpoint debe ser implementado en el backend
-    // Por ahora usaremos el changePassword pero necesitarás uno específico para admin reset
-    const payload = { new_password: this.form.value.new_password };
+    this.userService.adminResetPassword(this.user.usuario_id, this.form.value.new_password).subscribe({
+      next: () => {
+        this.isConfirmLoading = false;
+        this.isLoading = false;
+        this.showConfirmDialog = false;
+        this.confirmDialogData = null;
+        this.success = true;
+        setTimeout(() => this.close.emit(), 2000);
+      },
+      error: (err) => {
+        this.isConfirmLoading = false;
+        this.isLoading = false;
+        this.error = err.error?.detail || 'Error al restablecer contraseña';
+        this.showConfirmDialog = false;
+        this.confirmDialogData = null;
+      }
+    });
+  }
 
-    // TODO: Implementar endpoint específico para admin reset password
-    // this.userService.adminResetPassword(this.user.usuario_id, payload).subscribe({
-    //   next: () => {
-    //     this.success = true;
-    //     setTimeout(() => this.close.emit(), 2000);
-    //   },
-    //   error: (err) => {
-    //     this.error = err.error?.detail || 'Error al restablecer contraseña';
-    //     this.isLoading = false;
-    //   }
-    // });
+  onConfirmDialogCancel(): void {
+    this.showConfirmDialog = false;
+    this.confirmDialogData = null;
+    this.isConfirmLoading = false;
+  }
 
-    // Por ahora simulamos éxito
-    setTimeout(() => {
-      this.success = true;
-      this.isLoading = false;
-      setTimeout(() => this.close.emit(), 2000);
-    }, 1000);
+  onConfirmDialogConfirm(): void {
+    if (this.confirmDialogData?.action) {
+      this.confirmDialogData.action();
+    }
   }
 
   onClose(): void {
-    this.close.emit();
+    if (!this.isLoading) {
+      this.close.emit();
+    }
   }
 }
