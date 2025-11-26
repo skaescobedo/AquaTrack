@@ -57,18 +57,16 @@ export class Ponds implements OnInit {
     this.error.set(null);
 
     // Cargar granja, estanques y ciclo activo en paralelo
+    // ✅ NUEVO CÓDIGO (dentro de loadData)
     forkJoin({
-      farms: this.farmService.getFarms(),
+      farm: this.farmService.getFarm(this.farmId),  // ← Cambio aquí
       ponds: this.pondService.getPonds(this.farmId),
       activeCycle: this.cycleService.getActiveCycle(this.farmId).pipe(
-        catchError(() => of(null)) // Si no hay ciclo activo, retornar null
+        catchError(() => of(null))
       )
     }).subscribe({
       next: (result) => {
-        // Buscar la granja actual
-        const farm = result.farms.find(f => f.granja_id === this.farmId);
-        this.currentFarm.set(farm || null);
-        
+        this.currentFarm.set(result.farm);  // ← Cambio aquí
         this.ponds.set(result.ponds);
         this.activeCycle.set(result.activeCycle);
         this.loading.set(false);

@@ -80,12 +80,9 @@ export class Biometry implements OnInit {
   loadFarmName(): void {
     if (!this.farmId) return;
 
-    this.farmService.getFarms().subscribe({
-      next: (farms) => {
-        const farm = farms.find(f => f.granja_id === this.farmId);
-        if (farm) {
-          this.farmName.set(farm.nombre);
-        }
+    this.farmService.getFarm(this.farmId).subscribe({
+      next: (farm) => {
+        this.farmName.set(farm.nombre);
       },
       error: (err) => {
         console.error('Error loading farm:', err);

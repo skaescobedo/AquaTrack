@@ -16,10 +16,8 @@ export class FarmService {
     return this.http.get<Farm[]>(this.API_URL);
   }
 
-  // Cambiar para obtener la granja de la lista en lugar de endpoint individual
   getFarm(id: number): Observable<Farm> {
-    const params = new HttpParams().set('granja_id', id.toString());
-    return this.http.get<Farm>(`${this.API_URL}`, { params });
+    return this.http.get<Farm>(`${this.API_URL}/${id}`);
   }
 
   createFarm(data: FarmCreate): Observable<Farm> {

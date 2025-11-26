@@ -5,7 +5,6 @@ import { LucideAngularModule, Home, ArrowLeft, Menu, X, Waves, Sprout, Activity,
 import { AuthService } from '../../services/auth';
 import { FarmService } from '../../services/farms';
 import { Farm } from '../../models/farm.model';
-import { map } from 'rxjs/operators';
 
 interface FarmNavItem {
   label: string;
@@ -61,20 +60,13 @@ export class FarmLayout implements OnInit {
     });
   }
 
+  // ✅ NUEVO CÓDIGO
   loadFarmData(): void {
     if (!this.farmId) return;
 
-    // Obtener todas las granjas y filtrar la actual
-    this.farmService.getFarms().pipe(
-      map(farms => farms.find(f => f.granja_id === this.farmId) || null)
-    ).subscribe({
+    this.farmService.getFarm(this.farmId).subscribe({
       next: (farm) => {
-        if (farm) {
-          this.currentFarm.set(farm);
-        } else {
-          console.error('Granja no encontrada');
-          this.router.navigate(['/farms']);
-        }
+        this.currentFarm.set(farm);
       },
       error: (err) => {
         console.error('Error cargando granja:', err);
