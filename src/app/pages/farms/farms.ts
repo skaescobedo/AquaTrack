@@ -241,9 +241,20 @@ export class Farms implements OnInit {
       },
       error: (err) => {
         this.isConfirmLoading = false;
-        this.error.set(err.error?.detail || 'Error al desactivar granja');
-        this.showConfirmDialog = false;
-        this.confirmDialogData = null;
+        
+        // Si es error de ciclo activo, mostrar confirm-dialog informativo
+        if (err.status === 409 && err.error?.detail?.includes('ciclo activo')) {
+          this.confirmDialogData = {
+            title: 'No se puede desactivar',
+            message: err.error.detail,
+            action: () => this.onConfirmDialogCancel()
+          };
+        } else {
+          // Para otros errores, cerrar dialog y mostrar error
+          this.showConfirmDialog = false;
+          this.confirmDialogData = null;
+          this.error.set(err.error?.detail || 'Error al desactivar granja');
+        }
       }
     });
   }
