@@ -1,16 +1,16 @@
 <div class="biometry-page">
   <!-- Header -->
-  <div class="page-header">
-    <div class="header-content">
-      <h1 class="page-title">Biometrías</h1>
-      <p class="page-subtitle">
-        Registro y seguimiento de biometrías para {{ activeCycle()?.nombre || 'Ciclo' }}
-      </p>
+  <div class="page-header-actions">
+    <div class="left">
+      <h1 class="title">Biometrías</h1>
+      <p class="subtitle">Registro y seguimiento de biometrías para {{ activeCycle()?.nombre || 'Ciclo' }}</p>
     </div>
-    <button class="btn-primary" (click)="onOpenWizard()" [disabled]="!activeCycle()">
-      <lucide-icon [img]="Plus" [size]="20"></lucide-icon>
-      <span>Registrar Biometría</span>
-    </button>
+    <div class="right">
+      <button class="btn-primary" (click)="onOpenWizard()" [disabled]="!activeCycle()">
+        <lucide-icon [img]="Plus" [size]="20"></lucide-icon>
+        <span>Registrar Biometría</span>
+      </button>
+    </div>
   </div>
 
   <!-- Filters -->

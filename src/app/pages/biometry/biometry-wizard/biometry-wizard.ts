@@ -1,6 +1,6 @@
 import { Component, Input, Output, EventEmitter, signal, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { LucideAngularModule, X, ArrowLeft, ArrowRight } from 'lucide-angular';
+import { LucideAngularModule, X, ArrowLeft, ArrowRight, Activity } from 'lucide-angular';
 import { BiometryService } from '../../../services/biometry';
 import { BiometryCreate, BiometryContext } from '../../../models/biometry.model';
 import { Pond } from '../../../models/pond.model';
@@ -39,6 +39,7 @@ export class BiometryWizard implements OnInit {
   readonly X = X;
   readonly ArrowLeft = ArrowLeft;
   readonly ArrowRight = ArrowRight;
+  readonly Activity = Activity;
 
   @Input({ required: true }) cycleId!: number;
   @Input({ required: true }) ponds: Pond[] = [];

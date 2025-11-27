@@ -2,10 +2,10 @@
   <div class="modal-content" (click)="$event.stopPropagation()">
     <!-- Header -->
     <div class="modal-header">
-      <div class="header-icon">
+      <div class="icon-wrapper">
         <lucide-icon [img]="Calendar" [size]="24"></lucide-icon>
       </div>
-      <div class="header-text">
+      <div class="header-content">
         <h2 class="modal-title">Crear Plan de Siembras</h2>
         <p class="modal-subtitle">Define los parámetros base para el plan de siembras del ciclo</p>
       </div>
@@ -113,7 +113,7 @@
       </div>
 
       <!-- Actions -->
-      <div class="modal-actions">
+      <div class="modal-footer">
         <button
           type="button"
           class="btn btn-secondary"

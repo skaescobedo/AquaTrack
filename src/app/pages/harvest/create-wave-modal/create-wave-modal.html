@@ -2,10 +2,10 @@
   <div class="modal-content" (click)="$event.stopPropagation()">
     <!-- Header -->
     <div class="modal-header">
-      <div class="header-icon">
+      <div class="icon-wrapper">
         <lucide-icon [img]="Package" [size]="24"></lucide-icon>
       </div>
-      <div class="header-text">
+      <div class="header-content">
         <h2 class="modal-title">Crear Ola de Cosecha</h2>
         <p class="modal-subtitle">Define los parámetros para la nueva ola de cosecha</p>
       </div>
@@ -52,15 +52,12 @@
             class="form-input"
             required
           >
-            <option value="p">Parcial - Retiro parcial de organismos</option>
-            <option value="f">Final - Cosecha completa del estanque</option>
+            <option value="p">Parcial</option>
+            <option value="f">Final</option>
           </select>
           <span class="hint">
-            @if (tipo === 'p') {
-              <strong>Parcial:</strong> Se retiran algunos organismos, el estanque continúa operando
-            } @else {
-              <strong>Final:</strong> Se retiran todos los organismos, el estanque queda vacío
-            }
+            <strong>Parcial:</strong> retiro de algunos organismos.
+            <strong>Final:</strong> cosecha completa del estanque.
           </span>
         </div>
       </div>
@@ -98,10 +95,8 @@
         </div>
 
         <div class="info-box">
-          <lucide-icon [img]="AlertCircle" [size]="16"></lucide-icon>
-          <span>
-            Las fechas se distribuirán uniformemente entre los estanques del plan de siembras
-          </span>
+          <lucide-icon [img]="Calendar" [size]="20"></lucide-icon>
+          <span>Las fechas se distribuirán uniformemente entre los estanques</span>
         </div>
       </div>
 
@@ -124,23 +119,23 @@
           <span class="hint">Densidad objetivo a retirar por m²</span>
         </div>
 
+        <!-- Notas -->
         <div class="form-group">
           <label for="notas" class="form-label">Notas</label>
           <textarea
             id="notas"
             [(ngModel)]="notas"
             name="notas"
+            rows="3"
             class="form-textarea"
             placeholder="Observaciones adicionales..."
-            rows="3"
-            maxlength="255"
           ></textarea>
           <span class="hint">Opcional - Máximo 255 caracteres</span>
         </div>
       </div>
 
       <!-- Actions -->
-      <div class="modal-actions">
+      <div class="modal-footer">
         <button
           type="button"
           class="btn btn-secondary"

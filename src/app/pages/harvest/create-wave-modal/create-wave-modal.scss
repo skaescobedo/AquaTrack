@@ -1,10 +1,40 @@
 @use '../../../../theme/variables';
-
-// Usar los estilos base de modales
 @use '../../users/user-edit-modal/user-edit-modal.scss';
 
+.modal-header {
+  @apply gap-4;
+}
+
+.icon-wrapper {
+  @apply w-12 h-12 bg-blue-500 bg-opacity-20 rounded-lg flex items-center justify-center text-blue-400 flex-shrink-0;
+}
+
+.header-content {
+  @apply flex-1;
+
+  .modal-title {
+    @apply text-xl font-semibold text-white m-0 mb-1;
+  }
+
+  .modal-subtitle {
+    @apply text-sm text-slate-400 m-0;
+  }
+}
+
+.close-button {
+  @apply p-2 rounded-lg text-slate-400 hover:text-white hover:bg-slate-700 transition-colors flex-shrink-0;
+}
+
+.form-section {
+  @apply mb-6;
+
+  .section-title {
+    @apply text-lg font-semibold text-white mb-4 m-0;
+  }
+}
+
 .info-box {
-  @apply flex items-start gap-3 p-4 bg-blue-500 bg-opacity-10 border border-blue-500 rounded-lg text-sm text-blue-300;
+  @apply flex items-start gap-3 p-4 bg-blue-500 bg-opacity-10 border border-blue-500 rounded-lg text-sm text-blue-300 mt-4;
 
   lucide-icon {
     @apply flex-shrink-0 text-blue-400 mt-0.5;
@@ -20,5 +50,19 @@
 
   strong {
     @apply text-slate-300;
+  }
+}
+
+.modal-footer {
+  @apply flex justify-end gap-3 pt-4 mt-4 border-t border-slate-700;
+
+  .btn {
+    @apply flex items-center gap-2;
+  }
+}
+
+@media (max-width: 768px) {
+  .form-row {
+    @apply grid-cols-1;
   }
 }

@@ -4,6 +4,30 @@
   @apply max-w-2xl;
 }
 
+.modal-header {
+  @apply gap-4;
+}
+
+.icon-wrapper {
+  @apply w-12 h-12 bg-blue-500 bg-opacity-20 rounded-lg flex items-center justify-center text-blue-400 flex-shrink-0;
+}
+
+.header-content {
+  @apply flex-1;
+
+  .modal-title {
+    @apply text-xl font-semibold text-white m-0 mb-1;
+  }
+
+  .modal-subtitle {
+    @apply text-sm text-slate-400 m-0;
+  }
+}
+
+.close-button {
+  @apply p-2 rounded-lg text-slate-400 hover:text-white hover:bg-slate-700 transition-colors flex-shrink-0;
+}
+
 .form-section {
   @apply mb-6;
 
@@ -22,6 +46,10 @@
   strong {
     @apply font-semibold text-blue-100;
   }
+}
+
+.modal-footer {
+  @apply flex justify-end gap-3 pt-4 mt-4 border-t border-slate-700;
 }
 
 @media (max-width: 768px) {
