@@ -64,15 +64,10 @@ export class WaveDetailPage implements OnInit {
     const waveData = this.wave();
     const pondsData = this.ponds();
 
-    console.log('🔄 Computed harvestsWithPondInfo');
-    console.log('📦 Wave data:', waveData);
-    console.log('🏊 Ponds data:', pondsData.length, 'estanques');
-
     if (!waveData) return [];
 
     return waveData.cosechas.map(h => {
       const pond = pondsData.find(p => p.estanque_id === h.estanque_id);
-      console.log(`🔍 Buscando estanque ${h.estanque_id}:`, pond ? `Encontrado: ${pond.nombre}` : 'NO ENCONTRADO');
       
       return {
         ...h,
@@ -135,34 +130,24 @@ export class WaveDetailPage implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    console.log('🔍 WaveDetailPage - ngOnInit');
-    
-    // ✅ PRIMERO: Obtener farmId del árbol de rutas
+    // Obtener farmId del árbol de rutas
     let currentRoute: ActivatedRoute | null = this.route;
     while (currentRoute) {
       const farmIdParam = currentRoute.snapshot.paramMap.get('farmId');
       if (farmIdParam) {
         this.farmId = parseInt(farmIdParam);
-        console.log('🏭 Farm ID encontrado:', this.farmId);
         break;
       }
       currentRoute = currentRoute.parent;
     }
 
-    if (!this.farmId) {
-      console.error('❌ No se encontró farmId en la jerarquía de rutas');
-    }
-
-    // ✅ SEGUNDO: Obtener waveId y cargar datos
+    // Obtener waveId y cargar datos
     this.route.params.subscribe(params => {
-      console.log('📍 Route params:', params);
       this.waveId = params['waveId'] ? parseInt(params['waveId']) : null;
-      console.log('🌊 Wave ID:', this.waveId);
 
       if (this.waveId) {
         this.loadData();
       } else {
-        console.error('❌ No se encontró waveId');
         this.loading.set(false);
         this.error.set('No se pudo obtener el ID de la ola');
       }
@@ -172,9 +157,6 @@ export class WaveDetailPage implements OnInit {
   loadData(): void {
     if (!this.waveId) return;
 
-    console.log('📦 loadData - waveId:', this.waveId);
-    console.log('🏭 loadData - farmId:', this.farmId);
-
     this.loading.set(true);
     this.error.set(null);
 
@@ -183,16 +165,12 @@ export class WaveDetailPage implements OnInit {
       ponds: this.farmId ? this.pondService.getPonds(this.farmId) : of([])
     }).subscribe({
       next: (result) => {
-        console.log('✅ Wave cargada:', result.wave);
-        console.log('✅ Ponds cargados:', result.ponds.length, 'estanques');
-        console.log('🏊 Lista de estanques:', result.ponds.map(p => `${p.estanque_id}: ${p.nombre}`));
-        
         this.wave.set(result.wave);
         this.ponds.set(result.ponds);
         this.loading.set(false);
       },
       error: (err) => {
-        console.error('❌ Error loading wave detail:', err);
+        console.error('Error loading wave detail:', err);
         this.error.set('Error al cargar el detalle de la ola');
         this.loading.set(false);
       }
@@ -238,13 +216,11 @@ export class WaveDetailPage implements OnInit {
 
   onWaveCancelled(): void {
     this.showCancelWaveModal.set(false);
-    // Volver a la lista de olas
     this.goBack();
   }
 
   goBack(): void {
-    // Navegar de vuelta a la lista de olas
-    this.router.navigate(['../'], { relativeTo: this.route });
+    this.router.navigate(['/farms', this.farmId, 'harvest']);
   }
 
   // Getters

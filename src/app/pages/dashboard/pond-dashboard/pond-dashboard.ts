@@ -106,7 +106,7 @@ export class PondDashboard implements OnInit {
       'c': 'En Cosecha',
       'm': 'Mantenimiento'
     };
-    return status ? labels[status] || status : '';
+    return status ? labels[status] || 'Desconocido' : '';
   }
 
   get statusClass(): string {

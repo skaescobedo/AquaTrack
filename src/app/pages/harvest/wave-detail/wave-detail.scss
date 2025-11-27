@@ -4,16 +4,8 @@
   @apply min-h-full;
 }
 
-.page-breadcrumb {
-  @apply mb-6;
-
-  .btn-back {
-    @apply flex items-center gap-2 text-slate-400 hover:text-white transition-colors;
-
-    lucide-icon {
-      @apply flex-shrink-0;
-    }
-  }
+.page-header {
+  @apply flex items-center gap-4 mb-6;
 }
 
 .wave-detail-content {

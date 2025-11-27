@@ -5,11 +5,7 @@
 }
 
 .page-header {
-  @apply mb-6;
-}
-
-.btn-back {
-  @apply inline-flex items-center gap-2 px-4 py-2 text-slate-300 hover:text-white bg-slate-800 hover:bg-slate-700 rounded-lg transition-colors mb-4;
+  @apply flex items-center gap-4 mb-6;
 }
 
 .pond-title-section {
