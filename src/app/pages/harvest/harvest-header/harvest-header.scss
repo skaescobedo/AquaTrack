@@ -1,7 +1,17 @@
 @use '../../../../theme/variables';
 
 .harvest-header {
-  @apply grid grid-cols-1 md:grid-cols-3 gap-6 mb-8;
+  @apply grid grid-cols-1 gap-6 mb-8;
+  
+  // 3 columnas solo en pantallas grandes (>1170px)
+  @media (min-width: 1171px) {
+    @apply grid-cols-3;
+  }
+  
+  // 2 columnas para rango medio
+  @media (min-width: 768px) and (max-width: 1170px) {
+    @apply grid-cols-2;
+  }
 }
 
 // Cards base
@@ -127,13 +137,6 @@
         }
       }
     }
-  }
-}
-
-// Responsive
-@media (max-width: 1024px) {
-  .harvest-header {
-    @apply grid-cols-1;
   }
 }
 

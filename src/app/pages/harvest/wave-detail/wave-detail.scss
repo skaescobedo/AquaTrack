@@ -22,7 +22,12 @@
 
 // Grid vs List Layout
 .harvests-grid {
-  @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6;
+  @apply grid grid-cols-1 md:grid-cols-2 gap-6;
+  
+  // 3 columnas solo en pantallas grandes (>1170px)
+  @media (min-width: 1171px) {
+    @apply grid-cols-3;
+  }
 }
 
 .harvests-list {
