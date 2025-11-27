@@ -136,3 +136,27 @@
     @apply grid-cols-1;
   }
 }
+
+// Fix para pantallas pequeñas (iPhone SE y similares)
+@media (max-width: 390px) {
+  .stats-card {
+    .stats-content {
+      .stats-grid {
+        @apply gap-1.5;
+
+        .stat-item {
+          .stat-value {
+            @apply text-lg;
+          }
+
+          .stat-label {
+            @apply text-[9px] leading-tight;
+            // Forzar word-break para evitar overflow
+            word-break: break-word;
+            hyphens: auto;
+          }
+        }
+      }
+    }
+  }
+}

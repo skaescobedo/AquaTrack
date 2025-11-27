@@ -18,7 +18,8 @@
     }
   }
 
-  @media (max-width: 1024px) {
+  // En tablets y móviles, sidebar es fixed overlay
+  @media (max-width: 1023px) {
     @apply fixed left-0 top-0 bottom-0 z-50;
   }
 }
@@ -66,6 +67,11 @@
 // ================== MAIN CONTENT ==================
 .main-content {
   @apply flex-1 flex flex-col overflow-hidden;
+
+  // En tablets y móviles, el main-content ocupa todo el ancho
+  @media (max-width: 1023px) {
+    @apply w-full;
+  }
 }
 
 .topbar {
@@ -80,7 +86,12 @@
   }
 
   .mobile-menu-toggle {
-    @apply p-2 text-slate-300 hover:text-white hover:bg-slate-700 rounded-lg transition-colors lg:hidden;
+    @apply p-2 text-slate-300 hover:text-white hover:bg-slate-700 rounded-lg transition-colors;
+    
+    // Mostrar en tablets y móviles
+    @media (min-width: 1024px) {
+      @apply hidden;
+    }
   }
 
   .user-menu {
@@ -110,5 +121,10 @@
 
 // ================== MOBILE OVERLAY ==================
 .sidebar-overlay {
-  @apply fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden;
+  @apply fixed inset-0 bg-black bg-opacity-50 z-40;
+  
+  // Solo visible en tablets y móviles
+  @media (min-width: 1024px) {
+    @apply hidden;
+  }
 }

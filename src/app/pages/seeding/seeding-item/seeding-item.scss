@@ -195,7 +195,31 @@
 }
 
 // Responsive
-@media (max-width: 1024px) {
+
+// Rango problemático 1024px - 1170px
+@media (min-width: 1024px) and (max-width: 1170px) {
+  .seeding-item.list-view {
+    .item-body {
+      // Ajustar el grid para que no se apriete tanto
+      @apply gap-4;
+
+      .pond-info {
+        @apply col-span-3;
+      }
+
+      .seeding-details {
+        @apply col-span-6;
+      }
+
+      .item-actions {
+        @apply col-span-3;
+      }
+    }
+  }
+}
+
+// Menor a 1024px - full mobile/tablet
+@media (max-width: 1023px) {
   .seeding-item.list-view {
     .item-body {
       @apply grid-cols-1;
