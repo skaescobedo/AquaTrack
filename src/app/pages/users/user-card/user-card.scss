@@ -11,6 +11,17 @@
     transform: translateY(-4px);
   }
 
+  // ✨ NUEVO: Estilo especial para la tarjeta del usuario actual
+  &.current-user {
+    @apply border-blue-400;
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.05) 0%, rgba(26, 35, 50, 1) 100%);
+    
+    &:hover {
+      @apply border-blue-400 shadow-2xl;
+      box-shadow: 0 10px 40px rgba(59, 130, 246, 0.2);
+    }
+  }
+
   // Header con avatar y menú
   .card-header-section {
     flex-shrink: 0;
@@ -32,9 +43,25 @@
     border-top: 1px solid theme('colors.slate.700');
   }
 
+  // ✨ NUEVO: Contenedor de avatar con badge
+  .avatar-container {
+    position: relative;
+  }
+
   .avatar {
     @apply w-16 h-16 bg-blue-500 rounded-full flex items-center justify-center text-white text-xl font-bold;
     flex-shrink: 0;
+  }
+
+  // ✨ NUEVO: Badge "Tú" sobre el avatar
+  .current-user-badge {
+    position: absolute;
+    bottom: -4px;
+    right: -4px;
+    @apply bg-blue-500 text-white text-xs font-bold px-2 py-0.5 rounded-full border-2 border-slate-800;
+    font-size: 0.65rem;
+    letter-spacing: 0.5px;
+    box-shadow: 0 2px 8px rgba(59, 130, 246, 0.4);
   }
 
   // Status badge (igual que farm-card)

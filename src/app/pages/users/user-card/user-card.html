@@ -1,36 +1,45 @@
 <!-- user-card.html -->
-<div class="user-card">
+<div class="user-card" [class.current-user]="isCurrentUser">
   <!-- Header Section: Avatar, Status Badge & Menu -->
   <div class="card-header-section flex items-start justify-between mb-4">
     <div class="flex items-center gap-3">
-      <div class="avatar">{{ initials }}</div>
+      <div class="avatar-container">
+        <div class="avatar">{{ initials }}</div>
+        <!-- ✨ Badge "Tú" para el usuario actual -->
+        @if (isCurrentUser) {
+          <div class="current-user-badge">Tú</div>
+        }
+      </div>
       <div class="user-status" [ngClass]="user.status === 'a' ? 'active' : 'inactive'">
         {{ user.status === 'a' ? 'Activo' : 'Inactivo' }}
       </div>
     </div>
     
-    <div class="relative">
-      <button 
-        class="btn btn-ghost btn-icon"
-        (click)="toggleMenu()"
-      >
-        <lucide-icon [img]="MoreVertical" [size]="20"></lucide-icon>
-      </button>
+    <!-- Solo mostrar menú si NO es el usuario actual -->
+    @if (!isCurrentUser) {
+      <div class="relative">
+        <button 
+          class="btn btn-ghost btn-icon"
+          (click)="toggleMenu()"
+        >
+          <lucide-icon [img]="MoreVertical" [size]="20"></lucide-icon>
+        </button>
 
-      @if (showMenu) {
-        <div class="dropdown-menu">
-          <button class="dropdown-item" (click)="onEdit()">Editar información</button>
-          <button class="dropdown-item" (click)="onChangePermissions()">Cambiar permisos</button>
-          <button class="dropdown-item" (click)="onResetPassword()">Restablecer contraseña</button>
-          
-          @if (user.status === 'a') {
-            <button class="dropdown-item text-red-400" (click)="onDeactivate()">Desactivar usuario</button>
-          } @else {
-            <button class="dropdown-item text-green-400" (click)="onActivate()">Activar usuario</button>
-          }
-        </div>
-      }
-    </div>
+        @if (showMenu) {
+          <div class="dropdown-menu">
+            <button class="dropdown-item" (click)="onEdit()">Editar información</button>
+            <button class="dropdown-item" (click)="onChangePermissions()">Cambiar permisos</button>
+            <button class="dropdown-item" (click)="onResetPassword()">Restablecer contraseña</button>
+            
+            @if (user.status === 'a') {
+              <button class="dropdown-item text-red-400" (click)="onDeactivate()">Desactivar usuario</button>
+            } @else {
+              <button class="dropdown-item text-green-400" (click)="onActivate()">Activar usuario</button>
+            }
+          </div>
+        }
+      </div>
+    }
   </div>
 
   <!-- Info Section: User Info & Role -->

@@ -270,4 +270,9 @@ export class Users implements OnInit {
       this.confirmDialogData.action();
     }
   }
+
+  // ✨ NUEVO: Getter para ID del usuario actual
+  get currentUserId(): number | undefined {
+    return this.authService.currentUser()?.usuario_id;
+  }
 }

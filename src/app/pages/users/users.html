@@ -45,6 +45,7 @@
         @for (user of filteredUsers(); track user.usuario_id) {
           <app-user-card 
             [user]="user"
+            [currentUserId]="currentUserId"
             (edit)="onEditUser($event)"
             (changePermissions)="onChangePermissions($event)"
             (resetPassword)="onResetPassword($event)"

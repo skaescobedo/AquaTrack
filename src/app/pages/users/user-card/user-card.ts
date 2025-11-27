@@ -17,6 +17,7 @@ export class UserCard {
   readonly Shield = Shield;
 
   @Input({ required: true }) user!: UserListItem;
+  @Input() currentUserId?: number; // ID del usuario actual
   @Output() edit = new EventEmitter<number>();
   @Output() changePermissions = new EventEmitter<number>();
   @Output() resetPassword = new EventEmitter<number>();
@@ -24,7 +25,9 @@ export class UserCard {
   @Output() activate = new EventEmitter<number>();
 
   showMenu = false;
+  
   constructor(private elementRef: ElementRef) {}
+  
   // Cerrar menú al hacer clic fuera de ESTA card específica
   @HostListener('document:click', ['$event'])
   onDocumentClick(event: MouseEvent): void {
@@ -41,6 +44,11 @@ export class UserCard {
 
   get fullName(): string {
     return `${this.user.nombre} ${this.user.apellido1}`;
+  }
+
+  // ✨ NUEVO: Verificar si es el usuario actual
+  get isCurrentUser(): boolean {
+    return this.currentUserId === this.user.usuario_id;
   }
 
   toggleMenu(): void {
