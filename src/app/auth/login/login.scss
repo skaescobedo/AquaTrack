@@ -137,6 +137,39 @@
   }
 }
 
+// ✨ NUEVO: Estilos para input con icono Eye
+.input-with-icon {
+  position: relative;
+
+  .form-input {
+    padding-right: 3rem;
+  }
+
+  .input-icon-btn {
+    position: absolute;
+    right: 0.75rem;
+    top: 50%;
+    transform: translateY(-50%);
+    background: transparent;
+    border: none;
+    color: #94a3b8;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.25rem;
+    transition: color 0.2s ease;
+
+    &:hover {
+      color: #cbd5e1;
+    }
+
+    &:focus {
+      outline: none;
+    }
+  }
+}
+
 .field-error {
   font-size: 0.75rem;
   color: #fca5a5;

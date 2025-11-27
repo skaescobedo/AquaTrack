@@ -72,6 +72,8 @@ export class AuthService {
     );
   }
 
+  
+
   /**
    * Obtener perfil del usuario actual
    */
@@ -116,20 +118,17 @@ export class AuthService {
   /**
    * Solicitar recuperación de contraseña
    */
-  forgotPassword(request: ForgotPasswordRequest): Observable<PasswordResetResponse> {
+  forgotPassword(payload: ForgotPasswordRequest): Observable<PasswordResetResponse> {
     return this.http.post<PasswordResetResponse>(
       `${this.API_URL}/forgot-password`,
-      request
+      payload
     );
   }
 
-  /**
-   * Restablecer contraseña con token
-   */
-  resetPassword(request: ResetPasswordRequest): Observable<PasswordResetResponse> {
+  resetPassword(payload: ResetPasswordRequest): Observable<PasswordResetResponse> {
     return this.http.post<PasswordResetResponse>(
       `${this.API_URL}/reset-password`,
-      request
+      payload
     );
   }
 

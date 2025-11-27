@@ -2,14 +2,12 @@ import { HttpInterceptorFn, HttpErrorResponse } from '@angular/common/http';
 import { inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { catchError, throwError } from 'rxjs';
-import { AuthService } from '../../services/auth';
 
 /**
  * Interceptor para manejar errores HTTP globalmente
  */
 export const errorInterceptor: HttpInterceptorFn = (req, next) => {
   const router = inject(Router);
-  const authService = inject(AuthService);
 
   return next(req).pipe(
     catchError((error: HttpErrorResponse) => {
@@ -19,7 +17,9 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
         case 401:
           // Token inválido o expirado - redirigir a login
           errorMessage = 'Sesión expirada. Por favor, inicia sesión nuevamente.';
-          authService.logout();
+          // ✅ Limpiar token directamente sin usar AuthService
+          localStorage.removeItem('aquatrack_token');
+          router.navigate(['/login']);
           break;
         
         case 403:
@@ -51,9 +51,6 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
       }
 
       console.error('HTTP Error:', error);
-      
-      // Aquí puedes integrar un servicio de notificaciones (toast/snackbar)
-      // this.notificationService.error(errorMessage);
 
       return throwError(() => ({
         status: error.status,

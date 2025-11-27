@@ -1,20 +1,25 @@
 import { Component, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute, RouterLink } from '@angular/router';
+import { LucideAngularModule, Eye, EyeOff } from 'lucide-angular';
 import { AuthService } from '../../services/auth';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, RouterLink, LucideAngularModule],
   templateUrl: './login.html',
   styleUrls: ['./login.scss']
 })
 export class LoginComponent {
+  readonly Eye = Eye;
+  readonly EyeOff = EyeOff;
+
   loginForm: FormGroup;
   loading = signal(false);
   errorMessage = signal<string | null>(null);
+  showPassword = signal(false);
 
   constructor(
     private fb: FormBuilder,
@@ -28,6 +33,10 @@ export class LoginComponent {
     });
   }
 
+  togglePasswordVisibility(): void {
+    this.showPassword.update(show => !show);
+  }
+
   onSubmit(): void {
     if (this.loginForm.invalid) {
       this.markFormGroupTouched(this.loginForm);
@@ -37,25 +46,12 @@ export class LoginComponent {
     this.loading.set(true);
     this.errorMessage.set(null);
 
-    console.log('🔐 Iniciando login...');
-
     this.authService.login(this.loginForm.value).subscribe({
-      next: (response) => {
-        console.log('✅ Login exitoso, token recibido');
-        console.log('📍 Navegando a farms...');
-        
+      next: () => {
         const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/farms';
-        console.log('🎯 URL destino:', returnUrl);
-        
-        this.router.navigate([returnUrl]).then(success => {
-          console.log('🚀 Navegación completada:', success);
-          if (!success) {
-            console.error('❌ La navegación falló');
-          }
-        });
+        this.router.navigate([returnUrl]);
       },
       error: (error) => {
-        console.error('❌ Error en login:', error);
         this.loading.set(false);
         this.errorMessage.set(error.error?.detail || 'Credenciales inválidas');
       },

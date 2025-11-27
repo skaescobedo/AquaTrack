@@ -40,24 +40,34 @@
         }
       </div>
 
-      <!-- Campo Password -->
+      <!-- Campo Password con Eye Toggle -->
       <div class="form-group">
         <label for="password" class="form-label">Contraseña</label>
-        <input
-          id="password"
-          type="password"
-          formControlName="password"
-          class="form-input"
-          [class.error]="password?.invalid && password?.touched"
-          placeholder="••••••••"
-        />
+        <div class="input-with-icon">
+          <input
+            id="password"
+            [type]="showPassword() ? 'text' : 'password'"
+            formControlName="password"
+            class="form-input"
+            [class.error]="password?.invalid && password?.touched"
+            placeholder="••••••••"
+          />
+          <button
+            type="button"
+            class="input-icon-btn"
+            (click)="togglePasswordVisibility()"
+            tabindex="-1"
+          >
+            <lucide-icon [img]="showPassword() ? EyeOff : Eye" [size]="18"></lucide-icon>
+          </button>
+        </div>
         @if (password?.invalid && password?.touched) {
           <span class="field-error">
             @if (password?.errors?.['required']) {
               La contraseña es requerida
             }
             @if (password?.errors?.['minlength']) {
-              La contraseña debe tener mínimo 8 caracteres
+              La contraseña debe tener mínimo 5 caracteres
             }
           </span>
         }
@@ -65,7 +75,7 @@
 
       <!-- Link Olvidaste tu contraseña -->
       <div class="forgot-password-wrapper">
-        <a href="/forgot-password" class="forgot-password-link">
+        <a routerLink="/forgot-password" class="forgot-password-link">
           ¿Olvidaste tu contraseña?
         </a>
       </div>
