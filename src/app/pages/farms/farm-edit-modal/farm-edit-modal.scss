@@ -1,0 +1,4 @@
+@use '../../../../theme/variables';
+
+// Usar los estilos base de modales (exactamente como todos los demás modales)
+@use '../../users/user-edit-modal/user-edit-modal.scss';

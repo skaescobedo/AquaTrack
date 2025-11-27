@@ -1,4 +1,4 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, OnInit, signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { LucideAngularModule, Building2, Plus } from 'lucide-angular';
@@ -7,11 +7,24 @@ import { AuthService } from '../../services/auth';
 import { Farm, FarmCreate } from '../../models/farm.model';
 import { FarmCard } from './farm-card/farm-card';
 import { FarmModal } from './farm-modal/farm-modal';
+import { FarmEditModal } from './farm-edit-modal/farm-edit-modal';
+import { FarmFilters } from './farm-filters/farm-filters';
+import { ConfirmDialog } from '../../shared/confirm-dialog/confirm-dialog';
+
+type FilterStatus = 'active' | 'inactive' | 'all';
 
 @Component({
   selector: 'app-farms',
   standalone: true,
-  imports: [CommonModule, LucideAngularModule, FarmCard, FarmModal],
+  imports: [
+    CommonModule, 
+    LucideAngularModule, 
+    FarmCard, 
+    FarmModal,
+    FarmEditModal,
+    FarmFilters,
+    ConfirmDialog
+  ],
   templateUrl: './farms.html',
   styleUrls: ['./farms.scss']
 })
@@ -22,8 +35,52 @@ export class Farms implements OnInit {
   farms = signal<Farm[]>([]);
   loading = signal(true);
   error = signal<string | null>(null);
-  showModal = signal(false);
   userLoading = signal(true);
+
+  // Filtros
+  searchTerm = signal('');
+  filterStatus = signal<FilterStatus>('active');
+
+  // Estados de modales
+  showModal = signal(false);
+  showEditModal = signal(false);
+  selectedFarm: Farm | null = null;
+
+  // Confirm dialog
+  showConfirmDialog = false;
+  confirmDialogData: {
+    title: string;
+    message: string;
+    action: () => void;
+  } | null = null;
+  isConfirmLoading = false;
+
+  // Computed: Granjas filtradas
+  filteredFarms = computed(() => {
+    let result = this.farms();
+    const search = this.searchTerm().toLowerCase().trim();
+    const status = this.filterStatus();
+
+    if (status === 'active') {
+      result = result.filter(f => f.is_active);
+    } else if (status === 'inactive') {
+      result = result.filter(f => !f.is_active);
+    }
+
+    if (search) {
+      result = result.filter(f => {
+        const nombre = f.nombre.toLowerCase();
+        const ubicacion = (f.ubicacion || '').toLowerCase();
+        const descripcion = (f.descripcion || '').toLowerCase();
+        
+        return nombre.includes(search) || 
+               ubicacion.includes(search) || 
+               descripcion.includes(search);
+      });
+    }
+
+    return result;
+  });
 
   constructor(
     private farmService: FarmService,
@@ -109,6 +166,11 @@ export class Farms implements OnInit {
     });
   }
 
+  onFilterChange(event: { search: string; status: FilterStatus }): void {
+    this.searchTerm.set(event.search);
+    this.filterStatus.set(event.status);
+  }
+
   viewFarmPanel(farmId: number): void {
     this.router.navigate(['/farms', farmId]);
   }
@@ -137,15 +199,108 @@ export class Farms implements OnInit {
     });
   }
 
+  onEditFarm(farm: Farm): void {
+    this.selectedFarm = farm;
+    this.showEditModal.set(true);
+  }
+
+  closeEditModal(): void {
+    this.showEditModal.set(false);
+    this.selectedFarm = null;
+  }
+
+  onFarmUpdated(updatedFarm: Farm): void {
+    this.farms.update(farms => 
+      farms.map(f => f.granja_id === updatedFarm.granja_id ? updatedFarm : f)
+    );
+    this.closeEditModal();
+  }
+
+  // Desactivar Granja con confirm-dialog
+  onDeactivateFarm(farmId: number): void {
+    const farm = this.farms().find(f => f.granja_id === farmId);
+    if (farm) {
+      this.confirmDialogData = {
+        title: 'localhost:4200 dice',
+        message: `¿Desactivar la granja "${farm.nombre}"? No aparecerá en la lista de granjas activas.`,
+        action: () => this.confirmDeactivate(farmId)
+      };
+      this.showConfirmDialog = true;
+    }
+  }
+
+  confirmDeactivate(farmId: number): void {
+    this.isConfirmLoading = true;
+
+    this.farmService.updateFarm(farmId, { is_active: false }).subscribe({
+      next: () => {
+        this.isConfirmLoading = false;
+        this.showConfirmDialog = false;
+        this.confirmDialogData = null;
+        this.loadFarms();
+      },
+      error: (err) => {
+        this.isConfirmLoading = false;
+        this.error.set(err.error?.detail || 'Error al desactivar granja');
+        this.showConfirmDialog = false;
+        this.confirmDialogData = null;
+      }
+    });
+  }
+
+  // Activar Granja con confirm-dialog
+  onActivateFarm(farmId: number): void {
+    const farm = this.farms().find(f => f.granja_id === farmId);
+    if (farm) {
+      this.confirmDialogData = {
+        title: 'localhost:4200 dice',
+        message: `¿Activar la granja "${farm.nombre}"?`,
+        action: () => this.confirmActivate(farmId)
+      };
+      this.showConfirmDialog = true;
+    }
+  }
+
+  confirmActivate(farmId: number): void {
+    this.isConfirmLoading = true;
+
+    this.farmService.updateFarm(farmId, { is_active: true }).subscribe({
+      next: () => {
+        this.isConfirmLoading = false;
+        this.showConfirmDialog = false;
+        this.confirmDialogData = null;
+        this.loadFarms();
+      },
+      error: (err) => {
+        this.isConfirmLoading = false;
+        this.error.set(err.error?.detail || 'Error al activar granja');
+        this.showConfirmDialog = false;
+        this.confirmDialogData = null;
+      }
+    });
+  }
+
+  onConfirmDialogCancel(): void {
+    this.showConfirmDialog = false;
+    this.confirmDialogData = null;
+    this.isConfirmLoading = false;
+  }
+
+  onConfirmDialogConfirm(): void {
+    if (this.confirmDialogData?.action) {
+      this.confirmDialogData.action();
+    }
+  }
+
   get isAdminGlobal(): boolean {
     return this.authService.currentUser()?.is_admin_global || false;
   }
 
   get activeFarms(): Farm[] {
-    return this.farms().filter(f => f.is_active);
+    return this.filteredFarms().filter(f => f.is_active);
   }
 
   get inactiveFarms(): Farm[] {
-    return this.farms().filter(f => !f.is_active);
+    return this.filteredFarms().filter(f => !f.is_active);
   }
 }

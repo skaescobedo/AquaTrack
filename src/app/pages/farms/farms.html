@@ -32,50 +32,42 @@
     </div>
   }
 
-  <!-- Farms Grid -->
+  <!-- Content -->
   @if (!loading() && !error()) {
-    <!-- Active Farms -->
-    @if (activeFarms.length > 0) {
+    <!-- Filters -->
+    <app-farm-filters
+      (filterChange)="onFilterChange($event)"
+    />
+
+    <!-- Farms Grid -->
+    @if (filteredFarms().length > 0) {
       <div class="grid-container cols-3 fade-in">
-        @for (farm of activeFarms; track farm.granja_id) {
+        @for (farm of filteredFarms(); track farm.granja_id) {
           <app-farm-card 
             [farm]="farm"
             (viewPanel)="viewFarmPanel($event)"
+            (edit)="onEditFarm($event)"
+            (deactivate)="onDeactivateFarm($event)"
+            (activate)="onActivateFarm($event)"
           />
         }
       </div>
-    }
-
-    <!-- Inactive Farms Section -->
-    @if (inactiveFarms.length > 0) {
-      <div class="mt-8">
-        <h2 class="text-xl font-semibold text-slate-300 mb-4">Granjas Inactivas</h2>
-        <div class="grid-container cols-3 fade-in">
-          @for (farm of inactiveFarms; track farm.granja_id) {
-            <app-farm-card 
-              [farm]="farm"
-              (viewPanel)="viewFarmPanel($event)"
-            />
-          }
-        </div>
-      </div>
-    }
-
-    <!-- Empty State -->
-    @if (farms().length === 0) {
+    } @else {
       <div class="empty-state">
         <div class="icon">
           <lucide-icon [img]="Building2" [size]="64" class="text-slate-600"></lucide-icon>
         </div>
-        <h3 class="title">No tienes granjas asignadas</h3>
+        <h3 class="title">No se encontraron granjas</h3>
         <p class="message">
-          @if (isAdminGlobal) {
+          @if (searchTerm() || filterStatus() !== 'active') {
+            No hay granjas que coincidan con los filtros aplicados
+          } @else if (isAdminGlobal) {
             Crea una nueva granja para comenzar
           } @else {
             Contacta con el administrador para que te asigne a una granja
           }
         </p>
-        @if (isAdminGlobal) {
+        @if (isAdminGlobal && !searchTerm() && filterStatus() === 'active') {
           <button 
             class="btn btn-primary"
             (click)="openCreateModal()"
@@ -88,10 +80,32 @@
   }
 </div>
 
-<!-- Modal -->
+<!-- Modal Crear -->
 @if (showModal()) {
   <app-farm-modal
     (close)="closeModal()"
     (save)="onSaveFarm($event)"
+  />
+}
+
+<!-- Modal Editar -->
+@if (showEditModal() && selectedFarm) {
+  <app-farm-edit-modal
+    [farm]="selectedFarm"
+    (close)="closeEditModal()"
+    (saved)="onFarmUpdated($event)"
+  />
+}
+
+<!-- Confirm Dialog -->
+@if (showConfirmDialog && confirmDialogData) {
+  <app-confirm-dialog
+    [title]="confirmDialogData.title"
+    [message]="confirmDialogData.message"
+    [confirmText]="'Aceptar'"
+    [cancelText]="'Cancelar'"
+    [isLoading]="isConfirmLoading"
+    (confirm)="onConfirmDialogConfirm()"
+    (cancel)="onConfirmDialogCancel()"
   />
 }

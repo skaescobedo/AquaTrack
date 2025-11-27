@@ -6,3 +6,40 @@
     @apply opacity-75;
   }
 }
+
+// Menu dropdown
+.menu-container {
+  @apply relative;
+
+  .dropdown-menu {
+    @apply absolute right-0 top-full mt-1 w-48 bg-slate-800 border border-slate-700 rounded-lg shadow-xl z-10;
+    animation: slideDown 0.2s ease-out;
+
+    .menu-item {
+      @apply w-full px-4 py-2.5 text-left text-sm text-slate-300 hover:bg-slate-700 transition-colors flex items-center gap-2;
+
+      &:first-child {
+        @apply rounded-t-lg;
+      }
+
+      &:last-child {
+        @apply rounded-b-lg;
+      }
+
+      &.danger {
+        @apply text-red-400 hover:bg-red-500 hover:bg-opacity-10;
+      }
+    }
+  }
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

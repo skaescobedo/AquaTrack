@@ -1,0 +1,29 @@
+<div class="farm-filters">
+  <div class="filters-left">
+    <!-- Search -->
+    <div class="search-box">
+      <lucide-icon [img]="Search" [size]="20" class="search-icon"></lucide-icon>
+      <input
+        type="text"
+        placeholder="Buscar por nombre o ubicación..."
+        [(ngModel)]="searchTerm"
+        (ngModelChange)="onSearchChange()"
+        class="search-input"
+      />
+    </div>
+
+    <!-- Status Filter -->
+    <div class="filter-dropdown">
+      <lucide-icon [img]="Filter" [size]="20" class="filter-icon"></lucide-icon>
+      <select
+        [(ngModel)]="filterStatus"
+        (ngModelChange)="onStatusChange()"
+        class="filter-select"
+      >
+        <option value="active">Activas</option>
+        <option value="inactive">Inactivas</option>
+        <option value="all">Todas</option>
+      </select>
+    </div>
+  </div>
+</div>

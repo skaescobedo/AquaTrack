@@ -1,0 +1,122 @@
+<div class="modal-overlay" (click)="onClose()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <!-- Header -->
+    <div class="modal-header">
+      <div class="flex items-center gap-3">
+        <div class="icon-wrapper">
+          <lucide-icon [img]="Building2" [size]="24"></lucide-icon>
+        </div>
+        <div>
+          <h2>Editar Granja</h2>
+          <p class="text-sm text-slate-400">Actualiza la información de la granja</p>
+        </div>
+      </div>
+      <button class="btn btn-ghost btn-icon" (click)="onClose()">
+        <lucide-icon [img]="X" [size]="20"></lucide-icon>
+      </button>
+    </div>
+
+    <!-- Body -->
+    <div class="modal-body">
+      @if (error) {
+        <div class="error-banner">
+          <lucide-icon [img]="AlertCircle" [size]="20" class="error-icon"></lucide-icon>
+          <span>{{ error }}</span>
+        </div>
+      }
+
+      <form [formGroup]="form" (ngSubmit)="onSubmit()">
+        <!-- Nombre -->
+        <div class="form-group">
+          <label for="nombre" class="required">Nombre de la granja</label>
+          <input
+            id="nombre"
+            type="text"
+            formControlName="nombre"
+            placeholder="Granja El Paraíso"
+            [class.error]="nombre?.invalid && nombre?.touched"
+          />
+          @if (nombre?.invalid && nombre?.touched) {
+            <span class="error-message">Mínimo 2 caracteres</span>
+          }
+        </div>
+
+        <!-- Ubicación -->
+        <div class="form-group">
+          <label for="ubicacion">Ubicación</label>
+          <input
+            id="ubicacion"
+            type="text"
+            formControlName="ubicacion"
+            placeholder="Ciudad, Estado"
+          />
+        </div>
+
+        <!-- Descripción -->
+        <div class="form-group">
+          <label for="descripcion">Descripción</label>
+          <textarea
+            id="descripcion"
+            formControlName="descripcion"
+            placeholder="Descripción breve de la granja (opcional)"
+            rows="3"
+          ></textarea>
+        </div>
+
+        <!-- Superficie Total en HECTÁREAS -->
+        <div class="form-group">
+          <label for="superficie_ha" class="required">Superficie Total (hectáreas)</label>
+          <input
+            id="superficie_ha"
+            type="number"
+            step="0.01"
+            formControlName="superficie_ha"
+            placeholder="15.00"
+            [class.error]="superficie_ha?.invalid && superficie_ha?.touched"
+          />
+          @if (superficie_ha?.invalid && superficie_ha?.touched) {
+            <span class="error-message">
+              @if (superficie_ha?.errors?.['required']) {
+                La superficie es requerida
+              }
+              @if (superficie_ha?.errors?.['min']) {
+                La superficie debe ser mayor a 0
+              }
+            </span>
+          }
+          <span class="hint">
+            Estanques vigentes suman: <strong>{{ sumaEstanquesVigentesHa.toFixed(2) }} ha</strong>
+          </span>
+        </div>
+      </form>
+    </div>
+
+    <!-- Footer -->
+    <div class="modal-footer">
+      <button class="btn btn-ghost" (click)="onClose()" [disabled]="isLoading">
+        Cancelar
+      </button>
+      <button class="btn btn-primary" (click)="onSubmit()" [disabled]="isLoading || form.invalid">
+        @if (isLoading) {
+          <span class="spinner"></span>
+          <span>Guardando...</span>
+        } @else {
+          <span>Guardar cambios</span>
+        }
+      </button>
+    </div>
+  </div>
+
+  <!-- Confirm Dialog -->
+  @if (showConfirmDialog && confirmDialogData) {
+    <app-confirm-dialog
+      [title]="confirmDialogData.title"
+      [message]="confirmDialogData.message"
+      [confirmText]="'Aceptar'"
+      [cancelText]="'Cancelar'"
+      [isLoading]="isConfirmLoading"
+      (confirm)="onConfirmDialogConfirm()"
+      (cancel)="onConfirmDialogCancel()"
+    />
+  }
+</div>

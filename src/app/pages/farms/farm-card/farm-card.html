@@ -4,8 +4,39 @@
     <div class="farm-icon" [class.opacity-50]="!farm.is_active">
       <lucide-icon [img]="Building2" [size]="24"></lucide-icon>
     </div>
-    <div class="farm-status" [ngClass]="farm.is_active ? 'active' : 'inactive'">
-      {{ farm.is_active ? 'Activa' : 'Inactiva' }}
+    <div class="flex items-center gap-2">
+      <div class="farm-status" [ngClass]="farm.is_active ? 'active' : 'inactive'">
+        {{ farm.is_active ? 'Activa' : 'Inactiva' }}
+      </div>
+      
+      <!-- Menu -->
+      <div class="menu-container">
+        <button 
+          class="btn btn-ghost btn-icon btn-sm"
+          (click)="toggleMenu($event)"
+        >
+          <lucide-icon [img]="MoreVertical" [size]="16"></lucide-icon>
+        </button>
+        
+        @if (showMenu) {
+          <div class="dropdown-menu">
+            <button class="menu-item" (click)="onEdit($event)">
+              <lucide-icon [img]="Edit" [size]="16"></lucide-icon>
+              <span>Editar</span>
+            </button>
+            
+            @if (farm.is_active) {
+              <button class="menu-item danger" (click)="onDeactivate($event)">
+                <span>Desactivar</span>
+              </button>
+            } @else {
+              <button class="menu-item" (click)="onActivate($event)">
+                <span>Activar</span>
+              </button>
+            }
+          </div>
+        }
+      </div>
     </div>
   </div>
 
