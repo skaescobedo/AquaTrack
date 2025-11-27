@@ -3,14 +3,9 @@
 .harvest-header {
   @apply grid grid-cols-1 gap-6 mb-8;
   
-  // 3 columnas solo en pantallas grandes (>1170px)
-  @media (min-width: 1171px) {
+  // 3 columnas solo en pantallas XL (>1280px)
+  @media (min-width: 1281px) {
     @apply grid-cols-3;
-  }
-  
-  // 2 columnas para rango medio
-  @media (min-width: 768px) and (max-width: 1170px) {
-    @apply grid-cols-2;
   }
 }
 
@@ -75,7 +70,7 @@
   }
 
   .stats-content {
-    @apply flex-1;
+    @apply flex-1 min-w-0;
 
     .stats-title {
       @apply text-lg font-semibold text-white mb-4 m-0;
@@ -85,7 +80,7 @@
       @apply grid grid-cols-3 gap-4;
 
       .stat-item {
-        @apply text-center;
+        @apply text-center min-w-0;
 
         .stat-value {
           @apply text-2xl font-bold text-white mb-1;
@@ -140,23 +135,46 @@
   }
 }
 
-// Fix para pantallas pequeñas (iPhone SE y similares)
+// Responsive
+@media (max-width: 1280px) {
+  .harvest-header {
+    @apply grid-cols-1;
+  }
+}
+
+// Stats verticales bajo 1500px
+@media (max-width: 1499px) {
+  .stats-card .stats-content .stats-grid {
+    @apply grid-cols-1 gap-3;
+    
+    .stat-item {
+      @apply flex items-center justify-between text-left;
+      
+      .stat-label {
+        @apply order-1 normal-case tracking-normal text-sm;
+      }
+      
+      .stat-value {
+        @apply order-2 mb-0;
+      }
+    }
+  }
+}
+
+// Fix para pantallas pequeñas
 @media (max-width: 390px) {
   .stats-card {
     .stats-content {
       .stats-grid {
-        @apply gap-1.5;
+        @apply gap-2;
 
         .stat-item {
           .stat-value {
-            @apply text-lg;
+            @apply text-xl;
           }
 
           .stat-label {
-            @apply text-[9px] leading-tight;
-            // Forzar word-break para evitar overflow
-            word-break: break-word;
-            hyphens: auto;
+            @apply text-xs;
           }
         }
       }

@@ -32,8 +32,8 @@
 .seedings-grid {
   @apply grid grid-cols-1 md:grid-cols-2 gap-6;
   
-  // 3 columnas solo en pantallas grandes (>1170px)
-  @media (min-width: 1171px) {
+  // 3 columnas solo en pantallas XL (>1280px)
+  @media (min-width: 1310px) {
     @apply grid-cols-3;
   }
 }

@@ -126,12 +126,40 @@
   }
 }
 
-// Actions
+// Actions - Botones con anchos consistentes
 .item-actions {
   @apply flex gap-2 pt-4 border-t border-slate-700;
 
   .list-view & {
     @apply pt-0 border-t-0;
+  }
+
+  button {
+    @apply flex items-center justify-center gap-2 px-4 py-2 rounded-lg font-medium text-sm transition-colors;
+  }
+
+  .btn-reprogram {
+    @apply bg-slate-700 text-slate-300 border border-slate-600;
+    flex: 0 0 auto;
+    min-width: 130px;
+
+    &:hover:not(:disabled) {
+      @apply bg-slate-600 text-white;
+    }
+  }
+
+  .btn-confirm {
+    @apply bg-green-500 text-white;
+    flex: 1 1 auto;
+    min-width: 130px;
+
+    &:hover:not(:disabled) {
+      @apply bg-green-600;
+    }
+  }
+
+  button:disabled {
+    @apply opacity-50 cursor-not-allowed;
   }
 }
 
@@ -197,5 +225,14 @@
 @media (max-width: 768px) {
   .confirmed-data {
     @apply grid-cols-1 gap-2;
+  }
+
+  .item-actions {
+    @apply flex-col;
+
+    button {
+      @apply w-full;
+      flex: none;
+    }
   }
 }

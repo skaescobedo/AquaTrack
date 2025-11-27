@@ -44,7 +44,6 @@
       .badge {
         @apply px-2.5 py-1 text-xs font-medium rounded-full;
 
-        // Tipo badges
         &.badge-warning {
           @apply bg-yellow-500 bg-opacity-20 text-yellow-400 border border-yellow-500;
         }
@@ -53,7 +52,6 @@
           @apply bg-green-500 bg-opacity-20 text-green-400 border border-green-500;
         }
 
-        // Status badges
         &.badge-info {
           @apply bg-blue-500 bg-opacity-20 text-blue-400 border border-blue-500;
         }
@@ -113,12 +111,19 @@
   }
 }
 
-// Footer
+// Footer - Botones con anchos fijos
 .card-footer {
   @apply flex items-center gap-2 pt-4 border-t border-slate-700;
 
+  .btn-view,
+  .btn-cancel {
+    @apply flex items-center justify-center gap-2 px-4 py-2 rounded-lg font-medium text-sm transition-colors;
+  }
+
   .btn-view {
-    @apply flex-1 flex items-center justify-center gap-2 px-4 py-2 bg-blue-500 text-white rounded-lg font-medium text-sm transition-colors;
+    @apply bg-blue-500 text-white;
+    flex: 1 1 auto;
+    min-width: 120px;
 
     &:hover {
       @apply bg-blue-600;
@@ -126,7 +131,9 @@
   }
 
   .btn-cancel {
-    @apply flex items-center gap-2 px-4 py-2 bg-red-500 bg-opacity-20 text-red-400 rounded-lg font-medium text-sm transition-colors border border-red-500;
+    @apply bg-red-500 bg-opacity-20 text-red-400 border border-red-500;
+    flex: 0 0 auto;
+    width: 120px;
 
     &:hover {
       @apply bg-red-500 bg-opacity-30;
@@ -161,6 +168,7 @@
     .btn-view,
     .btn-cancel {
       @apply w-full;
+      flex: none;
     }
   }
 }
