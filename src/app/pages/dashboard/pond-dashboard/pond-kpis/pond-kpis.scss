@@ -17,7 +17,7 @@
 }
 
 .kpi-icon {
-  @apply w-12 h-12 rounded-lg flex items-center justify-center flex-shrink-0;
+  @apply w-12 h-12 bg-blue-500 bg-opacity-20 rounded-lg flex items-center justify-center text-blue-400 flex-shrink-0;
 }
 
 .kpi-content {

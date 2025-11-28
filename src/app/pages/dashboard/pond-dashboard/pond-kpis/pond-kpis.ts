@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { LucideAngularModule, TrendingUp, Users, Activity, Percent } from 'lucide-angular';
+import { LucideAngularModule, Shrimp, Droplets, Scale, Activity } from 'lucide-angular';
 import { PondKPIs, PondDetalles } from '../../../../models/analytics.model';
 
 @Component({
@@ -14,10 +14,10 @@ export class PondKpis {
   @Input({ required: true }) kpis!: PondKPIs;
   @Input({ required: true }) detalles!: PondDetalles;
 
-  readonly TrendingUp = TrendingUp;
-  readonly Users = Users;
-  readonly Activity = Activity;
-  readonly Percent = Percent;
+  readonly Shrimp = Shrimp;      // Biomasa (igual que cycle-metrics)
+  readonly Droplets = Droplets;  // Densidad
+  readonly Scale = Scale;        // Peso Promedio (igual que cycle-metrics)
+  readonly Activity = Activity;  // SOB/Supervivencia (igual que cycle-metrics)
 
   formatNumber(num: number): string {
     if (num >= 1000000) {
