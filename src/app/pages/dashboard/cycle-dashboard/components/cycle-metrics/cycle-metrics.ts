@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { LucideAngularModule, Calendar, Fish, Droplets, Activity, TrendingUp } from 'lucide-angular';
+import { LucideAngularModule, Calendar, Shrimp, Droplets, Waves, Activity, Scale } from 'lucide-angular';
 import { CycleKPIs } from '../../../../../models/analytics.model';
 
 @Component({
@@ -14,8 +14,9 @@ export class CycleMetrics {
   @Input({ required: true }) kpis!: CycleKPIs;
 
   readonly Calendar = Calendar;
-  readonly Fish = Fish;
+  readonly Shrimp = Shrimp;
   readonly Droplets = Droplets;
+  readonly Waves = Waves;
   readonly Activity = Activity;
-  readonly TrendingUp = TrendingUp;
+  readonly Scale = Scale;
 }
