@@ -8,8 +8,7 @@ import { catchError, of } from 'rxjs';
 
 // Componentes hijos
 import { PondKpis } from './pond-kpis/pond-kpis';
-import { PondGrowthChart } from './pond-growth-chart/pond-growth-chart';
-import { PondDensityChart } from './pond-density-chart/pond-density-chart';
+import { PondCharts } from './pond-charts/pond-charts';
 
 @Component({
   selector: 'app-pond-dashboard',
@@ -18,8 +17,7 @@ import { PondDensityChart } from './pond-density-chart/pond-density-chart';
     CommonModule,
     LucideAngularModule,
     PondKpis,
-    PondGrowthChart,
-    PondDensityChart
+    PondCharts
   ],
   templateUrl: './pond-dashboard.html',
   styleUrls: ['./pond-dashboard.scss']
@@ -106,7 +104,7 @@ export class PondDashboard implements OnInit {
       'c': 'En Cosecha',
       'm': 'Mantenimiento'
     };
-    return status ? labels[status] || 'Desconocido' : '';
+    return status ? labels[status] || status : '';
   }
 
   get statusClass(): string {

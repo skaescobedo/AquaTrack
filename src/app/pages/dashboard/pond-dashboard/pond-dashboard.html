@@ -7,6 +7,9 @@
     
     @if (detail()) {
       <div class="pond-title-section">
+        <div class="icon-wrapper">
+          <lucide-icon [img]="Waves" [size]="32" class="text-cyan-400"></lucide-icon>
+        </div>
         <div>
           <h1 class="title">{{ detail()!.nombre }}</h1>
           <div class="badges">
@@ -43,17 +46,10 @@
       [detalles]="detail()!.detalles"
     />
 
-    <!-- Charts Section -->
-    <div class="charts-section">
-      <app-pond-growth-chart
-        [data]="detail()!.graficas.crecimiento"
-        [pondName]="detail()!.nombre"
-      />
-
-      <app-pond-density-chart
-        [data]="detail()!.graficas.densidad_evolucion"
-        [pondName]="detail()!.nombre"
-      />
-    </div>
+    <!-- Charts Section (Unificado) -->
+    <app-pond-charts
+      [graficas]="detail()!.graficas"
+      [pondName]="detail()!.nombre"
+    />
   }
 </div>

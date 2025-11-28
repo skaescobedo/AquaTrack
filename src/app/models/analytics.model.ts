@@ -1,3 +1,9 @@
+// src/app/models/analytics.model.ts
+
+// ============================================
+// CYCLE OVERVIEW (Dashboard general del ciclo)
+// ============================================
+
 export interface CycleOverview {
   ciclo_id: number;
   nombre: string;
@@ -32,47 +38,43 @@ export interface CycleGraficas {
   crecimiento: PuntoCrecimiento[];
   biomasa_evolucion: PuntoBiomasa[];
   densidad_evolucion: PuntoDensidad[];
-  sob_evolucion: PuntoSOB[];  // 🆕 Nueva gráfica
+  sob_evolucion: PuntoSOB[];
 }
 
 // ============================================
 // GRÁFICAS DEL CICLO (V3 - Doble línea)
 // ============================================
 
-// ✅ Gráfica de Crecimiento (PP)
 export interface PuntoCrecimiento {
   semana: number;
-  pp_proyectado_original_g?: number;  // ✅ Opcional (puede no existir si solo hay draft)
-  pp_ajustado_g?: number;              // ✅ Opcional (puede no existir si solo hay published)
+  pp_proyectado_original_g?: number;
+  pp_ajustado_g?: number;
   fecha: string;
   tiene_datos_reales: boolean;
 }
 
-// ✅ Gráfica de Biomasa (ACTUALIZADA V3)
 export interface PuntoBiomasa {
   semana: number;
-  biomasa_proyectada_original_kg?: number;  // 🆕 Plan publicado
-  biomasa_ajustada_kg?: number;             // 🆕 Borrador ajustado
+  biomasa_proyectada_original_kg?: number;
+  biomasa_ajustada_kg?: number;
   fecha: string;
-  tiene_datos_reales: boolean;              // 🆕 Indica si hay anclaje
+  tiene_datos_reales: boolean;
 }
 
-// ✅ Gráfica de Densidad (ACTUALIZADA V3)
 export interface PuntoDensidad {
   semana: number;
-  densidad_proyectada_original_org_m2?: number;  // 🆕 Plan publicado
-  densidad_ajustada_org_m2?: number;             // 🆕 Borrador ajustado
+  densidad_proyectada_original_org_m2?: number;
+  densidad_ajustada_org_m2?: number;
   fecha: string;
-  tiene_datos_reales: boolean;                   // 🆕 Indica si hay anclaje
+  tiene_datos_reales: boolean;
 }
 
-// 🆕 Gráfica de SOB (NUEVA V3)
 export interface PuntoSOB {
   semana: number;
-  sob_proyectado_original_pct?: number;  // Plan publicado
-  sob_ajustado_pct?: number;             // Borrador ajustado
+  sob_proyectado_original_pct?: number;
+  sob_ajustado_pct?: number;
   fecha: string;
-  tiene_datos_reales: boolean;           // Indica si hay anclaje
+  tiene_datos_reales: boolean;
 }
 
 export interface ProximaSiembra {
@@ -136,23 +138,43 @@ export interface PondKPIs {
 export interface PondGraficas {
   crecimiento: PuntoCrecimientoPond[];
   densidad_evolucion: PuntoDensidadPond[];
+  biomasa_evolucion: PuntoBiomasaPond[];
+  sob_evolucion: PuntoSOBPond[];
 }
 
 // ============================================
-// 🔄 GRÁFICAS DEL POND (Versión Simple - Sin doble línea)
+// 🔄 GRÁFICAS DEL POND (Versión Híbrida)
 // ============================================
 
-// ✅ Gráfica de Crecimiento del Pond (VERSIÓN SIMPLE)
+// ✅ Gráfica de Crecimiento del Pond (proyectado + real)
 export interface PuntoCrecimientoPond {
   semana: number;
-  pp_g: number;      // ✅ Propiedad simple (no opcional)
+  pp_proyectado_g: number;      // De proyección published (siempre presente)
+  pp_real_g?: number;           // De biometría (opcional)
   fecha: string;
 }
 
-// ✅ Gráfica de Densidad del Pond (VERSIÓN SIMPLE)
+// ✅ Gráfica de Densidad del Pond (proyectado + real)
 export interface PuntoDensidadPond {
   semana: number;
-  densidad_org_m2: number;  // ✅ Propiedad simple (no opcional)
+  densidad_proyectada_org_m2: number;  // De proyección published (siempre presente)
+  densidad_real_org_m2?: number;       // De biometría (opcional)
+  fecha: string;
+}
+
+// ✅ Gráfica de Biomasa del Pond (proyectado + real)
+export interface PuntoBiomasaPond {
+  semana: number;
+  biomasa_proyectada_kg: number;  // De proyección published (siempre presente)
+  biomasa_real_kg?: number;       // De biometría (opcional)
+  fecha: string;
+}
+
+// ✅ Gráfica de SOB del Pond (proyectado + real)
+export interface PuntoSOBPond {
+  semana: number;
+  sob_proyectado_pct: number;  // De proyección published (siempre presente)
+  sob_real_pct?: number;       // De biometría (opcional)
   fecha: string;
 }
 

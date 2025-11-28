@@ -1,0 +1,85 @@
+<div class="charts-section">
+  <!-- ✅ Gráfico 1: Crecimiento (PP) -->
+  <div class="chart-card">
+    <h3 class="chart-title">Curva de Crecimiento del Estanque</h3>
+    <p class="chart-subtitle">Peso promedio proyectado vs real con biometrías</p>
+    @if (crecimientoOptions()) {
+      <apx-chart
+        [series]="crecimientoOptions()!.series!"
+        [chart]="crecimientoOptions()!.chart!"
+        [xaxis]="crecimientoOptions()!.xaxis!"
+        [yaxis]="crecimientoOptions()!.yaxis!"
+        [stroke]="crecimientoOptions()!.stroke!"
+        [markers]="crecimientoOptions()!.markers!"
+        [dataLabels]="crecimientoOptions()!.dataLabels!"
+        [grid]="crecimientoOptions()!.grid!"
+        [tooltip]="crecimientoOptions()!.tooltip!"
+        [colors]="crecimientoOptions()!.colors!"
+        [legend]="crecimientoOptions()!.legend!"
+      ></apx-chart>
+    }
+  </div>
+
+  <!-- ✅ Gráfico 2: Biomasa -->
+  <div class="chart-card">
+    <h3 class="chart-title">Evolución de Biomasa</h3>
+    <p class="chart-subtitle">Biomasa proyectada vs real del estanque en kg</p>
+    @if (biomasaOptions()) {
+      <apx-chart
+        [series]="biomasaOptions()!.series!"
+        [chart]="biomasaOptions()!.chart!"
+        [xaxis]="biomasaOptions()!.xaxis!"
+        [yaxis]="biomasaOptions()!.yaxis!"
+        [stroke]="biomasaOptions()!.stroke!"
+        [markers]="biomasaOptions()!.markers!"
+        [dataLabels]="biomasaOptions()!.dataLabels!"
+        [grid]="biomasaOptions()!.grid!"
+        [tooltip]="biomasaOptions()!.tooltip!"
+        [colors]="biomasaOptions()!.colors!"
+        [legend]="biomasaOptions()!.legend!"
+      ></apx-chart>
+    }
+  </div>
+
+  <!-- ✅ Gráfico 3: Densidad -->
+  <div class="chart-card">
+    <h3 class="chart-title">Evolución de Densidad</h3>
+    <p class="chart-subtitle">Densidad proyectada vs real por biometrías y cosechas</p>
+    @if (densidadOptions()) {
+      <apx-chart
+        [series]="densidadOptions()!.series!"
+        [chart]="densidadOptions()!.chart!"
+        [xaxis]="densidadOptions()!.xaxis!"
+        [yaxis]="densidadOptions()!.yaxis!"
+        [stroke]="densidadOptions()!.stroke!"
+        [markers]="densidadOptions()!.markers!"
+        [dataLabels]="densidadOptions()!.dataLabels!"
+        [grid]="densidadOptions()!.grid!"
+        [tooltip]="densidadOptions()!.tooltip!"
+        [colors]="densidadOptions()!.colors!"
+        [legend]="densidadOptions()!.legend!"
+      ></apx-chart>
+    }
+  </div>
+
+  <!-- 🆕 Gráfico 4: SOB (Supervivencia) -->
+  <div class="chart-card">
+    <h3 class="chart-title">Evolución de Supervivencia (SOB)</h3>
+    <p class="chart-subtitle">Porcentaje de supervivencia proyectado vs real</p>
+    @if (sobOptions()) {
+      <apx-chart
+        [series]="sobOptions()!.series!"
+        [chart]="sobOptions()!.chart!"
+        [xaxis]="sobOptions()!.xaxis!"
+        [yaxis]="sobOptions()!.yaxis!"
+        [stroke]="sobOptions()!.stroke!"
+        [markers]="sobOptions()!.markers!"
+        [dataLabels]="sobOptions()!.dataLabels!"
+        [grid]="sobOptions()!.grid!"
+        [tooltip]="sobOptions()!.tooltip!"
+        [colors]="sobOptions()!.colors!"
+        [legend]="sobOptions()!.legend!"
+      ></apx-chart>
+    }
+  </div>
+</div>
