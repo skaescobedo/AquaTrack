@@ -1,3 +1,4 @@
+<!-- pages/ponds/ponds.html -->
 <div class="ponds-page">
   <!-- Page Header -->
   <div class="page-header-actions">
@@ -55,37 +56,19 @@
 
   <!-- Ponds Grid -->
   @if (!loading() && !error()) {
-    <!-- Vigente Ponds -->
-    @if (vigentePonds.length > 0) {
+    @if (ponds().length > 0) {
       <div class="grid-container cols-3 fade-in">
-        @for (pond of vigentePonds; track pond.estanque_id) {
+        @for (pond of ponds(); track pond.estanque_id) {
           <app-pond-card 
             [pond]="pond"
             [farmId]="farmId!"
             [cycleId]="activeCycle()?.ciclo_id || null"
+            (edit)="onEditPond($event)"
+            (delete)="onDeletePond($event)"
           />
         }
       </div>
-    }
-
-    <!-- Non-Vigente Ponds Section -->
-    @if (nonVigentePonds.length > 0) {
-      <div class="mt-8">
-        <h2 class="text-xl font-semibold text-slate-300 mb-4">Estanques No Vigentes</h2>
-        <div class="grid-container cols-3 fade-in">
-          @for (pond of nonVigentePonds; track pond.estanque_id) {
-            <app-pond-card 
-              [pond]="pond"
-              [farmId]="farmId!"
-              [cycleId]="null"
-            />
-          }
-        </div>
-      </div>
-    }
-
-    <!-- Empty State -->
-    @if (ponds().length === 0) {
+    } @else {
       <div class="empty-state">
         <div class="icon">
           <lucide-icon [img]="Waves" [size]="64" class="text-slate-600"></lucide-icon>
@@ -111,11 +94,35 @@
   }
 </div>
 
-<!-- Modal -->
+<!-- Modal Crear -->
 @if (showModal()) {
   <app-pond-modal
     [farmId]="farmId!"
     (close)="closeModal()"
     (save)="onSavePond($event)"
+  />
+}
+
+<!-- Modal Editar -->
+@if (showEditModal() && selectedPond) {
+  <app-pond-edit-modal
+    [pond]="selectedPond"
+    [farmId]="farmId!"
+    (close)="closeEditModal()"
+    (saved)="onPondUpdated($event)"
+    (error)="onPondUpdateError($event)"
+  />
+}
+
+<!-- Confirm Dialog -->
+@if (showConfirmDialog && confirmDialogData) {
+  <app-confirm-dialog
+    [title]="confirmDialogData.title"
+    [message]="confirmDialogData.message"
+    [confirmText]="'Aceptar'"
+    [cancelText]="'Cancelar'"
+    [isLoading]="isConfirmLoading"
+    (confirm)="onConfirmDialogConfirm()"
+    (cancel)="onConfirmDialogCancel()"
   />
 }

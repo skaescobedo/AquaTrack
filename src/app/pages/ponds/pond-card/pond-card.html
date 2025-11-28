@@ -1,25 +1,51 @@
-<div class="pond-card" [class]="vigenteClass">
+<!-- pages/ponds/pond-card/pond-card.html -->
+<div class="pond-card" [class.no-vigente]="!pond.is_vigente">
   <!-- Header -->
   <div class="pond-header">
     <div class="pond-icon" [class.opacity-50]="!pond.is_vigente">
       <lucide-icon [img]="Waves" [size]="24"></lucide-icon>
     </div>
-    <div class="badges">
-      <span class="badge" [ngClass]="statusClass">
+    <div class="flex items-center gap-2">
+      <div class="pond-status" [ngClass]="statusClass">
         {{ statusLabel }}
-      </span>
-      @if (!pond.is_vigente) {
-        <span class="badge badge-neutral">No Vigente</span>
-      }
+      </div>
+      
+      <!-- Menu -->
+      <div class="menu-container">
+        <button 
+          class="btn btn-ghost btn-icon btn-sm"
+          (click)="toggleMenu($event)"
+        >
+          <lucide-icon [img]="MoreVertical" [size]="16"></lucide-icon>
+        </button>
+        
+        @if (showMenu()) {
+          <div class="dropdown-menu">
+            <button class="menu-item" (click)="onEdit($event)">
+              <lucide-icon [img]="Edit" [size]="16"></lucide-icon>
+              <span>Editar</span>
+            </button>
+            
+            <button class="menu-item danger" (click)="onDelete($event)">
+              <lucide-icon [img]="Trash2" [size]="16"></lucide-icon>
+              <span>Eliminar</span>
+            </button>
+          </div>
+        }
+      </div>
     </div>
   </div>
 
   <!-- Content -->
-  <div class="pond-content" [class.opacity-60]="!pond.is_vigente">
+  <div class="mt-4" [class.opacity-60]="!pond.is_vigente">
     <h3 class="pond-title">{{ pond.nombre }}</h3>
     
+    @if (!pond.is_vigente) {
+      <div class="text-xs text-slate-500 mt-1">No vigente</div>
+    }
+    
     @if (pond.notas) {
-      <p class="pond-notes">{{ pond.notas }}</p>
+      <p class="text-sm text-slate-400 mt-2">{{ pond.notas }}</p>
     }
   </div>
 
@@ -27,10 +53,7 @@
   <div class="pond-info" [class.opacity-60]="!pond.is_vigente">
     <div class="pond-stat">
       <lucide-icon [img]="Maximize2" [size]="16"></lucide-icon>
-      <span>Superficie: {{ superficieHa }} ha</span>
-    </div>
-    <div class="pond-stat-secondary">
-      {{ superficieM2Formatted }} m²
+      <span>{{ superficieM2Formatted }} m² ({{ superficieHa }} ha)</span>
     </div>
   </div>
 
@@ -38,20 +61,10 @@
   @if (canViewDashboard) {
     <div class="pond-actions">
       <button 
-        class="btn btn-primary btn-sm w-full"
+        class="btn btn-primary w-full"
         (click)="viewDashboard()"
       >
-        Ver panel
-      </button>
-    </div>
-  } @else if (pond.is_vigente && cycleId === null) {
-    <div class="pond-actions">
-      <button 
-        class="btn btn-secondary btn-sm w-full"
-        disabled
-        title="No hay ciclo activo"
-      >
-        Sin ciclo activo
+        Ver dashboard
       </button>
     </div>
   }

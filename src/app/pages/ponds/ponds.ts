@@ -1,3 +1,4 @@
+// pages/ponds/ponds.ts
 import { Component, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
@@ -11,12 +12,21 @@ import { Farm } from '../../models/farm.model';
 import { Cycle } from '../../models/cycle.model';
 import { PondCard } from './pond-card/pond-card';
 import { PondModal } from './pond-modal/pond-modal';
+import { PondEditModal } from './pond-edit-modal/pond-edit-modal';
+import { ConfirmDialog } from '../../shared/confirm-dialog/confirm-dialog';
 import { forkJoin, catchError, of } from 'rxjs';
 
 @Component({
   selector: 'app-ponds',
   standalone: true,
-  imports: [CommonModule, LucideAngularModule, PondCard, PondModal],
+  imports: [
+    CommonModule, 
+    LucideAngularModule, 
+    PondCard, 
+    PondModal,
+    PondEditModal,
+    ConfirmDialog
+  ],
   templateUrl: './ponds.html',
   styleUrls: ['./ponds.scss']
 })
@@ -30,7 +40,20 @@ export class Ponds implements OnInit {
   ponds = signal<Pond[]>([]);
   loading = signal(true);
   error = signal<string | null>(null);
+  
+  // Modales
   showModal = signal(false);
+  showEditModal = signal(false);
+  selectedPond: Pond | null = null;
+
+  // Confirm dialog
+  showConfirmDialog = false;
+  confirmDialogData: {
+    title: string;
+    message: string;
+    action: () => void;
+  } | null = null;
+  isConfirmLoading = false;
 
   constructor(
     private pondService: PondService,
@@ -56,17 +79,15 @@ export class Ponds implements OnInit {
     this.loading.set(true);
     this.error.set(null);
 
-    // Cargar granja, estanques y ciclo activo en paralelo
-    // ✅ NUEVO CÓDIGO (dentro de loadData)
     forkJoin({
-      farm: this.farmService.getFarm(this.farmId),  // ← Cambio aquí
-      ponds: this.pondService.getPonds(this.farmId),
+      farm: this.farmService.getFarm(this.farmId),
+      ponds: this.pondService.getPonds(this.farmId, true), // vigentesOnly = true
       activeCycle: this.cycleService.getActiveCycle(this.farmId).pipe(
         catchError(() => of(null))
       )
     }).subscribe({
       next: (result) => {
-        this.currentFarm.set(result.farm);  // ← Cambio aquí
+        this.currentFarm.set(result.farm);
         this.ponds.set(result.ponds);
         this.activeCycle.set(result.activeCycle);
         this.loading.set(false);
@@ -91,55 +112,114 @@ export class Ponds implements OnInit {
     if (!this.farmId) return;
 
     this.pondService.createPond(this.farmId, pondData).subscribe({
-      next: (pond) => {
-        console.log('Estanque creado exitosamente:', pond);
+      next: () => {
         this.closeModal();
         this.loadData();
       },
       error: (err) => {
         console.error('Error creando estanque:', err);
-        this.error.set(err.error?.detail || 'Error al crear el estanque');
+        this.closeModal();
+        
+        // Mostrar error en confirm dialog
+        this.confirmDialogData = {
+          title: 'Error al crear estanque',
+          message: err.error?.detail || 'Ocurrió un error al crear el estanque',
+          action: () => this.onConfirmDialogCancel()
+        };
+        this.showConfirmDialog = true;
       }
     });
   }
 
+  onEditPond(pond: Pond): void {
+    this.selectedPond = pond;
+    this.showEditModal.set(true);
+  }
+
+  closeEditModal(): void {
+    this.showEditModal.set(false);
+    this.selectedPond = null;
+  }
+
+  onPondUpdated(updated: Pond): void {
+    this.closeEditModal();
+    this.loadData();
+  }
+
+  onPondUpdateError(errorMessage: string): void {
+    this.closeEditModal();
+    
+    // Mostrar error en confirm dialog
+    this.confirmDialogData = {
+      title: 'Error al actualizar estanque',
+      message: errorMessage,
+      action: () => this.onConfirmDialogCancel()
+    };
+    this.showConfirmDialog = true;
+  }
+
+  onDeletePond(pond: Pond): void {
+    this.confirmDialogData = {
+      title: '¿Eliminar estanque?',
+      message: `¿Estás seguro de que deseas eliminar el estanque "${pond.nombre}"? Si tiene historial, se marcará como no vigente. Si no tiene historial, se eliminará permanentemente.`,
+      action: () => this.executeDelete(pond.estanque_id)
+    };
+    this.showConfirmDialog = true;
+  }
+
+  executeDelete(pondId: number): void {
+    this.isConfirmLoading = true;
+
+    this.pondService.deletePond(pondId).subscribe({
+      next: () => {
+        this.showConfirmDialog = false;
+        this.confirmDialogData = null;
+        this.isConfirmLoading = false;
+        this.loadData();
+      },
+      error: (err) => {
+        this.isConfirmLoading = false;
+        
+        // Mostrar error en confirm dialog
+        this.confirmDialogData = {
+          title: 'Error al eliminar estanque',
+          message: err.error?.detail || 'Ocurrió un error al eliminar el estanque',
+          action: () => this.onConfirmDialogCancel()
+        };
+        // Ya está abierto, solo cambiar el contenido
+      }
+    });
+  }
+
+  onConfirmDialogConfirm(): void {
+    if (this.confirmDialogData?.action) {
+      this.confirmDialogData.action();
+    }
+  }
+
+  onConfirmDialogCancel(): void {
+    this.showConfirmDialog = false;
+    this.confirmDialogData = null;
+    this.isConfirmLoading = false;
+  }
+
   get canManagePonds(): boolean {
-    // TODO: Implementar verificación de permisos (gestionar_estanques)
     return this.authService.currentUser()?.is_admin_global || false;
   }
 
-  get vigentePonds(): Pond[] {
-    return this.ponds().filter(p => p.is_vigente);
-  }
-
-  get nonVigentePonds(): Pond[] {
-    return this.ponds().filter(p => !p.is_vigente);
-  }
-
-  // Superficie total de la granja (en m²)
   get totalSuperficieGranja(): number {
     return this.currentFarm()?.superficie_total_m2 || 0;
   }
 
-  // Suma de superficie vigente de los estanques (en m²)
   get superficieVigente(): number {
-    return this.vigentePonds.reduce((sum, p) => sum + parseFloat(p.superficie_m2), 0);
+    return this.ponds().reduce((sum, p) => sum + parseFloat(p.superficie_m2), 0);
   }
 
-  // Superficie vigente operativa (solo estanques activos)
-  get superficieOperativa(): number {
-    return this.vigentePonds
-      .filter(p => p.status === 'a')
-      .reduce((sum, p) => sum + parseFloat(p.superficie_m2), 0);
-  }
-
-  // Porcentaje utilizado (vigente / total granja)
   get porcentajeUtilizado(): number {
     if (this.totalSuperficieGranja === 0) return 0;
     return (this.superficieVigente / this.totalSuperficieGranja) * 100;
   }
 
-  // Helper para convertir m² a hectáreas
   m2ToHa(m2: number): string {
     return (m2 / 10000).toFixed(2);
   }

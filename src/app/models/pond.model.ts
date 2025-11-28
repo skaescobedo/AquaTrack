@@ -1,3 +1,4 @@
+// models/pond.model.ts
 export interface Pond {
   estanque_id: number;
   granja_id: number;
@@ -18,7 +19,6 @@ export interface PondUpdate {
   nombre?: string;
   superficie_m2?: number;
   notas?: string;
-  requires_new_version?: boolean;
 }
 
 // Helper para obtener el label del status

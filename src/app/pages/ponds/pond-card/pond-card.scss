@@ -1,9 +1,10 @@
-@use '../../../../theme/variables';
+// pages/ponds/pond-card/pond-card.scss
+// Los estilos principales están en theme/_cards.scss
 
 .pond-card {
   @apply relative bg-slate-800 rounded-xl p-5 shadow-lg border border-slate-700 transition-all duration-300;
 
-  &.vigente:hover {
+  &:hover {
     @apply border-blue-500 shadow-xl;
     transform: translateY(-4px);
   }
@@ -11,44 +12,69 @@
   &.no-vigente {
     @apply opacity-75;
   }
+
+  .pond-header {
+    @apply flex items-start justify-between mb-4;
+  }
+
+  .pond-icon {
+    @apply w-12 h-12 bg-blue-500 bg-opacity-20 rounded-lg flex items-center justify-center text-blue-400 text-2xl;
+  }
+
+  .pond-status {
+    @apply px-2 py-1 rounded-md text-xs font-medium;
+  }
+
+  .pond-title {
+    @apply text-lg font-semibold text-white mb-1;
+  }
+
+  .pond-info {
+    @apply mt-4 pt-4 border-t border-slate-700;
+  }
+
+  .pond-stat {
+    @apply flex items-center gap-2 text-sm text-slate-300;
+  }
+
+  .pond-actions {
+    @apply mt-4 flex gap-2;
+  }
 }
 
-.pond-header {
-  @apply flex items-start justify-between mb-4;
+// Menu dropdown
+.menu-container {
+  @apply relative;
+
+  .dropdown-menu {
+    @apply absolute right-0 top-full mt-1 w-48 bg-slate-800 border border-slate-700 rounded-lg shadow-xl z-10;
+    animation: slideDown 0.2s ease-out;
+
+    .menu-item {
+      @apply w-full px-4 py-2.5 text-left text-sm text-slate-300 hover:bg-slate-700 transition-colors flex items-center gap-2;
+
+      &:first-child {
+        @apply rounded-t-lg;
+      }
+
+      &:last-child {
+        @apply rounded-b-lg;
+      }
+
+      &.danger {
+        @apply text-red-400 hover:bg-red-500 hover:bg-opacity-10;
+      }
+    }
+  }
 }
 
-.pond-icon {
-  @apply w-12 h-12 bg-blue-500 bg-opacity-20 rounded-lg flex items-center justify-center text-blue-400;
-}
-
-.badges {
-  @apply flex flex-col gap-2 items-end;
-}
-
-.pond-content {
-  @apply mt-4;
-}
-
-.pond-title {
-  @apply text-lg font-semibold text-white m-0 mb-2;
-}
-
-.pond-notes {
-  @apply text-sm text-slate-400 mt-2 m-0;
-}
-
-.pond-info {
-  @apply mt-4 pt-4 border-t border-slate-700;
-}
-
-.pond-stat {
-  @apply flex items-center gap-2 text-sm text-slate-300;
-}
-
-.pond-stat-secondary {
-  @apply text-xs text-slate-500 mt-1 ml-6;
-}
-
-.pond-actions {
-  @apply mt-4 flex gap-2;
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
