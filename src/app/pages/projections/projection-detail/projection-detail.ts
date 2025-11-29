@@ -255,15 +255,53 @@ export class ProjectionDetailComponent implements OnInit {
     });
   }
 
-  // Gráfico 3: Biomasa (simplificado: PP * SOB)
+  // Gráfico 3: Biomasa
+// ============================================
+// CORRECCIÓN EN: src/app/pages/projections/projection-detail/projection-detail.ts
+// ============================================
+
+// REEMPLAZAR setupBiomasaChart() CON ESTA VERSIÓN CORREGIDA:
+
   private setupBiomasaChart(lines: ProjectionLine[]): void {
-    const data = lines.map(line => ({
-      x: `S${line.semana_idx}`,
-      y: +line.pp_g * (+line.sob_pct_linea / 100)
-    }));
+    const contexto = this.projection()?.contexto_ciclo;
+    
+    if (!contexto) {
+      console.warn('No hay contexto del ciclo, no se puede calcular biomasa');
+      return;
+    }
+
+    // Calcular biomasa correctamente usando contexto del ciclo Y retiros acumulados
+    let retirosAcumulados = 0;
+    
+    const data = lines.map(line => {
+      // Acumular retiros proyectados
+      if (line.retiro_org_m2) {
+        retirosAcumulados += +line.retiro_org_m2;
+      }
+      
+      // Fórmula completa:
+      // 1. Densidad viva = (densidad_base × (SOB / 100)) - retiros_acumulados
+      // 2. Organismos vivos = densidad_viva × superficie
+      // 3. Biomasa = (org_vivos × pp) / 1000
+      
+      const densidadConSOB = contexto.densidad_base_org_m2 * (+line.sob_pct_linea / 100);
+      const densidadViva = Math.max(0, densidadConSOB - retirosAcumulados);
+      const orgVivos = densidadViva * contexto.superficie_total_m2;
+      const biomasaKg = (orgVivos * +line.pp_g) / 1000;
+      
+      return {
+        x: `S${line.semana_idx}`,
+        y: biomasaKg
+      };
+    });
+
+    // Índices con cosechas
+    const indicesCosecha = lines
+      .map((line, index) => line.cosecha_flag ? index : -1)
+      .filter(i => i !== -1);
 
     this.biomasaOptions.set({
-      series: [{ name: 'Biomasa Relativa', data }],
+      series: [{ name: 'Biomasa (kg)', data }],
       chart: {
         type: 'line',
         height: 350,
@@ -278,7 +316,15 @@ export class ProjectionDetailComponent implements OnInit {
         colors: ['#8b5cf6'],
         strokeColors: '#1e293b',
         strokeWidth: 2,
-        hover: { size: 9 }
+        hover: { size: 9 },
+        discrete: indicesCosecha.map(index => ({
+          seriesIndex: 0,
+          dataPointIndex: index,
+          fillColor: '#ef4444',
+          strokeColor: '#1e293b',
+          size: 8,
+          shape: 'circle'
+        }))
       },
       dataLabels: { enabled: false },
       legend: {
@@ -299,37 +345,64 @@ export class ProjectionDetailComponent implements OnInit {
       },
       yaxis: {
         title: {
-          text: 'Biomasa Relativa',
+          text: 'Biomasa (kg)',
           style: { color: '#94a3b8', fontSize: '12px' }
         },
         labels: {
           style: { colors: '#94a3b8', fontSize: '12px' },
-          formatter: (val) => val ? val.toFixed(2) : '0'
+          formatter: (val) => val ? val.toFixed(0) + ' kg' : '0 kg'
         }
       },
       tooltip: {
         theme: 'dark',
         y: {
-          formatter: (val) => val.toFixed(2)
+          formatter: (val, opts) => {
+            const index = opts?.dataPointIndex;
+            if (index !== undefined && indicesCosecha.includes(index)) {
+              return `${val.toFixed(2)} kg 🎣 (Cosecha)`;
+            }
+            return val.toFixed(2) + ' kg';
+          }
         }
       }
     });
   }
 
   // Gráfico 4: Densidad (restando retiros)
+// ============================================
+// CAMBIOS EN: src/app/pages/projections/projection-detail/projection-detail.ts
+// ============================================
+
+// REEMPLAZAR setupDensidadChart() CON ESTA VERSIÓN:
+
   private setupDensidadChart(lines: ProjectionLine[]): void {
-    let densidadAcumulada = 100;
+    const contexto = this.projection()?.contexto_ciclo;
+    
+    if (!contexto) {
+      console.warn('No hay contexto del ciclo, no se puede calcular densidad');
+      return;
+    }
+
+    // Calcular densidad correctamente usando contexto del ciclo
+    let retirosAcumulados = 0;
+    
     const data = lines.map(line => {
-      const retiro = line.retiro_org_m2 ? +line.retiro_org_m2 : 0;
-      if (retiro > 0) {
-        densidadAcumulada -= retiro;
+      // Acumular retiros
+      if (line.retiro_org_m2) {
+        retirosAcumulados += +line.retiro_org_m2;
       }
+      
+      // Fórmula: (densidad_base × (SOB / 100)) - retiros_acumulados
+      const densidadViva = contexto.densidad_base_org_m2 * (+line.sob_pct_linea / 100);
+      const densidadEfectiva = Math.max(0, densidadViva - retirosAcumulados);
+      
       return {
         x: `S${line.semana_idx}`,
-        y: densidadAcumulada
+        y: densidadEfectiva
       };
     });
 
+    // Índices con cosechas
     const indicesCosecha = lines
       .map((line, index) => line.cosecha_flag ? index : -1)
       .filter(i => i !== -1);
@@ -344,7 +417,7 @@ export class ProjectionDetailComponent implements OnInit {
         zoom: { enabled: false }
       },
       colors: ['#06b6d4'],
-      stroke: { curve: 'stepline', width: 3 },
+      stroke: { curve: 'smooth', width: 3 },
       markers: {
         size: 5,
         colors: ['#06b6d4'],
@@ -384,7 +457,7 @@ export class ProjectionDetailComponent implements OnInit {
         },
         labels: {
           style: { colors: '#94a3b8', fontSize: '12px' },
-          formatter: (val) => val ? val.toFixed(1) : '0'
+          formatter: (val) => val ? val.toFixed(2) + ' org/m²' : '0 org/m²'
         }
       },
       tooltip: {
@@ -393,8 +466,7 @@ export class ProjectionDetailComponent implements OnInit {
           formatter: (val, opts) => {
             const index = opts?.dataPointIndex;
             if (index !== undefined && indicesCosecha.includes(index)) {
-              const retiro = lines[index].retiro_org_m2;
-              return `${val.toFixed(2)} org/m² 🎣 (Retiro: ${retiro})`;
+              return `${val.toFixed(2)} org/m² 🎣 (Cosecha)`;
             }
             return val.toFixed(2) + ' org/m²';
           }

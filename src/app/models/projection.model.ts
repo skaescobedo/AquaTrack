@@ -22,6 +22,14 @@ export interface ProjectionLine {
   nota?: string;
 }
 
+export interface CycleContext {
+  densidad_base_org_m2: number;
+  superficie_total_m2: number;
+  estanques_count: number;
+  fecha_inicio: string; // ISO date
+}
+
+
 /**
  * Proyección básica (sin líneas)
  */
@@ -46,8 +54,12 @@ export interface Projection {
 /**
  * Proyección completa con líneas semanales
  */
+/**
+ * Proyección completa con líneas semanales y contexto del ciclo
+ */
 export interface ProjectionDetail extends Projection {
   lineas: ProjectionLine[];
+  contexto_ciclo?: CycleContext;  // ← AGREGAR ESTA LÍNEA
 }
 
 /**
