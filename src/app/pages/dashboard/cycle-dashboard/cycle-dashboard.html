@@ -41,9 +41,9 @@
             Iniciado el {{ formatDate(activeCycle()!.fecha_inicio) }}
           </p>
         </div>
-        <div class="badge badge-success">
-          {{ activeCycle()!.status }}
-        </div>
+          <div class="badge" [ngClass]="getStatusClass(activeCycle()!.status)">
+            {{ getStatusLabel(activeCycle()!.status) }}
+          </div>
       </div>
 
       <!-- Metrics (Componente modular) -->

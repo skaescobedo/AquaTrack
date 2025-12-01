@@ -174,4 +174,14 @@ export class CycleDashboard implements OnInit {
   get hasUpcomingHarvests(): boolean {
     return !!this.overview() && this.overview()!.proximas_cosechas.length > 0;
   }
+  
+  getStatusLabel(status: string): string {
+  switch (status) {
+    case 'a': return 'Activo';
+    case 'f': return 'Finalizado';
+    case 'c': return 'Cancelado';
+    default:  return status;
+  }
+}
+
 }
