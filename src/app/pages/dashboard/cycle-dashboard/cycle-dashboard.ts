@@ -175,13 +175,22 @@ export class CycleDashboard implements OnInit {
     return !!this.overview() && this.overview()!.proximas_cosechas.length > 0;
   }
   
-  getStatusLabel(status: string): string {
-  switch (status) {
-    case 'a': return 'Activo';
-    case 'f': return 'Finalizado';
-    case 'c': return 'Cancelado';
-    default:  return status;
+  getStatusClass(status: string): string {
+    switch (status) {
+      case 'a': return 'badge-success';
+      case 'f': return 'badge-info';
+      case 'c': return 'badge-danger';
+      default:  return 'badge-secondary';
+    }
   }
-}
+
+  getStatusLabel(status: string): string {
+    switch (status) {
+      case 'a': return 'Activo';
+      case 'f': return 'Finalizado';
+      case 'c': return 'Cancelado';
+      default:  return status;
+    }
+  }
 
 }
